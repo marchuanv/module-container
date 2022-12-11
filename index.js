@@ -1,3 +1,3 @@
 const http = require("http");
 const server = http.createServer();
-server.listen(80);
+server.listen(process.env.PORT);
