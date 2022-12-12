@@ -1,5 +1,5 @@
 const http = require("http");
-const { existsSync } = require('fs');
+const { existsSync, writeFileSync, mkDirSync } = require('fs');
 const path = require('path');
 const utils = require("utils");
 const server = http.createServer();
@@ -26,17 +26,24 @@ server.on("request", (request, response) => {
       'active-object.json'
   );
 
-  if (existsSync(aoJsonFilePath) && request.url.startsWith(`/${aoName}`)) {
-     results.statusCode = 200;
-     results.statusMessage = 'Success';
-     results.message = 'Known Active Object Summary';
-     results.name = aoName;
-  } else if (existsSync(activeAOJsonFilePath)) {
-     results.statusCode = 200;
-     results.statusMessage = 'Success';
-     results.message = 'Current Active Object Summary';
-     results.name = aoName;
+  if (request.method === 'GET') {
+     if (existsSync(aoJsonFilePath) && request.url.startsWith(`/${aoName}`)) {
+        results.statusCode = 200;
+        results.statusMessage = 'Success';
+        results.message = 'Known Active Object';
+        results.name = aoName;
+    } else if (existsSync(activeAOJsonFilePath)) {
+        results.statusCode = 200;
+        results.statusMessage = 'Success';
+        results.message = 'Current Active Object';
+        results.name = aoName;
+    }     
+  } else if (request.method === 'PUT' && !existsSync(aoJsonFilePath) ) {
+    writeFileSync(aoJsonFilePath, utils.getJSONString({
+        aoName
+    }));
   }
+  
   const bodyStr = utils.getJSONString(results);
   response.writeHead(results.statusCode, results.statusMessage, { 
     'Content-Length': Buffer.byteLength(bodyStr), 
