@@ -4,7 +4,7 @@ const path = require('path');
 const utils = require("utils");
 const server = http.createServer();
 const { Octokit, App } = require("octokit");
-const octokit = new Octokit({ auth: `personal-access-token123` });
+const octokit = new Octokit({ auth: process.env.GIT });
 server.on("request", (request, response) => {
   console.log("request received");
   const results = {
