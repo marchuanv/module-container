@@ -8,7 +8,7 @@ server.on("request", (request, response) => {
      statusMessage: 'Not Found',
      message: 'Not Found'
   };
-  const urlSplit = request.url.split(\//\g);
+  const urlSplit = request.url.split(/\//g);
   const oaName = urlSplit[0];
 
   const aoJsonFileDir = path.join(
