@@ -8,7 +8,7 @@ server.on("request", (request, response) => {
   const results = {
      statusCode: 404,
      statusMessage: 'Not Found',
-     message: 'Not Found'
+     message: 'No Active Objects Found'
   };
   const urlSplit = request.url.split(/\//g);
   const aoName = urlSplit[0];
