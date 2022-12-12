@@ -8,7 +8,7 @@ server.on("request", (request, response) => {
      statusMessage: 'Not Found',
      message: 'Not Found'
   };
-  if (request.path === '/active') {
+  if (request.url === '/active') {
      results.statusCode = 200;
      results.statusMessage = 'Success';
      results.message = 'no active objects';
