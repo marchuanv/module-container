@@ -11,7 +11,7 @@ server.on("request", (request, response) => {
      message: 'Not Found'
   };
   const urlSplit = request.url.split(/\//g);
-  const oaName = urlSplit[0];
+  const aoName = urlSplit[0];
 
   const aoJsonFileDir = path.join(
       __dirname,
@@ -26,15 +26,12 @@ server.on("request", (request, response) => {
       'active-object.json'
   );
 
-  if (existsSync(aoJsonFilePath)) {
-    if (request.url.startsWith(`/${aoName}`)) {
+  if (existsSync(aoJsonFilePath) && request.url.startsWith(`/${aoName}`)) {
      results.statusCode = 200;
      results.statusMessage = 'Success';
      results.message = 'Known Active Object Summary';
      results.name = aoName;
-    }
-  }
-  if (existsSync(activeAOJsonFilePath)) {
+  } else if (existsSync(activeAOJsonFilePath)) {
      results.statusCode = 200;
      results.statusMessage = 'Success';
      results.message = 'Current Active Object Summary';
