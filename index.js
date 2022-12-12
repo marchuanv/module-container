@@ -24,7 +24,7 @@ server.on("request", (request, response) => {
       'active-object.json`
   );
 
-  if (existsSync(aoJsonFilePath) {
+  if (existsSync(aoJsonFilePath)) {
     if (request.url.startsWith(`/${aoName}`)) {
      results.statusCode = 200;
      results.statusMessage = 'Success';
