@@ -10,6 +10,6 @@ server.on("request", (request, response) => {
     'Content-Length': Buffer.byteLength(bodyStr), 
     'Content-Type': 'application/json' 
   });
-  response.end("hello world");
+  response.end(jsonStr);
 });
 server.listen(process.env.PORT || 8080);
