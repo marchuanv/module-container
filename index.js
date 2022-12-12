@@ -32,7 +32,7 @@ server.on("request", (request, response) => {
      results.name = aoName;
     }
   }
-  if (existsSync(activeAOJsonFilePath) {
+  if (existsSync(activeAOJsonFilePath)) {
      results.statusCode = 200;
      results.statusMessage = 'Success';
      results.message = 'Current Active Object Summary';
