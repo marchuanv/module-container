@@ -7,7 +7,6 @@ const { Octokit, App } = require("octokit");
 const octokit = new Octokit({ auth: process.env.GIT });
 octokit.rest.users.getAuthenticated().then((info) => {
  console.log(info);
-}); 
 server.on("request", (request, response) => {
   console.log("request received");
   const results = {
@@ -63,3 +62,5 @@ server.on("request", (request, response) => {
   response.end(bodyStr);
 });
 server.listen(process.env.PORT || 8080);
+}); 
+
