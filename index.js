@@ -21,7 +21,7 @@ server.on("request", (request, response) => {
   );
   const activeAOJsonFilePath = path.join(
       __dirname,
-      'active-object.json`
+      'active-object.json'
   );
 
   if (existsSync(aoJsonFilePath)) {
