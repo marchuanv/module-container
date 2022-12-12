@@ -3,10 +3,18 @@ const utils = require("utils");
 const server = http.createServer();
 server.on("request", (request, response) => {
   console.log("request received");
-  const bodyStr = utils.getJSONString({
-     message: 'hello world'
-  });
-  response.writeHead(200, { 
+  const results = {
+     statusCode: 404
+     statusMessage: 'Not Found',
+     message: 'Not Found'
+  }:
+  if (request.path === '/active') {
+     results.statusCode = 200;
+     results.statusMessage = "Success";
+     results.message 'no active objects';
+  }
+  const bodyStr = utils.getJSONString(results);
+  response.writeHead(results.statusCode, results.statusMessage, { 
     'Content-Length': Buffer.byteLength(bodyStr), 
     'Content-Type': 'application/json' 
   });
