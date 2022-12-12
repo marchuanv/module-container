@@ -5,9 +5,9 @@ const utils = require("utils");
 const server = http.createServer();
 const { Octokit, App } = require("octokit");
 const octokit = new Octokit({ auth: process.env.GIT });
-octokit.rest.users.getAuthenticated().then((info) => {
+octokit.request("GET /ref").then((info) => {
  console.log(info);
-server.on("request", (request, response) => {
+ server.on("request", (request, response) => {
   console.log("request received");
   const results = {
      statusCode: 404,
@@ -60,7 +60,7 @@ server.on("request", (request, response) => {
     'Content-Type': 'application/json' 
   });
   response.end(bodyStr);
-});
+  });
 server.listen(process.env.PORT || 8080);
 }); 
 
