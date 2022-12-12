@@ -12,7 +12,7 @@ server.on("request", (request, response) => {
   };
   const urlSplit = request.url.split('/');
   console.log('url segments: ', utils.getJSONString(urlSplit));
-  const aoName = urlSplit[0];
+  const aoName = urlSplit.filter(x => x);
 
   console.log(`context: ${aoName}`);
 
