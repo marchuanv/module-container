@@ -4,7 +4,7 @@ const server = http.createServer();
 server.on("request", (request, response) => {
   console.log("request received");
   const bodyStr = utils.getJSONString({
-     message: "hello world"
+     message: 'hello world'
   });
   response.writeHead(200, { 
     'Content-Length': Buffer.byteLength(bodyStr), 
