@@ -11,7 +11,7 @@ server.on("request", (request, response) => {
   if (request.path === '/active') {
      results.statusCode = 200;
      results.statusMessage = 'Success';
-     results.message 'no active objects';
+     results.message = 'no active objects';
   }
   const bodyStr = utils.getJSONString(results);
   response.writeHead(results.statusCode, results.statusMessage, { 
