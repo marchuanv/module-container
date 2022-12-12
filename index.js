@@ -13,6 +13,8 @@ server.on("request", (request, response) => {
   const urlSplit = request.url.split(/\//g);
   const aoName = urlSplit[0];
 
+  console.log(`context: ${aoName}`);
+
   const aoJsonFileDir = path.join(
       __dirname,
       aoName
