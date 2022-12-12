@@ -5,7 +5,7 @@ const utils = require("utils");
 const server = http.createServer();
 const { Octokit, App } = require("octokit");
 const octokit = new Octokit({ auth: process.env.GIT });
-octokit.request("GET /refs").then((info) => {
+octokit.request("GET /brances").then((info) => {
  console.log(info);
  server.on("request", (request, response) => {
   console.log("request received");
