@@ -10,7 +10,7 @@ server.on("request", (request, response) => {
      statusMessage: 'Not Found',
      message: 'No Active Objects Found'
   };
-  const urlSplit = request.url.split('/');
+  const urlSplit = request.path.split('/');
   const aoName = urlSplit[0];
 
   console.log(`context: ${aoName}`);
