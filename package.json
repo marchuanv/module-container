@@ -23,7 +23,7 @@
    "homepage":"https://github.com/marchuanv/active-objects#readme",
    "dependencies":{
       "utils":"marchuanv/utils",
-      "octokit":"^2.0.10"
+      "octokit":"2.0.10"
    },
    "devDependencies":{}
 }
