@@ -38,12 +38,12 @@ server.on("request", (request, response) => {
         results.message = 'Current Active Object';
         results.name = aoName;
     }
-  } else if (request.method === 'PUT' && !existsSync(aoJsonFileDir) ) {
-
+  } else if (aoName && request.method === 'PUT' && !existsSync(aoJsonFileDir) ) {
+    mkSync(aoJsonFileDir);
     writeFileSync(aoJsonFilePath, utils.getJSONString({
         aoName
     }));
-  } else if (request.method === 'DELETE' && existsSync(aoJsonFileDir) ) {
+  } else if (aoName && request.method === 'DELETE' && existsSync(aoJsonFileDir) ) {
     rmSync(aoJsonFileDir, { recursive: true });
   }
   
