@@ -7,7 +7,7 @@ server.on("request", (request, response) => {
      statusCode: 404,
      statusMessage: 'Not Found',
      message: 'Not Found'
-  }:
+  };
   if (request.path === '/active') {
      results.statusCode = 200;
      results.statusMessage = 'Success';
