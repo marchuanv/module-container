@@ -1,5 +1,5 @@
 const http = require("http");
-const { existsSync, writeFileSync, mkDirSync, rmSync } = require('fs');
+const { existsSync, writeFileSync, mkdirSync, rmSync } = require('fs');
 const path = require('path');
 const utils = require("utils");
 const server = http.createServer();
@@ -39,7 +39,7 @@ server.on("request", (request, response) => {
         results.name = aoName;
     }
   } else if (aoName && request.method === 'PUT' && !existsSync(aoJsonFileDir) ) {
-    mkSync(aoJsonFileDir);
+    mkdirSync(aoJsonFileDir);
     writeFileSync(aoJsonFilePath, utils.getJSONString({
         aoName
     }));
