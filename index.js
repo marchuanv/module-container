@@ -1,5 +1,5 @@
 const http = require("http");
-const { existsSync, writeFileSync, mkDirSync } = require('fs');
+const { existsSync, writeFileSync, mkDirSync, rmSync } = require('fs');
 const path = require('path');
 const utils = require("utils");
 const server = http.createServer();
@@ -37,11 +37,14 @@ server.on("request", (request, response) => {
         results.statusMessage = 'Success';
         results.message = 'Current Active Object';
         results.name = aoName;
-    }     
-  } else if (request.method === 'PUT' && !existsSync(aoJsonFilePath) ) {
+    }
+  } else if (request.method === 'PUT' && !existsSync(aoJsonFileDir) ) {
+
     writeFileSync(aoJsonFilePath, utils.getJSONString({
         aoName
     }));
+  } else if (request.method === 'DELETE' && existsSync(aoJsonFileDir) ) {
+    rmSync(aoJsonFileDir, { recursive: true });
   }
   
   const bodyStr = utils.getJSONString(results);
