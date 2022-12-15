@@ -6,7 +6,7 @@ const server = http.createServer();
 const { Octokit, App } = require("octokit");
 const octokit = new Octokit({ auth: process.env.GIT });
 octokit.request("GET /repos/marchuanv/active-objects/brances").then((info) => {
- console.log(info);
+ console.log('BRANCH INFO: ', info);
  server.on("request", (request, response) => {
   console.log("request received");
   const results = {
@@ -46,6 +46,7 @@ octokit.request("GET /repos/marchuanv/active-objects/brances").then((info) => {
         results.name = aoName;
     }
   } else if (aoName && request.method === 'PUT' && !existsSync(aoJsonFileDir) ) {
+    console.log('creating');
     mkdirSync(aoJsonFileDir);
     writeFileSync(aoJsonFilePath, utils.getJSONString({
         aoName
