@@ -19,19 +19,40 @@ server.on("request", async (request, response) => {
 
   console.log(`context: ${aoName}`);
 
-  let branchExists = true;
+  let branchExists = false;
   try {
-      info = await octokit.request(`GET /repos/marchuanv/active-objects/branches/${aoName}`);
+      await octokit.request(`GET /repos/marchuanv/active-objects/branches/${aoName}`);
+      branchExists = true;
   } catch(error) {
       if (error.status===404) {
           branchExists = false;
       }
+      throws(error);
   }
 
   if (!branchExists) {
       console.log(`${aoName} does not exist.`);
   }
 
+  let revision = "";
+  try {
+      revision = await octokit.request(`POST /repos/marchuanv/active-objects/git/refs/heads`);
+  } catch(error) {
+      throws(error);
+  }
+
+  try {
+      revision = await octokit.request(`POST /repos/marchuanv/active-objects/git/refs`,{
+         ref: `refs/heads/${aoName}`,
+         sha: revision
+      });
+  } catch(error) {
+      throws(error);
+  }
+
+  // https://api.github.com/repos/<AUTHOR>/<REPO>/git/refs
+  // https://api.github.com/repos/<AUTHOR>/<REPO>/git/refs/heads
+  
   const aoJsonFileDir = path.join(
       __dirname,
       aoName
