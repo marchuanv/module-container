@@ -6,7 +6,7 @@ const server = http.createServer();
 const { Octokit, App } = require("octokit");
 const octokit = new Octokit({ auth: process.env.GIT });
 
-server.on("request", (request, response) => {
+server.on("request", async (request, response) => {
   console.log("request received");
   const results = {
      statusCode: 404,
