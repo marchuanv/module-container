@@ -27,7 +27,7 @@ server.on("request", async (request, response) => {
       if (error.status===404) {
           branchExists = false;
       }
-      throws(error);
+      throw(error);
   }
 
   if (!branchExists) {
@@ -38,7 +38,7 @@ server.on("request", async (request, response) => {
   try {
       revision = await octokit.request(`POST /repos/marchuanv/active-objects/git/refs/heads`);
   } catch(error) {
-      throws(error);
+      throw(error);
   }
 
   try {
@@ -47,7 +47,7 @@ server.on("request", async (request, response) => {
          sha: revision
       });
   } catch(error) {
-      throws(error);
+      throw(error);
   }
 
   // https://api.github.com/repos/<AUTHOR>/<REPO>/git/refs
