@@ -26,8 +26,9 @@ server.on("request", async (request, response) => {
   } catch(error) {
       if (error.status===404) {
           branchExists = false;
+      } else {
+          throw(error);
       }
-      throw(error);
   }
 
   if (!branchExists) {
