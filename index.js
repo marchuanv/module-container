@@ -37,7 +37,7 @@ server.on("request", async (request, response) => {
       try {
           const {data} = await octokit.request(`GET /repos/marchuanv/active-objects/git/refs/heads`);
           console.log('data', data);
-          revision = data.find(x=>x.object.sha).map(x=>x.object.sha);
+          revision = data.shift().object.sha;
       } catch(error) {
           throw(error);
       }
