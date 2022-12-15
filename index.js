@@ -40,7 +40,7 @@ server.on("request", async (request, response) => {
           throw(error);
       }
       if (revision) {
-          console.log('latest revision: ', revision);
+          console.log('latest revision: ', JSON.stringify(revision));
       }
       try {
            await octokit.request(`POST /repos/marchuanv/active-objects/git/refs`,{
