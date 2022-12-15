@@ -36,13 +36,12 @@ server.on("request", async (request, response) => {
       let revision = "";
       try {
           const {data} = await octokit.request(`GET /repos/marchuanv/active-objects/git/refs/heads`);
-          console.log('data', data);
           revision = data.shift().object.sha;
       } catch(error) {
           throw(error);
       }
       if (revision) {
-          console.log('latest revision: ', JSON.stringify(revision));
+          console.log('latest revision: ', revision);
       }
       try {
            await octokit.request(`POST /repos/marchuanv/active-objects/git/refs`,{
