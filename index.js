@@ -72,9 +72,9 @@ server.on("request", (request, response) => {
                 } catch(error) {
                     console.error(error);
                 }
-                let message = `${aoName}.js script updated`;
-                if (!fileSha) {
-                    message = `${aoName}.js script created`;
+                let message = `${aoName}.js script created`;
+                if (fileSha) {
+                    message = `${aoName}.js script updated`;
                 }
                 try {
                     await octokit.request(`${request.method} /repos/marchuanv/active-objects/contents/${aoName}.js`, {
