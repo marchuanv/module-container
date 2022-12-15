@@ -20,7 +20,7 @@ server.on("request", (request, response) => {
   console.log(`context: ${aoName}`);
   const info = await octokit.request(`GET /repos/marchuanv/active-objects/branches/${aoName}`);
   console.log('BRANCH INFO', info);
-  const  = path.join(
+  const aoJsonFileDir = path.join(
       __dirname,
       aoName
   );
