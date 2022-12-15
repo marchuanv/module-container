@@ -5,6 +5,7 @@ const utils = require("utils");
 const server = http.createServer();
 const { Octokit, App } = require("octokit");
 const octokit = new Octokit({ auth: process.env.GIT });
+console.log('----------------- GET BRANCHES ------------------');
 octokit.request("GET /repos/marchuanv/active-objects/brances").then((info) => {
  console.log('BRANCH INFO: ', info);
  server.on("request", (request, response) => {
