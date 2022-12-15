@@ -35,7 +35,7 @@ server.on("request", async (request, response) => {
       console.log(`${aoName} does not exist.`);
       let revision = "";
       try {
-          revision = await octokit.request(`POST /repos/marchuanv/active-objects/git/refs/heads`);
+          revision = await octokit.request(`GET /repos/marchuanv/active-objects/git/refs/heads`);
       } catch(error) {
           throw(error);
       }
