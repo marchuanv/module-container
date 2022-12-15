@@ -33,23 +33,21 @@ server.on("request", async (request, response) => {
 
   if (!branchExists) {
       console.log(`${aoName} does not exist.`);
-  }
-
-  let revision = "";
-  try {
-      revision = await octokit.request(`POST /repos/marchuanv/active-objects/git/refs/heads`);
-  } catch(error) {
-      throw(error);
-  }
-
-  try {
-      revision = await octokit.request(`POST /repos/marchuanv/active-objects/git/refs`,{
-         ref: `refs/heads/${aoName}`,
-         sha: revision
-      });
-  } catch(error) {
-      throw(error);
-  }
+      let revision = "";
+      try {
+          revision = await octokit.request(`POST /repos/marchuanv/active-objects/git/refs/heads`);
+      } catch(error) {
+          throw(error);
+      }
+      try {
+          revision = await octokit.request(`POST /repos/marchuanv/active-objects/git/refs`,{
+            ref: `refs/heads/${aoName}`,
+            sha: revision
+          });
+       } catch(error) {
+          throw(error);
+       }
+   }
 
   // https://api.github.com/repos/<AUTHOR>/<REPO>/git/refs
   // https://api.github.com/repos/<AUTHOR>/<REPO>/git/refs/heads
