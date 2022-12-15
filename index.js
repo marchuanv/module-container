@@ -30,45 +30,7 @@ server.on("request", async (request, response) => {
           throw(error);
       }
   }
-
-  if (!branchExists) {
-      console.log(`${aoName} does not exist.`);
-      let revision = "";
-      try {
-          const {data} = await octokit.request(`GET /repos/marchuanv/active-objects/git/refs/heads`);
-          revision = data.shift().object.sha;
-      } catch(error) {
-          throw(error);
-      }
-      if (revision) {
-          console.log('latest revision: ', revision);
-      }
-      try {
-           await octokit.request(`POST /repos/marchuanv/active-objects/git/refs`,{
-            ref: `refs/heads/${aoName}`,
-            sha: revision
-          });
-       } catch(error) {
-          throw(error);
-       }
-   }
-
-  // https://api.github.com/repos/<AUTHOR>/<REPO>/git/refs
-  // https://api.github.com/repos/<AUTHOR>/<REPO>/git/refs/heads
   
-  const aoJsonFileDir = path.join(
-      __dirname,
-      aoName
-  );
-  const aoJsonFilePath = path.join(
-      aoJsonFileDir,
-      `${aoName}.json`
-  );
-  const activeAOJsonFilePath = path.join(
-      __dirname,
-      'active-object.json'
-  );
-
   if (request.method === 'GET') {
      if (existsSync(aoJsonFilePath) && request.url.startsWith(`/${aoName}`)) {
         results.statusCode = 200;
@@ -81,15 +43,36 @@ server.on("request", async (request, response) => {
         results.message = 'Current Active Object';
         results.name = aoName;
     }
-  } else if (aoName && request.method === 'PUT' && !existsSync(aoJsonFileDir) ) {
-    console.log('creating');
-    mkdirSync(aoJsonFileDir);
-    writeFileSync(
-      aoJsonFilePath, 
-      utils.getJSONString({aoName})
-    );
-  } else if (aoName && request.method === 'DELETE' && existsSync(aoJsonFileDir) ) {
-    rmSync(aoJsonFileDir, { recursive: true });
+  } else if (aoName && request.method === 'PUT' && !branchExists ) {
+        console.log(`${aoName} does not exist.`);
+        let revision = "";
+        try {
+            const {data} = await octokit.request(`GET /repos/marchuanv/active-objects/git/refs/heads`);
+            revision = data.shift().object.sha;
+        } catch(error) {
+            throw(error);
+        }
+        if (revision) {
+            console.log('latest revision: ', revision);
+        }
+        try {
+            await octokit.request(`POST /repos/marchuanv/active-objects/git/refs`,{
+               ref: `refs/heads/${aoName}`,
+               sha: revision
+            });
+        } catch(error) {
+           throw(error);
+        }
+  } else if (aoName && request.method === 'DELETE' && branchExists ) {
+        // repos/${{ github.repository }}/git/refs/heads/${{ github.head_ref }
+        try {
+            await octokit.request(`DELETE /repos/marchuanv/active-objects/git/refs/heads/${}`,{
+               ref: `refs/heads/${aoName}`,
+               sha: revision
+            });
+        } catch(error) {
+           throw(error);
+        }
   }
   
   const bodyStr = utils.getJSONString(results);
