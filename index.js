@@ -5,10 +5,8 @@ const utils = require("utils");
 const server = http.createServer();
 const { Octokit, App } = require("octokit");
 const octokit = new Octokit({ auth: process.env.GIT });
-console.log('----------------- GET BRANCHES ------------------');
-octokit.request("GET /repos/marchuanv/active-objects/brances").then((info) => {
- console.log('BRANCH INFO: ', info);
- server.on("request", (request, response) => {
+
+server.on("request", (request, response) => {
   console.log("request received");
   const results = {
      statusCode: 404,
@@ -20,7 +18,9 @@ octokit.request("GET /repos/marchuanv/active-objects/brances").then((info) => {
   const aoName = urlSplit[0];
 
   console.log(`context: ${aoName}`);
-
+  octokit.request(`GET /repos/marchuanv/active-objects/branches/${aoName}`).then((info) => {
+     console.log('BRANCH INFO', info);
+  });
   const aoJsonFileDir = path.join(
       __dirname,
       aoName
@@ -49,9 +49,10 @@ octokit.request("GET /repos/marchuanv/active-objects/brances").then((info) => {
   } else if (aoName && request.method === 'PUT' && !existsSync(aoJsonFileDir) ) {
     console.log('creating');
     mkdirSync(aoJsonFileDir);
-    writeFileSync(aoJsonFilePath, utils.getJSONString({
-        aoName
-    }));
+    writeFileSync(
+      aoJsonFilePath, 
+      utils.getJSONString({aoName})
+    );
   } else if (aoName && request.method === 'DELETE' && existsSync(aoJsonFileDir) ) {
     rmSync(aoJsonFileDir, { recursive: true });
   }
@@ -62,7 +63,6 @@ octokit.request("GET /repos/marchuanv/active-objects/brances").then((info) => {
     'Content-Type': 'application/json' 
   });
   response.end(bodyStr);
-  });
+});
 server.listen(process.env.PORT || 8080);
-}); 
 
