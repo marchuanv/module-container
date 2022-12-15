@@ -43,7 +43,7 @@ server.on("request", async (request, response) => {
           revision = await octokit.request(`POST /repos/marchuanv/active-objects/git/refs`,JSON.stringify({
             ref: `refs/heads/${aoName}`,
             sha: revision
-          }});
+          }, null, 4});
        } catch(error) {
           throw(error);
        }
