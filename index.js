@@ -1,20 +1,9 @@
 const http = require("http");
-const {
-    existsSync,
-    writeFileSync,
-    mkdirSync,
-    rmSync
-} = require('fs');
-const path = require('path');
+const https = require("https");
 const utils = require("utils");
 const server = http.createServer();
-const {
-    Octokit,
-    App
-} = require("octokit");
-const octokit = new Octokit({
-    auth: process.env.GIT
-});
+const { Octokit } = require("octokit");
+const octokit = new Octokit({ auth: process.env.GIT });
 
 server.on("request", async (request, response) => {
     console.log("request received");
@@ -43,47 +32,46 @@ server.on("request", async (request, response) => {
 
     let revision = "";
     try {
-        const {
-            data
-        } = await octokit.request(`GET /repos/marchuanv/active-objects/git/refs/heads`);
+        const { data } = await octokit.request(`GET /repos/marchuanv/active-objects/git/refs/heads`);
         revision = data.shift().object.sha;
+        console.log('latest revision: ', revision);
     } catch (error) {
         throw (error);
     }
-
     if (request.method === 'GET') {
-        if (existsSync(aoJsonFilePath) && request.url.startsWith(`/${aoName}`)) {
-            results.statusCode = 200;
-            results.statusMessage = 'Success';
-            results.message = 'Known Active Object';
-            results.name = aoName;
-        } else if (existsSync(activeAOJsonFilePath)) {
-            results.statusCode = 200;
-            results.statusMessage = 'Success';
-            results.message = 'Current Active Object';
-            results.name = aoName;
-        }
+        const { data } = await octokit.request(`GET /repos/marchuanv/active-objects/contents/${aoName}.js`);
+        https.get(data.download_url, (resp) => {
+            let data = '';
+            resp.on('data', (chunk) => {
+                data += chunk;
+            });
+            resp.on('end', () => {
+                console.log(JSON.parse(data).explanation);
+            });
+        }).on("error", (err) => {
+            console.log("Error: " + err.message);
+        });
     } else if (aoName && request.method === 'PUT' && !branchExists) {
         console.log(`${aoName} does not exist.`);
-
-        if (revision) {
-            console.log('latest revision: ', revision);
-        }
         try {
             await octokit.request(`POST /repos/marchuanv/active-objects/git/refs`, {
                 ref: `refs/heads/${aoName}`,
                 sha: revision
             });
+            results.statusCode = 200;
+            results.statusMessage = 'Success';
+            results.message = 'Active Object Created';
+            results.name = aoName;
         } catch (error) {
             throw (error);
         }
     } else if (aoName && request.method === 'DELETE' && branchExists) {
-        // repos/${{ github.repository }}/git/refs/heads/${{ github.head_ref }
         try {
-            await octokit.request(`DELETE /repos/marchuanv/active-objects/git/refs/heads/${}`, {
-                ref: `refs/heads/${aoName}`,
-                sha: revision
-            });
+            await octokit.request(`DELETE /repos/marchuanv/active-objects/git/refs/heads/${aoName}`);
+            results.statusCode = 200;
+            results.statusMessage = 'Success';
+            results.message = 'Active Object Deleted';
+            results.name = aoName;
         } catch (error) {
             throw (error);
         }
