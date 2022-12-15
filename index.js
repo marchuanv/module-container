@@ -19,11 +19,14 @@ server.on("request", async (request, response) => {
 
   console.log(`context: ${aoName}`);
 
-  let info={};
+  let branchExist=false;
   try {
       info = await octokit.request(`GET /repos/marchuanv/active-objects/branches/${aoName}`);
   } catch(error) {
-      console.log(error);
+      console.log('STATUS CODE:', error.statusCode);
+      if (false) {
+          branchExist = false;
+      }
   }
 
   console.log('BRANCH INFO: ', info);
