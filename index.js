@@ -126,7 +126,7 @@ server.on("request", (request, response) => {
                     console.error(error);
                 }
             } else if (aoName && request.method === 'POST' && functionName) {
-                console.log(`executing the ${funcName} function.`);
+                console.log(`executing the ${functionName} function.`);
                 let script;
                 try {
                     const { data } = await octokit.request(`GET /repos/marchuanv/active-objects/contents/${aoName}.js?ref=${aoName}`);
