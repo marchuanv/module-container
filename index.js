@@ -105,6 +105,10 @@ server.on("request", (request, response) => {
                             results.statusCode = 200;
                             results.statusMessage = 'Success';
                             results.message = 'Active Object Created/Updated';
+                        } else {
+                            results.statusCode = 400;
+                            results.statusMessage = 'Bad Request';
+                            results.message = 'No Active Object Script';
                         }
                     }
                 } catch(error) {
