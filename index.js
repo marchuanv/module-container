@@ -46,7 +46,7 @@ server.on("request", (request, response) => {
                         results.statusCode = 200;
                         results.statusMessage = 'Success';
                         results.message = 'Active Object Info';
-                        results.data = content;
+                        results.script = content;
                 } catch(error) {
                     console.error(error);
                 }
