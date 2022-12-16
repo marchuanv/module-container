@@ -128,10 +128,10 @@ server.on("request", (request, response) => {
             } else if (aoName && request.method === 'POST' && functionName) {
                 try {
                     const { data } = await octokit.request(`GET /repos/marchuanv/active-objects/contents/${aoName}.js?ref=${aoName}`);
-                    content = await fetch({ url: data.download_url});
+                    const script = await fetch({ url: data.download_url});
                     const context = {};
                     vm.createContext(context); // Contextify the object.
-                    vm.runInContext(content, context);
+                    vm.runInContext(script, context);
                     context[functionName]();
                 } catch(error) {
                     console.error(error);
