@@ -81,10 +81,7 @@ server.on("request", (request, response) => {
                             vm.runInContext(content, context);
                         } catch (error) {
                             console.error(error);
-                            isValidScript = false;
-                            results.statusCode = 422;
-                            results.statusMessage = 'Unprocessable Entity';
-                            results.message = 'Active Object Script Error';
+                            isValidScript = false;  
                             results.error = error.message;
                             results.stack = error.stack;
                         }
@@ -106,10 +103,14 @@ server.on("request", (request, response) => {
                             results.statusMessage = 'Success';
                             results.message = 'Active Object Created/Updated';
                         } else {
-                            results.statusCode = 400;
-                            results.statusMessage = 'Bad Request';
-                            results.message = 'No Active Object Script';
+                            results.statusCode = 422;
+                            results.statusMessage = 'Unprocessable Entity';
+                            results.message = 'Active Object Script Error';
                         }
+                    } else {
+                         results.statusCode = 400;
+                         results.statusMessage = 'Bad Request';
+                         results.message = 'No Active Object Script';
                     }
                 } catch(error) {
                     console.error(error);
