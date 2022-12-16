@@ -141,6 +141,9 @@ server.on("request", (request, response) => {
                        vm.createContext(context);
                        vm.runInContext(script, context);
                        context[functionName]();
+                       results.statusCode = 200;
+                       results.statusMessage = 'Success';
+                       results.message = 'Active Object Function Executed';
                     } catch(error) {
                        console.error(error);
                        results.statusCode = 422;
