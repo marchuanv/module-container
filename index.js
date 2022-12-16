@@ -21,15 +21,25 @@ server.on("request", (request, response) => {
         const urlSplit = request.url.split('/').filter(x => x);
         console.log('url segments: ', utils.getJSONString(urlSplit));
         const aoName = urlSplit[0];
+        const functionName = urlSplit[1];
     
         if (aoName !== 'main') {
-
             let branchExists = false;
             try {
                 await octokit.request(`GET /repos/marchuanv/active-objects/branches/${aoName}`);
                 branchExists = true;
             } catch (error) {
                 console.error(error);
+            }
+            if (!branchExists) {
+                try {
+                    await octokit.request(`POST /repos/marchuanv/active-objects/git/refs`, {
+                       ref: `refs/heads/${aoName}`,
+                       sha: revision
+                    });
+                } catch(error) {
+                    console.error(error);
+                }
             }
             let revision = "";
             try {
@@ -50,17 +60,7 @@ server.on("request", (request, response) => {
                 } catch(error) {
                     console.error(error);
                 }
-            } else if (aoName && request.method === 'PUT') {
-                if (!branchExists) {
-                    try {
-                        await octokit.request(`POST /repos/marchuanv/active-objects/git/refs`, {
-                            ref: `refs/heads/${aoName}`,
-                            sha: revision
-                        });
-                    } catch(error) {
-                        console.error(error);
-                    }
-                }
+            } else if (aoName && request.method === 'PUT') {    
                 let fileSha = undefined;
                 try {
                     const { data } = await octokit.request(`GET /repos/marchuanv/active-objects/contents/${aoName}.js?ref=${aoName}`);
@@ -123,6 +123,17 @@ server.on("request", (request, response) => {
                     results.statusMessage = 'Success';
                     results.message = 'Active Object Deleted';
                 } catch (error) {
+                    console.error(error);
+                }
+            } else if (aoName && request.method === 'POST' && functionName) {
+                try {
+                    const { data } = await octokit.request(`GET /repos/marchuanv/active-objects/contents/${aoName}.js?ref=${aoName}`);
+                    content = await fetch({ url: data.download_url});
+                    const context = {};
+                    vm.createContext(context); // Contextify the object.
+                    vm.runInContext(content, context);
+                    context[functionName]();
+                } catch(error) {
                     console.error(error);
                 }
             }
