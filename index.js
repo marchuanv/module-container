@@ -1,5 +1,5 @@
 const http = require("http");
-const https = require("https");
+const fetch = require("./fetch");
 const utils = require("utils");
 const server = http.createServer();
 const { Octokit } = require("octokit");
@@ -40,17 +40,11 @@ server.on("request", (request, response) => {
             if (request.method === 'GET') {
                 try {
                     const { data } = await octokit.request(`GET /repos/marchuanv/active-objects/contents/${aoName}.js?ref=${aoName}`);
-                    https.get(data.download_url, (resp) => {
-                        content = "";
-                        resp.on('data', (chunk) => content += chunk);
-                    }).on("error", (err) => {
-                        console.log("Error: " + err.message);
-                    });
-                    results.statusCode = 200;
-                    results.statusMessage = 'Success';
-                    results.message = 'Active Object Info';
-                    results.name = aoName;
-                    results.data = content;
+                    content = await fetch({ url: data.download_url});
+                        results.statusCode = 200;
+                        results.statusMessage = 'Success';
+                        results.message = 'Active Object Info';
+                        results.data = content;
                 } catch(error) {
                     console.error(error);
                 }
@@ -96,25 +90,26 @@ server.on("request", (request, response) => {
                 results.statusCode = 200;
                 results.statusMessage = 'Success';
                 results.message = 'Active Object Created/Updated';
-                results.name = aoName;
             } else if (aoName && request.method === 'DELETE' && branchExists) {
                 try {
                     await octokit.request(`DELETE /repos/marchuanv/active-objects/git/refs/heads/${aoName}`);
                     results.statusCode = 200;
                     results.statusMessage = 'Success';
                     results.message = 'Active Object Deleted';
-                    results.name = aoName;
                 } catch (error) {
                     console.error(error);
                 }
             }
         }
-       
+        const { statusCode, statusMessage } = results;
+        delete results.statusCode;
+        delete results.statusMessage;
         const bodyStr = utils.getJSONString(results);
-        response.writeHead(results.statusCode, results.statusMessage, {
+        response.writeHead(statusCode, statusMessage, {
             'Content-Length': Buffer.byteLength(bodyStr),
             'Content-Type': 'application/json'
         });
+
         response.end(bodyStr);
     });
 });
