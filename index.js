@@ -126,15 +126,27 @@ server.on("request", (request, response) => {
                     console.error(error);
                 }
             } else if (aoName && request.method === 'POST' && functionName) {
+                let script;
                 try {
                     const { data } = await octokit.request(`GET /repos/marchuanv/active-objects/contents/${aoName}.js?ref=${aoName}`);
-                    const script = await fetch({ url: data.download_url });
-                    const context = { };
-                    vm.createContext(context);
-                    vm.runInContext(script, context);
-                    context[functionName]();
+                    script = await fetch({ url: data.download_url});
                 } catch(error) {
                     console.error(error);
+                }
+                if (script) {       
+                    try {
+                       const context = { };
+                       vm.createContext(context);
+                       vm.runInContext(script, context);
+                       context[functionName]();
+                    } catch(error) {
+                       console.error(error);
+                       results.statusCode = 422;
+                       results.statusMessage = 'Unprocessable Entity';
+                       results.message = 'Active Object Script Error';
+                       results.error = error.message;
+                       results.stack = error.stack;
+                    }  
                 }
             }
         }
