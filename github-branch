@@ -1,6 +1,6 @@
 const github = require('./github');
 module.exports = {
-   isExisting = ({ branchName }) => {
+   isExisting = async ({ branchName }) => {
      try {
         const octokit = await github.login();
         await octokit.request(`GET /repos/marchuanv/active-objects/branches/${branchName}`);
@@ -9,7 +9,7 @@ module.exports = {
         console.error(error);
         return false;
     },
-    create = ({ branchName }) => {
+    create = async ({ branchName }) => {
       try {
         const octokit = await github.login();
         const { data } = await octokit.request(`GET /repos/marchuanv/active-objects/git/refs/heads`);
@@ -20,6 +20,13 @@ module.exports = {
         });
       } catch(error) {
         console.error(error);
+      }
+   },
+   delete: async () => {
+      try {
+         await octokit.request(`DELETE /repos/marchuanv/active-objects/git/refs/heads/${branchName}`);
+      } catch(error) {
+         console.log(error);
       }
    }
 }
