@@ -1,2 +1,2 @@
 const github = require('./github');
-github.login();
+const octokit = github.login();
