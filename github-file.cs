@@ -1,13 +1,19 @@
 const github = require('./github');
 module.exports = {
-   getContent: async ({ branchName, fileName }) => {
+   getFile: async ({ branchName, fileName }) => {
       const octokit = await github.login();
       const { data } = await octokit.request(`GET /repos/marchuanv/active-objects/contents/${branchName}.js?ref=${fileName}`);
-      return await fetch({ url: data.download_url});
+      const sha = data?.sha;
+      const content = await fetch({ url: data.download_url});
+      return { 
+         sha,
+         content
+      };
    },
-   createContent: async ({ branchName, fileName }) => {
+   createFile: async ({ branchName, fileName, content }) => {
       const octokit = await github.login();
-      await octokit.request(`${request.method} /repos/marchuanv/active-objects/contents/${fileName}.js`, {
+      const file = await module.exports.getFile({ branchName, fileName });
+      await octokit.request(`PUT /repos/marchuanv/active-objects/contents/${fileName}.js`, {
          owner: 'marchuanv',
          repo: 'active-objects',
          path: `/${fileName}.js`,
@@ -18,7 +24,7 @@ module.exports = {
              email: 'active-objects-admin@gmail.com'
          }, 
          content: utils.stringToBase64(content),
-         sha: fileSha
+         sha: file?.sha;
       });
    }
 }
