@@ -8,5 +8,15 @@ module.exports = {
     } catch (error) {
         console.error(error);
         return false;
-    }
+    },
+    create = ({ branchName }) => {
+      try {
+        await octokit.request(`POST /repos/marchuanv/active-objects/git/refs`, {
+            ref: `refs/heads/${branchName}`,
+            sha: revision
+        });
+      } catch(error) {
+        console.error(error);
+      }
+   }
 }
