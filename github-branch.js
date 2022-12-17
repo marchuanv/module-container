@@ -22,7 +22,7 @@ module.exports = {
         console.error(error);
       }
    },
-   delete: async () => {
+   delete: async ({ branchName }) => {
       try {
          await octokit.request(`DELETE /repos/marchuanv/active-objects/git/refs/heads/${branchName}`);
       } catch(error) {
