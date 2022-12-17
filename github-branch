@@ -1,0 +1,12 @@
+const github = require('./github');
+module.exports = {
+   isExisting = ({ branchName }) => {
+     try {
+        const octokit = await github.login();
+        await octokit.request(`GET /repos/marchuanv/active-objects/branches/${branchName}`);
+        return true;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
