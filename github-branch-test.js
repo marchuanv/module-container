@@ -1,14 +1,15 @@
-const testBranch = require('./github-branch')({ branchName: 'test', privateKey: process.env.GIT });
 require('./logging')('info');
-( async () => {
-   await testBranch.delete();
-   const isExisting = await testBranch.isExisting()
-   if (isExisting) {
-      console.log('TEST FAILED');
-      throw new Error('test failed.');
-   }
-   console.log('TEST PASSED');
-})();
+const { runTest } = require('./test-runner.js');
+const moduleName = 'github-branch';
+const branchName = 'test';
+const privateKey = privateKey: process.env.GIT;
+
+runTest({ 
+  moduleName,
+  branchName,
+  privateKey,
+  'delete'
+});
 
 ( async () => {
    const isExisting = await testBranch.isExisting()
