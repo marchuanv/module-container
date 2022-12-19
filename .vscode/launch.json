@@ -6,6 +6,12 @@
       "type": "node-terminal",
       "request": "launch",
       "command": "npm start"
+    },
+    {
+      "name": "github-branch-test",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "node ${workspaceFolder}/github-branch-test.js"
     }
   ]
 }
