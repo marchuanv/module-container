@@ -20,10 +20,8 @@ server.on("request", (request, response) => {
         console.log('url segments: ', utils.getJSONString(urlSplit));
         const aoName = urlSplit[0];
         const functionName = urlSplit[1];
-
         const githubBranch = require('./github-branch')({ privateKey, branchName: aoName });
         const githubFile = require('./github-file')({ privateKey, branchName: aoName, fileName: aoName });
-
         if (aoName !== 'main') {
             let branchExists = await githubBranch.isExisting();
             if (!branchExists) {
@@ -63,7 +61,7 @@ server.on("request", (request, response) => {
                      results.message = 'No Active Object Script';
                 }
             } else if (aoName && request.method === 'DELETE' && branchExists) {
-                await githubBranch.deleteFile();
+                await githubBranch.delete();
             } else if (aoName && request.method === 'POST' && functionName) {
                 let script = await githubBranch.getFileContent();
                 if (script) {       
@@ -95,7 +93,6 @@ server.on("request", (request, response) => {
             'Content-Length': Buffer.byteLength(bodyStr),
             'Content-Type': 'application/json'
         });
-
         response.end(bodyStr);
     });
 });
