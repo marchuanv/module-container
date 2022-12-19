@@ -1,5 +1,5 @@
 const github = require('./github');
-const logging = require('./logging')();
+const logging = require('./logging')('error');
 module.exports = ({ privateKey, branchName }) => {
    const octokit = github.login({ privateKey });
    return {
