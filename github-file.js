@@ -15,17 +15,17 @@ module.exports = ({ privateKey, branchName, fileName }) => {
             return null;
          }
       },
-      getFileContent: async ({ branchName, fileName }) => {
-         const metadata = await operations.getFileMetadata({ branchName, fileName });
+      getFileContent: async () => {
+         const metadata = await operations.getFileMetadata();
          if (!metadata) {
             throw new Error(`no '${fileName}' file(s) in the '${branchName}' branch.`);
          }
          const content = await fetch({ url: metadata.download_url});
          return content;
       },
-      ensureFileContent: async ({ branchName, fileName, content }) => {
+      ensureFileContent: async ({ content }) => {
          try {
-            const metadata = await operations.getFileMetadata({ branchName, fileName });
+            const metadata = await operations.getFileMetadata();
             await octokit.request(`PUT /repos/marchuanv/active-objects/contents/${fileName}.js`, {
                owner: 'marchuanv',
                repo: 'active-objects',
@@ -45,7 +45,7 @@ module.exports = ({ privateKey, branchName, fileName }) => {
          }
       },
       deleteFile: async () => {
-         const metadata = await operations.getFileMetadata({ branchName, fileName });
+         const metadata = await operations.getFileMetadata();
          if (metadata) {
             await octokit.request(`DELETE /repos/marchuanv/active-objects/contents/${fileName}.js`, {
                owner: 'marchuanv',
