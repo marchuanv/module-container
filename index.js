@@ -4,6 +4,9 @@ const vm = require('node:vm');
 const server = http.createServer();
 const privateKey = process.env.GIT;
 
+const logging = require('./logging');
+logging.setLevel({ level: 'info' });
+
 server.on("request", (request, response) => {
     let content = '';
     request.on('data', (chunk) => {
@@ -69,7 +72,7 @@ server.on("request", (request, response) => {
                 results.statusMessage = 'Success';
                 results.message = 'Active Object Deleted';
             } else if (aoName && request.method === 'POST' && functionName) {
-                let script = await githubBranch.getFileContent();
+                let script = await githubFile.getFileContent();
                 if (script) {       
                     try {
                        console.log(`executing the ${functionName} function.`);

@@ -16,19 +16,28 @@ module.exports = ({ privateKey, branchName, fileName }) => {
          }
       },
       isExisting: async () => {
-         const metadata = await operations.getFileMetadata();
-         if (metadata) {
-            return true;
+         try {
+            const metadata = await operations.getFileMetadata();
+            if (metadata) {
+               return true;
+            }
+            return false;
+         } catch(error) {
+            return false;
          }
-         return false;
       },
       getFileContent: async () => {
-         const metadata = await operations.getFileMetadata();
-         if (!metadata) {
-            throw new Error(`no '${fileName}' file(s) in the '${branchName}' branch.`);
+         try {
+            const metadata = await operations.getFileMetadata();
+            if (!metadata) {
+               throw new Error(`no '${fileName}' file(s) in the '${branchName}' branch.`);
+            }
+            return await fetch({ url: metadata.download_url});
+         } catch(error) {
+            logging.log({ error });
+            logging.log({ info: error.message });
+            return null;
          }
-         const content = await fetch({ url: metadata.download_url});
-         return content;
       },
       ensureFileContent: async ({ content }) => {
          try {
@@ -54,18 +63,23 @@ module.exports = ({ privateKey, branchName, fileName }) => {
       deleteFile: async () => {
          const metadata = await operations.getFileMetadata();
          if (metadata) {
-            await octokit.request(`DELETE /repos/marchuanv/active-objects/contents/${fileName}.js`, {
-               owner: 'marchuanv',
-               repo: 'active-objects',
-               path: `/${fileName}.js`,
-               message: 'deleted', 
-               branch: branchName,
-               committer: {
-                  name: 'active-objects-admin',
-                  email: 'active-objects-admin@gmail.com'
-               },
-               sha: metadata?.sha
-            });
+            try {
+               await octokit.request(`DELETE /repos/marchuanv/active-objects/contents/${fileName}.js`, {
+                  owner: 'marchuanv',
+                  repo: 'active-objects',
+                  path: `/${fileName}.js`,
+                  message: 'deleted', 
+                  branch: branchName,
+                  committer: {
+                     name: 'active-objects-admin',
+                     email: 'active-objects-admin@gmail.com'
+                  },
+                  sha: metadata?.sha
+               });
+            } catch(error) {
+               logging.log({ error });
+               logging.log({ info: error.message });
+            }
          }
       }
    };
