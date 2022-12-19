@@ -9,6 +9,8 @@ runTest({
   branchName,
   privateKey,
   'delete'
+}).assert(() => {
+  return true;
 });
 
 ( async () => {
