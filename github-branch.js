@@ -1,11 +1,10 @@
 const github = require('./github');
-const logging = require('./logging')('error');
+const logging = require('./logging');
 module.exports = ({ privateKey, branchName }) => {
    const octokit = github.login({ privateKey });
    return {
       isExisting: async () => {
          try {
-            const octokit = await github.login({ privateKey });
             await octokit.request(`GET /repos/marchuanv/active-objects/branches/${branchName}`);
             return true;
          } catch (error) {
@@ -16,7 +15,6 @@ module.exports = ({ privateKey, branchName }) => {
       },
       create: async () => {
          try {
-         const octokit = await github.login({ privateKey });
          const { data } = await octokit.request(`GET /repos/marchuanv/active-objects/git/refs/heads`);
          const revision = data.shift().object.sha;
          await octokit.request(`POST /repos/marchuanv/active-objects/git/refs`, {
