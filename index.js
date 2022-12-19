@@ -36,37 +36,32 @@ server.on("request", (request, response) => {
                 results.message = 'Active Object Info';
                 results.script = content;
             } else if (aoName && request.method === 'PUT') {    
-                try {
-                    if (content) {
-                        let isValidScript = true;
-                        try {
-                            const context = {};
-                            vm.createContext(context); // Contextify the object.
-                            vm.runInContext(content, context);
-                        } catch (error) {
-                            console.error(error);
-                            isValidScript = false; 
-                            results.statusCode = 500;
-                            results.statusMessage = 'Internal Server Error';
-                            results.message = 'Active Object Script Error';
-                            results.error = error.message;
-                            results.stack = error.stack;
-                        }
-                        if (isValidScript) {
-                            await githubFile.ensureFileContent({ content });
-                            results.statusCode = 200;
-                            results.statusMessage = 'Success';
-                            results.message = 'Active Object Created/Updated';
-                        }
-                    } else {
-                         results.statusCode = 400;
-                         results.statusMessage = 'Bad Request';
-                         results.message = 'No Active Object Script';
+                if (content) {
+                    let isValidScript = true;
+                    try {
+                        const context = {};
+                        vm.createContext(context); // Contextify the object.
+                        vm.runInContext(content, context);
+                    } catch (error) {
+                        console.error(error);
+                        isValidScript = false; 
+                        results.statusCode = 500;
+                        results.statusMessage = 'Internal Server Error';
+                        results.message = 'Active Object Script Error';
+                        results.error = error.message;
+                        results.stack = error.stack;
                     }
-                } catch(error) {
-                    console.error(error);
+                    if (isValidScript) {
+                        await githubFile.ensureFileContent({ content });
+                        results.statusCode = 200;
+                        results.statusMessage = 'Success';
+                        results.message = 'Active Object Created/Updated';
+                    }
+                } else {
+                     results.statusCode = 400;
+                     results.statusMessage = 'Bad Request';
+                     results.message = 'No Active Object Script';
                 }
-              
             } else if (aoName && request.method === 'DELETE' && branchExists) {
                 await githubBranch.deleteFile();
             } else if (aoName && request.method === 'POST' && functionName) {
