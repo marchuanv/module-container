@@ -20,19 +20,22 @@ server.on("request", (request, response) => {
         console.log('url segments: ', utils.getJSONString(urlSplit));
         const aoName = urlSplit[0];
         const functionName = urlSplit[1];
-        const githubBranch = require('./github-branch')({ privateKey, branchName: aoName });
-        const githubFile = require('./github-file')({ privateKey, branchName: aoName, fileName: aoName });
-        if (aoName !== 'main') {
+        if (aoName && aoName !== 'main') {
+            const githubBranch = require('./github-branch')({ privateKey, branchName: aoName });
+            const githubFile = require('./github-file')({ privateKey, branchName: aoName, fileName: aoName });
             let branchExists = await githubBranch.isExisting();
             if (!branchExists) {
                 await githubBranch.create();
             }
             if (request.method === 'GET') {
-                content = await githubFile.getFileContent();
-                results.statusCode = 200;
-                results.statusMessage = 'Success';
-                results.message = 'Active Object Info';
-                results.script = content;
+                const isExisting = await githubFile.isExisting();
+                if (isExisting) {
+                    content = await githubFile.getFileContent();
+                    results.statusCode = 200;
+                    results.statusMessage = 'Success';
+                    results.message = 'Active Object Info';
+                    results.script = content;
+                }
             } else if (aoName && request.method === 'PUT') {    
                 if (content) {
                     let isValidScript = true;
@@ -61,7 +64,10 @@ server.on("request", (request, response) => {
                      results.message = 'No Active Object Script';
                 }
             } else if (aoName && request.method === 'DELETE' && branchExists) {
-                await githubBranch.delete();
+                await githubFile.deleteFile();
+                results.statusCode = 200;
+                results.statusMessage = 'Success';
+                results.message = 'Active Object Deleted';
             } else if (aoName && request.method === 'POST' && functionName) {
                 let script = await githubBranch.getFileContent();
                 if (script) {       

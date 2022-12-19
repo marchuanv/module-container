@@ -4,7 +4,7 @@ const logging = require('./logging');
 const utils = require("utils");
 module.exports = ({ privateKey, branchName, fileName }) => {
    const octokit = github.login({ privateKey });
-   const operations = {
+   const operations = { 
       getFileMetadata: async () => {
          try {
             const { data } = await octokit.request(`GET /repos/marchuanv/active-objects/contents/${branchName}.js?ref=${fileName}`);
@@ -14,6 +14,13 @@ module.exports = ({ privateKey, branchName, fileName }) => {
             logging.log({ info: error.message });
             return null;
          }
+      },
+      isExisting: async () => {
+         const metadata = await operations.getFileMetadata();
+         if (metadata) {
+            return true;
+         }
+         return false;
       },
       getFileContent: async () => {
          const metadata = await operations.getFileMetadata();
@@ -51,7 +58,7 @@ module.exports = ({ privateKey, branchName, fileName }) => {
                owner: 'marchuanv',
                repo: 'active-objects',
                path: `/${fileName}.js`,
-               message: 'created/updated', 
+               message: 'deleted', 
                branch: branchName,
                committer: {
                   name: 'active-objects-admin',
