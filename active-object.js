@@ -11,9 +11,10 @@ module.exports = ({ url, script }) => {
       vm.runInNewContext(script, context);
       const mainFuncName = Object.keys(context)[0];
       const mainFunc = context[mainFuncName];
+      const instance = await mainFunc(input);
       const output = {};
       for(const segName of segments) {
-        const func = object[segName];
+        const func = instance[segName];
         output[segName] = await func(input);
       };
       return output;
