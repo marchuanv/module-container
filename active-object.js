@@ -1,4 +1,5 @@
 const vm = require('vm');
+const logging = require('./logging');
 module.exports = ({ url, script }) => {
   const segments = url.split('/').map(x => x.toLowerCase()).filter(x=>x);
   const context = {};
@@ -9,7 +10,7 @@ module.exports = ({ url, script }) => {
     },
     call: async (input) => {
       vm.runInNewContext(script, context);
-      console.log('CONTEXT: ', context);
+      logging.log('CONTEXT: ', context);
       const mainFuncName = Object.keys(context)[0];
       const mainFunc = context[mainFuncName];
       const instance = await mainFunc(input);
