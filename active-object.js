@@ -6,7 +6,7 @@ module.exports = ({ url, script }) => {
   vm.createContext(context);
   const functions = {
     validate: () => {
-      logging.log(`SCRIPT: ${script}`);
+      logging.log({ info: `SCRIPT: ${script}` });
       new vm.Script(script);
     },
     call: async (input) => {
