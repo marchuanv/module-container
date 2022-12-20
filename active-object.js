@@ -9,6 +9,7 @@ module.exports = ({ url, script }) => {
     },
     call: async (input) => {
       vm.runInNewContext(script, context);
+      console.log('CONTEXT: ', context);
       const mainFuncName = Object.keys(context)[0];
       const mainFunc = context[mainFuncName];
       const instance = await mainFunc(input);
