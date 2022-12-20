@@ -1,14 +1,16 @@
 const vm = require('vm');
-module.exports = ({ url, objectScript }) => {
+module.exports = ({ url, script }) => {
   const segments = url.split('/').map(x => x.toLowerCase()).filter(x=>x);
-  const object = {};
-  vm.createContext(object);
+  const context = {};
+  vm.createContext(context);
   const functions = {
     validate: () => { 
-      const script = new vm.Script(objectScript);
+      new vm.Script(script);
     },
     call: async (input) => {
-      vm.runInContext(objectScript, object);
+      vm.runInNewContext(script, context);
+      const mainFuncName = Object.keys(context)[0];
+      const mainFunc = context[mainFuncName];
       const output = {};
       for(const segName of segments) {
         const func = object[segName];
