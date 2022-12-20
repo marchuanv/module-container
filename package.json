@@ -18,7 +18,8 @@
    },
    "type":"commonjs",
    "scripts":{
-      "start":"node index.js"
+      "start":"node index.js",
+      "test": "node ./active-object-test.js"
    },
    "homepage":"https://github.com/marchuanv/active-objects#readme",
    "dependencies":{
