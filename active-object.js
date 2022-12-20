@@ -5,10 +5,10 @@ module.exports = ({ url, objectScript }) => {
   vm.createContext(object);
   const functions = {
     validate: () => { 
-      vm.runInContext(script, context)
+      const script = new vm.Script(objectScript);
     },
     call: async (input) => {
-      vm.runInContext(script, object);
+      vm.runInContext(objectScript, object);
       const output = {};
       for(const segName of segments) {
         const func = object[segName];
