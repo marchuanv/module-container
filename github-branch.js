@@ -10,20 +10,22 @@ module.exports = ({ privateKey, branchName }) => {
          } catch (error) {
             logging.log({ error });
             logging.log({ info: error.message });
+            logging.log({ info: error.stack });
             return false;
          }
       },
       create: async () => {
          try {
-         const { data } = await octokit.request(`GET /repos/marchuanv/active-objects/git/refs/heads`);
-         const revision = data.shift().object.sha;
-         await octokit.request(`POST /repos/marchuanv/active-objects/git/refs`, {
+            const { data } = await octokit.request(`GET /repos/marchuanv/active-objects/git/refs/heads`);
+            const revision = data.shift().object.sha;
+            await octokit.request(`POST /repos/marchuanv/active-objects/git/refs`, {
                ref: `refs/heads/${branchName}`,
                sha: revision
-         });
+            });
          } catch(error) {
             logging.log({ error });
             logging.log({ info: error.message });
+            logging.log({ info: error.stack });
          }
       },
       delete: async () => {
@@ -32,6 +34,7 @@ module.exports = ({ privateKey, branchName }) => {
          } catch(error) {
             logging.log({ error });
             logging.log({ info: error.message });
+            logging.log({ info: error.stack });
          }
       }
    }

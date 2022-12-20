@@ -8,16 +8,10 @@
       "command": "npm start"
     },
     {
-      "name": "github-branch-test",
+      "name": "Tests",
       "type": "node-terminal",
       "request": "launch",
-      "command": "node ${workspaceFolder}/github-branch-test.js"
-    },
-    {
-      "name": "github-file-test",
-      "type": "node-terminal",
-      "request": "launch",
-      "command": "node ${workspaceFolder}/github-file-test.js"
+      "command": "npm test"
     }
   ]
 }
