@@ -1,6 +1,6 @@
 const vm = require('vm');
 module.exports = ({ url, objectScript }) => {
-  const segments = url.split('/').map(x => x.toLowerCase());
+  const segments = url.split('/').map(x => x.toLowerCase()).filter(x=>x);
   const object = {};
   vm.createContext(object);
   const functions = {
