@@ -10,7 +10,7 @@ module.exports = ({ url, script }) => {
     },
     call: async (input) => {
       vm.runInNewContext(script, context);
-      logging.log('CONTEXT: ', context);
+      logging.log(`CONTEXT: ${context}`);
       const mainFuncName = Object.keys(context)[0];
       const mainFunc = context[mainFuncName];
       const instance = await mainFunc(input);
