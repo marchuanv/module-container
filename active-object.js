@@ -15,7 +15,7 @@ module.exports = ({ url, objectScript }) => {
         output[segName] = await func(input);
       };
       return output;
-    };
+    }
   };
   return functions;
 }
