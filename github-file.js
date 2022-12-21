@@ -1,5 +1,4 @@
 const github = require('./github');
-const fetch = require("./fetch");
 const logging = require('./logging');
 const utils = require("utils");
 module.exports = ({ privateKey, branchName, fileName }) => {
@@ -33,7 +32,7 @@ module.exports = ({ privateKey, branchName, fileName }) => {
             if (!metadata) {
                throw new Error(`no '${fileName}' file(s) in the '${branchName}' branch.`);
             }
-            return await fetch({ url: metadata.download_url});
+            return utils.base64ToString(metadata.content);
          } catch(error) {
             logging.log({ error });
             logging.log({ info: error.message });

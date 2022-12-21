@@ -3,7 +3,7 @@ const logging = require('./logging');
 const utils = require('utils');
 module.exports = ({ url, script }) => {
   const segments = url.split('/').map(x => x.toLowerCase()).filter(x=>x);
-  const context = {};
+  let context = {};
   vm.createContext(context);
   const functions = {
     isValidScript: () => {
@@ -17,23 +17,28 @@ module.exports = ({ url, script }) => {
         return false;
       } 
     },
+    activate: () => {
+      vm.runInNewContext(script, context);
+      logging.log(`CONTEXT: ${context}`);
+    },
     call: async (input) => {
       try {
-        if (!functions.isValidScript()) {
-          logging.log({ info: 'invalid script' });
-          return;
-        }
-        vm.runInNewContext(script, context);
-        logging.log(`CONTEXT: ${context}`);
-        const mainFuncName = Object.keys(context)[0];
-        const mainFunc = context[mainFuncName];
-        const instance = new mainFunc(input);
+        const funcName = Object.keys(context)[0];
+        const func = context[funcName];
+        const instance = new func(input);
         const instanceMemberNames = Object.keys(instance);
-        const output = {};
         for(const segName of segments) {
           const funcName = instanceMemberNames.find(x => x.toLowerCase().replace(/^\s*$/,'') === segName.toLowerCase().replace(/^\s*$/,''));
-          const func = instance[funcName];
-          output[funcName] = await func(input);
+          if (funcName) {
+            const func = instance[funcName];
+            const output = await func(input);
+            if (output.prototype) {
+              context = output;
+              await functions.call({ input });
+            } else {
+              return output;
+            }
+          }
         };
         return output;
       } catch (error) {

@@ -1,6 +1,6 @@
 const http = require("http");
 const utils = require("utils");
-const vm = require('node:vm');
+
 const server = http.createServer();
 const privateKey = process.env.GIT;
 
@@ -39,27 +39,18 @@ server.on("request", (request, response) => {
                     results.message = 'Active Object Info';
                     results.script = content;
                 }
-            } else if (aoName && request.method === 'PUT') {    
+            } else if (aoName && request.method === 'PUT') { 
+                const activeObject = require("./active-object")({ url: request.url, script: content });   
                 if (content) {
-                    let isValidScript = true;
-                    try {
-                        const context = {};
-                        vm.createContext(context); // Contextify the object.
-                        vm.runInContext(content, context);
-                    } catch (error) {
-                        console.error(error);
-                        isValidScript = false; 
-                        results.statusCode = 500;
-                        results.statusMessage = 'Internal Server Error';
-                        results.message = 'Active Object Script Error';
-                        results.error = error.message;
-                        results.stack = error.stack;
-                    }
-                    if (isValidScript) {
+                    if (await activeObject.isValidScript()){
                         await githubFile.ensureFileContent({ content });
                         results.statusCode = 200;
                         results.statusMessage = 'Success';
                         results.message = 'Active Object Created/Updated';
+                    } else {
+                        results.statusCode = 500;
+                        results.statusMessage = 'Internal Server Error';
+                        results.message = 'Active Object Script Error';
                     }
                 } else {
                      results.statusCode = 400;
@@ -72,24 +63,21 @@ server.on("request", (request, response) => {
                 results.statusMessage = 'Success';
                 results.message = 'Active Object Deleted';
             } else if (aoName && request.method === 'POST' && functionName) {
-                let script = await githubFile.getFileContent();
+                const script = await githubFile.getFileContent();
+                const activeObject = require("./active-object")({ url: request.url, script });
                 if (script) {       
                     try {
                        console.log(`executing the ${functionName} function.`);
-                       const context = { };
-                       vm.createContext(context);
-                       vm.runInContext(script, context);
-                       context[functionName]();
+                       await activeObject.activate();
                        results.statusCode = 200;
                        results.statusMessage = 'Success';
                        results.message = 'Active Object Function Executed';
+                       results.results = await activeObject.call({ input: content });
                     } catch(error) {
                        console.error(error);
                        results.statusCode = 500;
                        results.statusMessage = 'Internal Server Error';
                        results.message = 'Active Object Script Error';
-                       results.error = error.message;
-                       results.stack = error.stack;
                     }  
                 }
             }
