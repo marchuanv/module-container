@@ -3,6 +3,7 @@ const logging = require('./logging');
 const utils = require('utils');
 module.exports = ({ url, script }) => {
   const segments = url.split('/').map(x => x.toLowerCase()).filter(x=>x);
+  let funcName;
   let context = {};
   vm.createContext(context);
   const functions = {
@@ -20,26 +21,28 @@ module.exports = ({ url, script }) => {
     activate: () => {
       vm.runInNewContext(script, context);
       logging.log(`CONTEXT: ${context}`);
+      funcName = Object.keys(context)[0];
     },
     call: async (input) => {
       try {
-        const funcName = Object.keys(context)[0];
         const func = context[funcName];
-        const instance = new func(input);
-        const instanceMemberNames = Object.keys(instance);
-        for(const segName of segments) {
-          const funcName = instanceMemberNames.find(x => x.toLowerCase().replace(/^\s*$/,'') === segName.toLowerCase().replace(/^\s*$/,''));
-          if (funcName) {
-            const func = instance[funcName];
-            const output = await func(input);
-            if (output.prototype) {
-              context = output;
-              await functions.call({ input });
-            } else {
-              return output;
+        if (func.constructor) {
+          let instance = new func(input);
+          let instanceMemberNames = Object.keys(instance);
+          for(const segName of segments) {
+            const memberFuncName = instanceMemberNames.find(x => x.toLowerCase().replace(/^\s*$/,'') === segName.toLowerCase().replace(/^\s*$/,''));
+            if (memberFuncName) {
+              const memberFunc = instance[memberFuncName];
+              instance = await memberFunc(input);
+              if (Object.keys(context).find(x => x ===  instance.constructor.name)) {
+                instanceMemberNames = Object.keys(instance);
+              }
+              output = instance;
             }
-          }
-        };
+          };
+        } else {
+          output = await func(input)
+        }
         return output;
       } catch (error) {
         logging.log({ error });
