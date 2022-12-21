@@ -8,6 +8,6 @@ const script = `function test() {
 }`;
 const input = {};
 ( async () => {
-  await test({ moduleName, functionName: 'validate', testParams: { url, script, input } }).assert((res) => res.indexOf('failed') >= -1);
+  await test({ moduleName, functionName: 'validate', testParams: { url, script, input } }).assert((res) => res === false);
   await test({ moduleName, functionName: 'call', testParams: { url, script, input } }).assert((res) => res.message && res.stack );
 })();

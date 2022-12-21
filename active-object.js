@@ -6,19 +6,23 @@ module.exports = ({ url, script }) => {
   const context = {};
   vm.createContext(context);
   const functions = {
-    validate: () => {
+    isValidScript: () => {
       try {
         new vm.Script(script);
-        return "success";
+        return true;
       } catch(error) {
         logging.log({ error });
         logging.log({ info: error.message });
         logging.log({ info: error.stack });
-        return `failed: ${utils.getJSONString({ message: error.message, stack:  error.stack })}`;
+        return false;
       } 
     },
     call: async (input) => {
       try {
+        if (!functions.isValidScript()) {
+          logging.log({ info: 'invalid script' });
+          return;
+        }
         vm.runInNewContext(script, context);
         logging.log(`CONTEXT: ${context}`);
         const mainFuncName = Object.keys(context)[0];
