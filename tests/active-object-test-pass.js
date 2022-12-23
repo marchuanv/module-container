@@ -8,6 +8,6 @@ const script = `function test() {
 }`;
 const input = {};
 ( async () => {
-  await test({ moduleName, functionName: 'validate', testParams: { url, script, input } }).assert((res) => res === true);
+  await test({ moduleName, functionName: 'isValidScript', testParams: { url, script, input } }).assert((res) => res === true);
   await test({ moduleName, functionName: 'call', testParams: { url, script, input } }).assert(({ doTest1, doTest2, doTest3 }) => doTest1 && doTest2 && doTest3 );
 })();
