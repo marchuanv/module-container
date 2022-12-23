@@ -1,15 +1,17 @@
 const vm = require('vm');
 const logging = require('./logging');
-const utils = require('utils');
 module.exports = ({ url, script }) => {
   const segments = url.split('/').map(x => x.toLowerCase()).filter(x=>x);
   let funcName;
   let context = {};
   vm.createContext(context);
   const functions = {
-    isValidScript: () => {
+    activate: () => {
       try {
-        new vm.Script(script);
+        const vmScript = new vm.Script(script);
+        vmScript.runInNewContext(script, context);
+        logging.log(`CONTEXT: ${context}`);
+        funcName = Object.keys(context)[0];
         return true;
       } catch(error) {
         logging.log({ error });
@@ -17,11 +19,6 @@ module.exports = ({ url, script }) => {
         logging.log({ info: error.stack });
         return false;
       } 
-    },
-    activate: () => {
-      vm.runInNewContext(script, context);
-      logging.log(`CONTEXT: ${context}`);
-      funcName = Object.keys(context)[0];
     },
     call: async (input) => {
       try {
