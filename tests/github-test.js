@@ -3,17 +3,15 @@ const privateKey = process.env.GIT;
 
 ( async () => {
    let moduleName = '';
-   let branchName = '';
+   const branchName = 'test';
 
    moduleName = 'github-branch';
-   branchName = 'test';
    await test({ moduleName, functionName: 'delete', testParams: { privateKey, branchName } }).assert(() => true);
    await test({ moduleName, functionName: 'isExisting', testParams: { privateKey, branchName } }).assert((res) => !res);
    await test({ moduleName, functionName: 'create', testParams: { privateKey, branchName } }).assert(() => true);
    await test({ moduleName, functionName: 'isExisting', testParams: { privateKey, branchName } }).assert((res) => res);
 
    moduleName = 'github-file';
-   branchName = 'test';
    const fileName = 'test';
    const content = 'github-file-content-test';
    await test({ moduleName, functionName: 'deleteFile', testParams: { privateKey, branchName, fileName } }).assert((res) => !res);
