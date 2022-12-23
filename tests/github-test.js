@@ -1,13 +1,22 @@
 const { test } = require('./test-runner.js');
-const moduleName = 'github-file';
 const privateKey = process.env.GIT;
-const branchName = 'test';
-const fileName = 'test';
 
 ( async () => {
+   const moduleName = 'github-file';
+   const branchName = 'test';
+   const fileName = 'test';
    const content = 'github-file-content-test';
    await test({ moduleName, functionName: 'deleteFile', testParams: { privateKey, branchName, fileName } }).assert((res) => !res);
    await test({ moduleName, functionName: 'ensureFileContent', testParams: { privateKey, branchName, fileName, content } }).assert(() => true);
    await test({ moduleName, functionName: 'getFileMetadata', testParams: { privateKey, branchName, fileName } }).assert((res) => res?.sha);
    await test({ moduleName, functionName: 'getFileContent', testParams: { privateKey, branchName, fileName } }).assert((res) => res === content);
-})();
+})().then(() => {
+   ( async () => {
+      const moduleName = 'github-branch';
+      const branchName = 'test';
+      await test({ moduleName, functionName: 'delete', testParams: { privateKey, branchName } }).assert(() => true);
+      await test({ moduleName, functionName: 'isExisting', testParams: { privateKey, branchName } }).assert((res) => !res);
+      await test({ moduleName, functionName: 'create', testParams: { privateKey, branchName } }).assert(() => true);
+      await test({ moduleName, functionName: 'isExisting', testParams: { privateKey, branchName } }).assert((res) => res);
+   })();
+});
