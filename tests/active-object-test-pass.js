@@ -3,13 +3,13 @@ const moduleName = 'active-object';
 const url = '/doTest1/doTest2/doTest3';
 const script = `
 function TestClassA() {
-  this.doTest1 = () => 'doTest1';
+  this.doTest1 = () => new TestClassB();
 }
 function TestClassB() {
-  this.doTest2 = () => 'doTest2';
+  this.doTest2 = () => new TestClassC();
 }
 function TestClassC() {
-  this.doTest3 = () => 'doTest3';
+  this.doTest3 = () => console.log('Hello World!');
 }
 `;
 const input = {};
