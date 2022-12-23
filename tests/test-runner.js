@@ -27,6 +27,9 @@ async function run() {
     const { moduleName, functionName, testParams, callback, resolve } = test;
     const module = require(`../${moduleName}`)(testParams);
     const func = module[functionName];
+    if (!func) {
+      throw new Error(`function ${functionName} does not exist for the ${moduleName} module.`);
+    }
     const results = await func(testParams);
     const res = callback(results);
     if(res) {
