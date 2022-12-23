@@ -15,7 +15,7 @@ module.exports = ({ url, script }) => {
         return true;
       } catch(error) {
         logging.log({ error });
-        logging.log({ info: error.message });
+        logging.log({ info: error.stack });
         return false;
       } 
     },
