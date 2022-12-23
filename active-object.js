@@ -26,6 +26,9 @@ module.exports = ({ url, script }) => {
     call: async (input) => {
       try {
         const func = context[funcName];
+        if (!func) {
+          throw new Error(`the function ${functionName} does not exist for the context`);
+        }
         if (func.constructor) {
           let instance = new func(input);
           let instanceMemberNames = Object.keys(instance);
