@@ -10,7 +10,6 @@ module.exports = ({ privateKey, branchName }) => {
          } catch (error) {
             logging.log({ error });
             logging.log({ info: error.message });
-            logging.log({ info: error.stack });
             return false;
          }
       },
@@ -25,7 +24,7 @@ module.exports = ({ privateKey, branchName }) => {
          } catch(error) {
             logging.log({ error });
             logging.log({ info: error.message });
-            logging.log({ info: error.stack });
+            
          }
       },
       delete: async () => {
@@ -34,7 +33,7 @@ module.exports = ({ privateKey, branchName }) => {
          } catch(error) {
             logging.log({ error });
             logging.log({ info: error.message });
-            logging.log({ info: error.stack });
+            
          }
       }
    }

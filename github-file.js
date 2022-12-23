@@ -11,7 +11,7 @@ module.exports = ({ privateKey, branchName, fileName }) => {
          } catch (error) {
             logging.log({ error });
             logging.log({ info: error.message });
-            logging.log({ info: error.stack });
+            
             return null;
          }
       },
@@ -36,7 +36,7 @@ module.exports = ({ privateKey, branchName, fileName }) => {
          } catch(error) {
             logging.log({ error });
             logging.log({ info: error.message });
-            logging.log({ info: error.stack });
+            
             return null;
          }
       },
@@ -59,7 +59,7 @@ module.exports = ({ privateKey, branchName, fileName }) => {
          } catch(error) {
             logging.log({ error });
             logging.log({ info: error.message });
-            logging.log({ info: error.stack });
+            
          }
       },
       deleteFile: async () => {
@@ -81,7 +81,7 @@ module.exports = ({ privateKey, branchName, fileName }) => {
             } catch(error) {
                logging.log({ error });
                logging.log({ info: error.message });
-               logging.log({ info: error.stack });
+               
             }
          }
       }

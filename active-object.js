@@ -16,7 +16,6 @@ module.exports = ({ url, script }) => {
       } catch(error) {
         logging.log({ error });
         logging.log({ info: error.message });
-        logging.log({ info: error.stack });
         return false;
       } 
     },
@@ -47,7 +46,6 @@ module.exports = ({ url, script }) => {
       } catch (error) {
         logging.log({ error });
         logging.log({ info: error.message });
-        logging.log({ info: error.stack });
         return {
           message: error.message,
           stack: error.stack
