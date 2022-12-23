@@ -4,10 +4,10 @@ module.exports = {
         globalLevel = level;
     },
     log: ({ error, info }) => {
-        if ( !(error instanceof Error) ) {
-            throw new Error('logging failed to log, error argument passed is not of type Error');
-        }
         if (globalLevel === 'error' && error) {
+            if (!(error instanceof Error)) {
+                throw new Error('logging failed to log, error argument passed is not of type Error');
+            }
             console.error(error);
         }
         if (globalLevel === 'info' && info) {
