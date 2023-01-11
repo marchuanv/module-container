@@ -14,6 +14,7 @@ function TestClassC() {
 `;
 const input = {};
 ( async () => {
-  await test({ moduleName, functionName: 'activate', testParams: { url, script, input } }).assert((res) => res === true ? true: false);
-  await test({ moduleName, functionName: 'call', testParams: { url, script, input } }).assert(({ doTest1, doTest2, doTest3 }) => doTest1 && doTest2 && doTest3 );
+  const testName = 'active-object-test-pass';
+  await test({ testName, moduleName, functionName: 'activate', testParams: { url, script, input } }).assert((res) => res === true ? true: false);
+  await test({ testName, moduleName, functionName: 'call', testParams: { url, script, input } }).assert(({ doTest1, doTest2, doTest3 }) => doTest1 && doTest2 && doTest3 );
 })();

@@ -8,6 +8,7 @@ const script = `function test() {
 }`;
 const input = {};
 ( async () => {
-  await test({ moduleName, functionName: 'activate', testParams: { url, script, input } }).assert((res) => res === false ? true: false );
-  await test({ moduleName, functionName: 'call', testParams: { url, script, input } }).assert((res) => res.message && res.stack );
+  const testName = 'active-object-test-fail';
+  await test({ testName, moduleName, functionName: 'activate', testParams: { url, script, input } }).assert((res) => res === false ? true: false );
+  await test({ testName, moduleName, functionName: 'call', testParams: { url, script, input } }).assert((res) => res.message && res.stack );
 })();

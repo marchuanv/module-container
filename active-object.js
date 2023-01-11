@@ -23,7 +23,7 @@ module.exports = ({ url, script }) => {
       try {
         const func = context[funcName];
         if (!func) {
-          throw new Error(`the function ${funcName} does not exist for the context`);
+          throw new Error(`the function: '${funcName}' does not exist for the context. call activate first`);
         }
         if (func.constructor) {
           let instance = new func(input);
