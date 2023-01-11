@@ -43,6 +43,7 @@ async function run() {
       logging.log({ info: 'TEST PASSED' });
     } else {
       logging.log({ info: 'TEST FAILED' });
+      process.exit(1);
     }
     resolve();
     lock = false;
