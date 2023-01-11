@@ -53,13 +53,14 @@ run();
 
 module.exports = {
   test: ({ testName, moduleName, functionName, testParams }) => {
-    const index = tests.length + 1;
-    tests.push({ testName, index, moduleName, functionName, testParams, callback: null, resolve: null, isReady: false });
+    tests.push({ testName, moduleName, functionName, testParams, callback: null, resolve: null, isReady: false });
     return {
       assert: (callback) => {
         return new Promise((resolve) => {
-          const itemIndex = tests.findIndex(x => 
-            x.index === index &&
+          const itemIndex = tests.findIndex(x =>
+            !x.callback &&
+            !x.resolve &&
+            !x.isReady &&
             x.moduleName === moduleName &&
             x.functionName === functionName
           );

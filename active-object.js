@@ -1,6 +1,8 @@
 const vm = require('vm');
+const { readFileSync } = require('fs');
 const logging = require('./logging');
-module.exports = ({ url, script }) => {
+module.exports = ({ url, scriptFilePath }) => {
+  const script = readFileSync(scriptFilePath,{ encoding: 'utf8' });
   const segments = url.split('/').map(x => x.toLowerCase()).filter(x=>x);
   let funcName;
   let context = {};
@@ -9,8 +11,8 @@ module.exports = ({ url, script }) => {
     activate: () => {
       try {
         const vmScript = new vm.Script(script);
-        vmScript.runInNewContext(script, context);
-        logging.log(`CONTEXT: ${context}`);
+        vmScript.runInContext(context);
+        logging.log({ info: `CONTEXT: ${context}` });
         funcName = Object.keys(context)[0];
         return true;
       } catch(error) {
