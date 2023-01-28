@@ -1,7 +1,7 @@
 const { test } = require('./test-runner.js');
 const path = require('path');
 const moduleName = 'active-object';
-const url = '/doTest1/doTest2/doTest3';
+const url = '/test/doTest1';
 const scriptFilePath = path.join(__dirname,'active-object-test-fail-script.js');
 const input = {};
 ( async () => {

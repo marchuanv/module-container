@@ -1,15 +1,20 @@
 function TestClassA() {
-  this.doTest1 = () => {
+  this.func1 = () => {
     return new TestClassB();
   }
 }
 function TestClassB() {
-  this.doTest2 = () => {
+  this.func2 = () => {
     return new TestClassC();
   }
 }
 function TestClassC() {
-  this.doTest3 = () => {
+  this.func3 = () => {
+    return new TestClassD();
+  }
+}
+function TestClassD() {
+  this.func4 = () => {
     console.log('Hello World!');
   }
 }

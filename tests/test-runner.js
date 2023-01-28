@@ -1,75 +1,96 @@
 const logging = require('../logging');
 logging.setLevel({ level: 'info' });
 const tests = [];
+const modules = [];
 let lock = false;
-let count = 0;
+let intervalId = null;
+let hasTests = false;
+
 async function run() {
-  const intervalId = setInterval(async() => {
-    
-    if (tests.length === 0 || lock) {
-      clearInterval(intervalId);
-      count = (count + 1);
-      if (count > 5) {
-        return clearInterval(intervalId);
-      } else {
-        return await run();
-      }
-    }
-    
-    const test = tests.shift();
-    if (!test.isReady) {
-      tests.push(test);
-      return await run();
-    }
+  
+  if (lock) {
+    return;
+  }
 
-    count = 0;
-    lock = true;
-    const { testName, moduleName, functionName, testParams, callback, resolve } = test;
+  let test = tests.sort((x,y) => x.priority - y.priority)[0]; //peek
+  if (!test.isReady) {
+    return;
+  }
 
-    logging.log({ info: ' ' });
-    logging.log({ info: '---------------------------------------------------------------------' });
-    logging.log({ info: `RUNNING ${testName.toUpperCase()}: ${moduleName} -> ${functionName}` });
-    logging.log({ info: ' ' });
+  test = tests.shift();
 
-    const module = require(`../${moduleName}`)(testParams);
-    const func = module[functionName];
-    if (!func) {
-      throw new Error(`the function ${functionName} does not exist for the ${moduleName} module.`);
-    }
-    const results = await func(testParams);
-    const res = callback(results);
-    logging.log({ info: ' ' });
-    if(res) {
-      logging.log({ info: 'TEST PASSED' });
-    } else {
-      logging.log({ info: 'TEST FAILED' });
-      process.exit(1);
-    }
-    resolve();
-    lock = false;
-    logging.log({ info: ' ' });
-  }, 1000);
+  lock = true;
+  const { testName, moduleName, functionName, testParams, callback, resolve,  } = test;
+  const { module } = modules.find(x => x.moduleName === moduleName && x.testName === testName) || { };
+
+  logging.log({ info: ' ' });
+  logging.log({ info: '---------------------------------------------------------------------' });
+  logging.log({ info: `RUNNING ${testName.toUpperCase()}: ${moduleName} -> ${functionName}` });
+  logging.log({ info: ' ' });
+  
+  const func = module[functionName];
+  if (!func) {
+    throw new Error(`the function ${functionName} does not exist for the ${moduleName} module.`);
+  }
+  const results = await func(testParams);
+  const res = callback(results);
+  logging.log({ info: ' ' });
+  if(res) {
+    logging.log({ info: 'TEST PASSED' });
+  } else {
+    logging.log({ info: 'TEST FAILED' });
+    process.exit(1);
+  }
+  resolve();
+  lock = false;
+  logging.log({ info: ' ' });
 }
-run();
+intervalId = setInterval(async() => {
+  if (tests.length > 0) {
+    await run();
+  } else if (hasTests) {
+    clearInterval(intervalId);
+  }
+}, 1000);
 
 module.exports = {
   test: ({ testName, moduleName, functionName, testParams }) => {
-    tests.push({ testName, moduleName, functionName, testParams, callback: null, resolve: null, isReady: false });
+    const priority = tests.length + 1;
+    //matching tests with same module
+    let { module } = modules.find(x =>
+      x.testName === testName && 
+      x.moduleName === moduleName &&
+      x.module
+    ) || { };
+    if (!module) {
+      module = require(`../${moduleName}`)(testParams);
+      modules.push({ testName, moduleName, module });
+    }
+    tests.push({ 
+      priority,
+      testName,
+      moduleName,
+      functionName,
+      testParams,
+      callback: null,
+      resolve: null,
+      isReady: false,
+    });
+    hasTests = true;
     return {
       assert: (callback) => {
         return new Promise((resolve) => {
-          const itemIndex = tests.findIndex(x =>
+          const test = tests.find(x =>
             !x.callback &&
             !x.resolve &&
             !x.isReady &&
+            x.testName === testName &&
             x.moduleName === moduleName &&
             x.functionName === functionName
           );
-          const item = tests.splice(itemIndex, 1)[0];
-          item.callback = callback;
-          item.resolve = resolve;
-          item.isReady = true;
-          tests.push(item);
+          test.callback = callback;
+          test.resolve = resolve;
+          test.isReady = true;
         });
       }
     }

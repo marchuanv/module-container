@@ -3,7 +3,7 @@ const { readFileSync } = require('fs');
 const logging = require('./logging');
 module.exports = ({ url, scriptFilePath }) => {
   const script = readFileSync(scriptFilePath,{ encoding: 'utf8' });
-  const segments = url.split('/').map(x => x.toLowerCase()).filter(x=>x);
+  const segments = url.split('/').filter(x=>x);
   let funcName;
   let context = {};
   vm.createContext(context);
@@ -23,28 +23,18 @@ module.exports = ({ url, scriptFilePath }) => {
     },
     call: async (input) => {
       try {
-        const func = context[funcName];
+        const className = segments[0];
+        const funcName = segments[1];
+        const classFunc = context[className];
+        if (!classFunc) {
+          throw new Error(`the class: '${className}' does not exist in context. call activate first`);
+        }
+        const instance = new classFunc();
+        const func = instance[funcName];
         if (!func) {
-          throw new Error(`the function: '${funcName}' does not exist for the context. call activate first`);
+          throw new Error(`function: '${funcName}' for class: '${className}' does not exist.`);
         }
-        if (func.constructor) {
-          let instance = new func(input);
-          let instanceMemberNames = Object.keys(instance);
-          for(const segName of segments) {
-            const memberFuncName = instanceMemberNames.find(x => x.toLowerCase().replace(/^\s*$/,'') === segName.toLowerCase().replace(/^\s*$/,''));
-            if (memberFuncName) {
-              const memberFunc = instance[memberFuncName];
-              instance = await memberFunc(input);
-              if (Object.keys(context).find(x => x ===  instance.constructor.name)) {
-                instanceMemberNames = Object.keys(instance);
-              }
-              output = instance;
-            }
-          };
-        } else {
-          output = await func(input)
-        }
-        return output;
+        return await func(input);
       } catch (error) {
         logging.log({ error });
         logging.log({ info: error.message });
