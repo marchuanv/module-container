@@ -1,25 +1,30 @@
 const http = require("http");
+const logging = require('./logging');
 const utils = require("utils");
+const path = require("path");
+const { writeFileSync, mkdirSync, existsSync } = require("fs");
 
+const activeObjectsDir = path.join(__dirname, 'objects');
 const server = http.createServer();
 const privateKey = process.env.GIT;
 
-const logging = require('./logging');
 logging.setLevel({ level: 'info' });
 
 server.on("request", (request, response) => {
     let content = '';
+    let url = request.url.toLowerCase();
     request.on('data', (chunk) => {
         content += chunk;
     });
     request.on('end', async () => {
+        content = content.toLowerCase();
         console.log("request received");
         const results = {
             statusCode: 404,
             statusMessage: 'Not Found',
             message: 'No Active Objects Found'
         };
-        const urlSplit = request.url.split('/').filter(x => x);
+        const urlSplit = url.split('/').filter(x => x);
         console.log('url segments: ', utils.getJSONString(urlSplit));
         const aoName = urlSplit[0];
         const functionName = urlSplit[1];
@@ -39,10 +44,15 @@ server.on("request", (request, response) => {
                     results.message = 'Active Object Info';
                     results.script = content;
                 }
-            } else if (aoName && request.method === 'PUT') { 
-                const activeObject = require("./active-object")({ url: request.url, script: content });   
+            } else if (aoName && request.method === 'PUT') {
                 if (content) {
-                    if (await activeObject.isValidScript()){
+                    if (!existsSync(activeObjectsDir)) {
+                        mkdirSync(activeObjectsDir);
+                    }
+                    const scriptFilePath = path.join(activeObjectsDir, `${aoName}-script.js`);
+                    writeFileSync(path.join(activeObjectsDir, `${aoName}-script.js`), content);
+                    const activeObject = require("./active-object")({ url, scriptFilePath });
+                    if (activeObject.activate()) {
                         await githubFile.ensureFileContent({ content });
                         results.statusCode = 200;
                         results.statusMessage = 'Success';
@@ -64,21 +74,28 @@ server.on("request", (request, response) => {
                 results.message = 'Active Object Deleted';
             } else if (aoName && request.method === 'POST' && functionName) {
                 const script = await githubFile.getFileContent();
-                const activeObject = require("./active-object")({ url: request.url, script });
-                if (script) {       
-                    try {
-                       console.log(`executing the ${functionName} function.`);
-                       await activeObject.activate();
-                       results.statusCode = 200;
-                       results.statusMessage = 'Success';
-                       results.message = 'Active Object Function Executed';
-                       results.results = await activeObject.call({ input: content });
-                    } catch(error) {
-                       console.error(error);
-                       results.statusCode = 500;
-                       results.statusMessage = 'Internal Server Error';
-                       results.message = 'Active Object Script Error';
-                    }  
+                if (!existsSync(activeObjectsDir)) {
+                    mkdirSync(activeObjectsDir);
+                }
+                const scriptFilePath = path.join(activeObjectsDir, `${aoName}-script.js`);
+                writeFileSync(path.join(activeObjectsDir, `${aoName}-script.js`), script);
+                const activeObject = require("./active-object")({ url, scriptFilePath });
+                try {
+                    console.log(`executing the ${functionName} function.`);
+                    await activeObject.activate();
+                    const results = await activeObject.call({ input: content });
+                    if (results.message && results.stack) {
+                        throw new Error(message);
+                    }
+                    results.statusCode = 200;
+                    results.statusMessage = 'Success';
+                    results.message = 'Active Object Function Executed';
+                    results.results = results;
+                } catch(error) {
+                    console.error(error);
+                    results.statusCode = 500;
+                    results.statusMessage = 'Internal Server Error';
+                    results.message = 'Active Object Script Error';
                 }
             }
         }
