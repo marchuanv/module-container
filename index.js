@@ -2,7 +2,8 @@ const http = require("http");
 const logging = require('./logging');
 const utils = require("utils");
 const path = require("path");
-const { writeFileSync, mkdirSync, existsSync } = require("fs");
+const { fs } = require('memfs');
+const { writeFileSync, mkdirSync, existsSync } = fs;
 
 const activeObjectsDir = path.join(__dirname, 'objects');
 const server = http.createServer();

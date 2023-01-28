@@ -1,8 +1,9 @@
 const vm = require('vm');
-const { readFileSync } = require('fs');
+const { fs } = require('memfs');
+const { readFileSync } = fs;
 const logging = require('./logging');
 module.exports = ({ url, scriptFilePath }) => {
-  const script = readFileSync(scriptFilePath,{ encoding: 'utf8' });
+  const script = readFileSync(scriptFilePath, { encoding: 'utf8' });
   const segments = url.split('/').filter(x=>x);
   let funcName;
   let context = {};
