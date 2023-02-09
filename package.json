@@ -24,7 +24,6 @@
    },
    "homepage": "https://github.com/marchuanv/active-objects#readme",
    "dependencies": {
-      "memfs": "^3.4.13",
       "octokit": "2.0.10",
       "utils": "marchuanv/utils"
    }

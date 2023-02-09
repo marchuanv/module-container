@@ -1,4 +1,4 @@
-const logging = require('../logging');
+const logging = require('../lib/logging');
 logging.setLevel({ level: 'info' });
 const tests = [];
 const modules = [];
@@ -33,7 +33,7 @@ async function run() {
     throw new Error(`the function ${functionName} does not exist for the ${moduleName} module.`);
   }
   const results = await func(testParams);
-  const res = callback(results);
+  const res = await callback(results);
   logging.log({ info: ' ' });
   if(res) {
     logging.log({ info: 'TEST PASSED' });
@@ -63,7 +63,7 @@ module.exports = {
       x.module
     ) || { };
     if (!module) {
-      module = require(`../${moduleName}`)(testParams);
+      module = require(`../lib/${moduleName}`)(testParams);
       modules.push({ testName, moduleName, module });
     }
     tests.push({ 
