@@ -7,12 +7,12 @@ let intervalId = null;
 let hasTests = false;
 
 async function run() {
-  
+
   if (lock) {
     return;
   }
 
-  let test = tests.sort((x,y) => x.priority - y.priority)[0]; //peek
+  let test = tests.sort((x, y) => x.priority - y.priority)[0]; //peek
   if (!test.isReady) {
     return;
   }
@@ -20,14 +20,14 @@ async function run() {
   test = tests.shift();
 
   lock = true;
-  const { testName, moduleName, functionName, testParams, callback, resolve,  } = test;
-  const { module } = modules.find(x => x.moduleName === moduleName && x.testName === testName) || { };
+  const { testName, moduleName, functionName, testParams, callback, resolve, } = test;
+  const { module } = modules.find(x => x.moduleName === moduleName && x.testName === testName) || {};
 
   logging.log({ info: ' ' });
   logging.log({ info: '---------------------------------------------------------------------' });
   logging.log({ info: `RUNNING ${testName.toUpperCase()}: ${moduleName} -> ${functionName}` });
   logging.log({ info: ' ' });
-  
+
   const func = module[functionName];
   if (!func) {
     throw new Error(`the function ${functionName} does not exist for the ${moduleName} module.`);
@@ -35,7 +35,7 @@ async function run() {
   const results = await func(testParams);
   const res = await callback(results);
   logging.log({ info: ' ' });
-  if(res) {
+  if (res) {
     logging.log({ info: 'TEST PASSED' });
   } else {
     logging.log({ info: 'TEST FAILED' });
@@ -45,7 +45,7 @@ async function run() {
   lock = false;
   logging.log({ info: ' ' });
 }
-intervalId = setInterval(async() => {
+intervalId = setInterval(async () => {
   if (tests.length > 0) {
     await run();
   } else if (hasTests) {
@@ -54,19 +54,19 @@ intervalId = setInterval(async() => {
 }, 1000);
 
 module.exports = {
-  test: ({ testName, moduleName, functionName, testParams }) => {
+  test: async ({ testName, moduleName, functionName, testParams }) => {
     const priority = tests.length + 1;
     //matching tests with same module
     let { module } = modules.find(x =>
-      x.testName === testName && 
+      x.testName === testName &&
       x.moduleName === moduleName &&
       x.module
-    ) || { };
+    ) || {};
     if (!module) {
-      module = require(`../lib/${moduleName}`)(testParams);
+      const module = await require(`../lib/${moduleName}`);
       modules.push({ testName, moduleName, module });
     }
-    tests.push({ 
+    tests.push({
       priority,
       testName,
       moduleName,
