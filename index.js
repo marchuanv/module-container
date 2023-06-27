@@ -1,67 +1,36 @@
 const http = require("http");
 const logging = require('./lib/logging');
-const utils = require("utils");
-const path = require("path");
-const { createSession } = require('./lib/store');
+const registry = require('./lib/endpoint-registry');
 
-const activeObjEndpointExp = /^\/api\/v[0-9]+\/active-object\/[a-zA-Z]+\/[a-zA-Z0-9]+$/g;
-const actionExpressions = [
-    /active-object\/get/g,
-    /active-object\/create/g,
-    /active-object\/remove/g,
-    /active-object-class\/get/g,
-    /active-object-class\/create/g,
-    /active-object-class\/remove/g
-];
+logging.setLevel({ level: 'info' });
+const { findRootHandler } = registry;
 
-const endpointsDirPath = path.join(__dirname, 'lib', 'endpoints');
-
-createSession({ sessionId: 'f3ab396e-b549-4fbe-9eda-21570147f78a' }).then(({ session }) => {
+findRootHandler(/v1/g).then((rootHandler) => {
+    if (!rootHandler) {
+        throw new Error('there are no root handlers.');
+    }
+    console.log(`using ${rootHandler.name} root handler.`);
     const server = http.createServer();
-    logging.setLevel({ level: 'info' });
-    server.on("request", (request, response) => {
-        let requestContent = '';
-        let url = request.url.toLowerCase();
-        request.on('data', (chunk) => {
-            requestContent += chunk;
+    server.on("request", (req, res) => {
+        const path = req.url.toLowerCase();
+        const headers = req.headers;
+        let content = '';
+        req.on('data', (chunk) => {
+            content += chunk;
         });
-        request.on('end', async () => {
-            let statusCode = -1;
-            let statusMessage = '';
-            let handle = async () => { return { statusCode: 500, statusMessage: '500 Internal Server Error', responseContent: { message: 'Internal Server Error' } } };
+        req.on('end', async () => {
+            let { statusCode, statusMessage, responseContent, contentType } = {};
             try {
-                requestContent = utils.getJSONObject(requestContent) || {};
-                requestContent.url = url;
-                activeObjEndpointExp.lastIndex = -1;
-                if (activeObjEndpointExp.test(url)) {
-                    handle = null;
-                    for (const action of actionExpressions) {
-                        action.lastIndex = -1;
-                        if (action.test(url)) {
-                            action.lastIndex = -1;
-                            const results = action.exec(url);
-                            const fileName = results[0].replace(/\//g, '-');
-                            ({ handle } = require(path.join(endpointsDirPath, `${fileName}.js`)));
-                            break;
-                        }
-                    }
-                    if (!handle) {
-                        handle = async () => { return { statusCode: 404, statusMessage: '404 Not Found', responseContent: { message: '404 Not Found' } } };
-                    }
-                } else {
-                    handle = async () => { return { statusCode: 404, statusMessage: '404 Not Found', responseContent: { message: '404 Not Found' } } };
-                }
-                ({ statusCode, statusMessage, responseContent } = await handle(session, requestContent));
-            } catch (err) {
-                console.log(err);
-                handle = async () => { return { statusCode: 500, statusMessage: '500 Internal Server Error', responseContent: { message: 'Internal Server Error' } } };
-                ({ statusCode, statusMessage, responseContent } = await handle(session, requestContent));
+                ({ statusCode, statusMessage, responseContent, contentType } = await rootHandler.handle({ path, content, headers }));
+            } catch (error) {
+                logging.log({ info: 'root handler should handle all errors, this should not happen.' });
+                logging.log({ error });
             }
-            response.writeHead(statusCode, statusMessage, {
-                'Content-Length': Buffer.byteLength(JSON.stringify(responseContent)),
-                'Content-Type': 'application/json'
+            res.writeHead(statusCode, statusMessage, {
+                'Content-Length': Buffer.byteLength(responseContent),
+                'Content-Type': contentType
             });
-            response.end(JSON.stringify(responseContent));
+            res.end(responseContent);
         });
     });
     server.listen(process.env.PORT || 80);
