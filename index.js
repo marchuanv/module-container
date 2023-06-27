@@ -4,7 +4,7 @@ const utils = require("utils");
 const path = require("path");
 const { createSession } = require('./lib/store');
 
-const activeObjEndpointExp = /^\/api\/v[0-9]+\/active-object\/[a-zA-Z]+\/[a-zA-Z0-9]+.json$/g;
+const activeObjEndpointExp = /^\/api\/v[0-9]+\/active-object\/[a-zA-Z]+\/[a-zA-Z0-9]+$/g;
 const actionExpressions = [
     /active-object\/get/g,
     /active-object\/create/g,
