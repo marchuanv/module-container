@@ -8,7 +8,10 @@ const activeObjEndpointExp = /^\/api\/v[0-9]+\/active-object\/[a-zA-Z]+\/[a-zA-Z
 const actionExpressions = [
     /active-object\/get/g,
     /active-object\/create/g,
-    /active-object\/remove/g
+    /active-object\/remove/g,
+    /active-object-class\/get/g,
+    /active-object-class\/create/g,
+    /active-object-class\/remove/g
 ];
 
 const endpointsDirPath = path.join(__dirname, 'lib', 'endpoints');
