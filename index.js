@@ -1,11 +1,12 @@
+const { error } = require("console");
 const http = require("http");
-const logging = require('./lib/logging');
-const registry = require('./lib/endpoint-registry');
-
-logging.setLevel({ level: 'info' });
-const { findRootHandler } = registry;
-
-findRootHandler(/v1/g).then((rootHandler) => {
+require('./lib/extensions');
+(async () => {
+    const logging = await require('/lib/logging.js');
+    const registry = await require('/lib/endpoint-registry.js');
+    logging.setLevel({ level: 'info' });
+    const { findRootHandler } = registry;
+    const rootHandler = await findRootHandler(/v1/g);
     if (!rootHandler) {
         throw new Error('there are no root handlers.');
     }
@@ -34,4 +35,12 @@ findRootHandler(/v1/g).then((rootHandler) => {
         });
     });
     server.listen(process.env.PORT || 80);
-});
+    module.exports = {
+        stop: () => {
+        },
+        start: () => {
+        }
+    };
+})();
+
+
