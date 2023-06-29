@@ -1,26 +1,27 @@
 import {
-    GetConfig,
     Logging,
     Store,
     GithubBranch,
     Github,
-    GithubFile
-} from '../../lib/index.mjs';
+    GithubFile,
+    CreateClass
+} from '../../../lib/index.mjs';
 import path from 'node:path'
 import utils from 'utils'
-describe('when-activating-get-config', () => {
+import vm from 'node:v8'
+describe('when-activating-create-class-endpoint', () => {
     const references = new WeakMap();
-    beforeAll(function() {
+    beforeAll(() => {
         const logging = new Logging();
         const github = new Github();
         const githubBranch = new GithubBranch({ logging, github });
         const githubFile = new GithubFile({ utils, logging, github });
         const store = new Store({ githubBranch, githubFile, utils, logging, path });
-        const getConfig = new GetConfig({ utils, store });
-        references.set(references, { getConfig });
+        const createClass = new CreateClass({ utils, vm, store });
+        references.set(references, { createClass });
     });
     it('should create an instace', () => {
-        const { getConfig } = references.get(references);
-        expect(getConfig).toBeInstanceOf(GetConfig)
+        const { createClass } = references.get(references);
+        expect(createClass).toBeInstanceOf(CreateClass)
     });
 });

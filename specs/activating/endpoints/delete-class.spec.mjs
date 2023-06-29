@@ -4,12 +4,11 @@ import {
     GithubBranch,
     Github,
     GithubFile,
-    EndpointRegistry
-} from '../../lib/index.mjs';
+    DeleteClass
+} from '../../../lib/index.mjs';
 import path from 'node:path'
 import utils from 'utils'
-import vm from 'node:v8'
-describe('when-activating-endpoint-registry', () => {
+describe('when-activating-delete-class-endpoint', () => {
     const references = new WeakMap();
     beforeAll(() => {
         const logging = new Logging();
@@ -17,11 +16,11 @@ describe('when-activating-endpoint-registry', () => {
         const githubBranch = new GithubBranch({ logging, github });
         const githubFile = new GithubFile({ utils, logging, github });
         const store = new Store({ githubBranch, githubFile, utils, logging, path });
-        const endpointRegistry = new EndpointRegistry({ path, utils, store, logging, vm });
-        references.set(references, { endpointRegistry });
+        const deleteClass = new DeleteClass({ utils, store });
+        references.set(references, { deleteClass });
     });
     it('should create an instace', () => {
-        const { endpointRegistry } = references.get(references);
-        expect(endpointRegistry).toBeInstanceOf(EndpointRegistry)
+        const { deleteClass } = references.get(references);
+        expect(deleteClass).toBeInstanceOf(DeleteClass)
     });
 });

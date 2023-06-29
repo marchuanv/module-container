@@ -1,6 +1,6 @@
 import {
     Logging,
-} from '../lib/index.mjs';
+} from '../../lib/index.mjs';
 describe('when-activating-logging', () => {
     const references = new WeakMap();
     beforeAll(() => {
