@@ -18,11 +18,15 @@
   },
   "type": "module",
   "scripts": {
-    "start": "node index.mjs"
+    "start": "node index.mjs",
+    "test": "node specs/index.mjs"
   },
   "homepage": "https://github.com/marchuanv/active-objects#readme",
   "dependencies": {
     "octokit": "2.0.10",
     "utils": "marchuanv/utils"
+  },
+  "devDependencies": {
+    "jasmine": "^5.0.2"
   }
 }
