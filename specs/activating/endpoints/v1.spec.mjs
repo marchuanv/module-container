@@ -22,8 +22,8 @@ describe('when-activating-v1-endpoint', () => {
         const _v1 = new v1({ utils, logging, registry });
         references.set(references, { _v1 });
     });
-    it('should create an instace', () => {
+    it('should create an instance', () => {
         const { _v1 } = references.get(references);
-        expect(_v1).toBeInstanceOf(v1)
+        expect(_v1).toBeInstanceOf(v1);
     });
 });

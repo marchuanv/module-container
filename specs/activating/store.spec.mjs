@@ -16,8 +16,8 @@ describe('when-activating-store', () => {
         const store = new Store({ githubBranch, githubFile, utils, logging });
         references.set(references, { store });
     });
-    it('should create an instace', () => {
+    it('should create an instance', () => {
         const { store } = references.get(references);
-        expect(store).toBeInstanceOf(Store)
+        expect(store).toBeInstanceOf(Store);
     });
 });

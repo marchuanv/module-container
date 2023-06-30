@@ -11,8 +11,8 @@ describe('when-activating-github-branch', () => {
         const githubBranch = new GithubBranch({ logging, github });
         references.set(references, { githubBranch });
     });
-    it('should create an instace', () => {
+    it('should create an instance', () => {
         const { githubBranch } = references.get(references);
-        expect(githubBranch).toBeInstanceOf(GithubBranch)
+        expect(githubBranch).toBeInstanceOf(GithubBranch);
     });
 });

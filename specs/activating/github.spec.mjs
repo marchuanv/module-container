@@ -7,8 +7,8 @@ describe('when-activating-github', () => {
         const github = new Github();
         references.set(references, { github });
     });
-    it('should create an instace', () => {
+    it('should create an instance', () => {
         const { github } = references.get(references);
-        expect(github).toBeInstanceOf(Github)
+        expect(github).toBeInstanceOf(Github);
     });
 });

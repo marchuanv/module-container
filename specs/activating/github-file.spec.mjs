@@ -12,8 +12,8 @@ describe('when-activating-github-file', () => {
         const githubFile = new GithubFile({ logging, github, utils });
         references.set(references, { githubFile });
     });
-    it('should create an instace', () => {
+    it('should create an instance', () => {
         const { githubFile } = references.get(references);
-        expect(githubFile).toBeInstanceOf(GithubFile)
+        expect(githubFile).toBeInstanceOf(GithubFile);
     });
 });

@@ -19,8 +19,8 @@ describe('when-activating-get-config-endpoint', () => {
         const getClass = new GetClass({ utils, store });
         references.set(references, { getClass });
     });
-    it('should create an instace', () => {
+    it('should create an instance', () => {
         const { getClass } = references.get(references);
-        expect(getClass).toBeInstanceOf(GetClass)
+        expect(getClass).toBeInstanceOf(GetClass);
     });
 });

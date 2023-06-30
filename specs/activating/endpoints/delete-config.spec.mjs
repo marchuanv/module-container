@@ -19,8 +19,8 @@ describe('when-activating-delete-config-endpoint', () => {
         const deleteConfig = new DeleteConfig({ utils, store });
         references.set(references, { deleteConfig });
     });
-    it('should create an instace', () => {
+    it('should create an instance', () => {
         const { deleteConfig } = references.get(references);
-        expect(deleteConfig).toBeInstanceOf(DeleteConfig)
+        expect(deleteConfig).toBeInstanceOf(DeleteConfig);
     });
 });

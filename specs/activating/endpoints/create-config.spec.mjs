@@ -19,8 +19,8 @@ describe('when-activating-create-config-endpoint', () => {
         const createConfig = new CreateConfig({ utils, store });
         references.set(references, { createConfig });
     });
-    it('should create an instace', () => {
+    it('should create an instance', () => {
         const { createConfig } = references.get(references);
-        expect(createConfig).toBeInstanceOf(CreateConfig)
+        expect(createConfig).toBeInstanceOf(CreateConfig);
     });
 });

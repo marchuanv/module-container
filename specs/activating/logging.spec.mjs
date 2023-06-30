@@ -7,8 +7,8 @@ describe('when-activating-logging', () => {
         const logging = new Logging();
         references.set(references, { logging });
     });
-    it('should create an instace', () => {
+    it('should create an instance', () => {
         const { logging } = references.get(references);
-        expect(logging).toBeInstanceOf(Logging)
+        expect(logging).toBeInstanceOf(Logging);
     });
 });

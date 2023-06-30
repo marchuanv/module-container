@@ -20,8 +20,8 @@ describe('when-activating-endpoint-registry', () => {
         const endpointRegistry = new EndpointRegistry({ path, utils, store, logging, vm });
         references.set(references, { endpointRegistry });
     });
-    it('should create an instace', () => {
+    it('should create an instance', () => {
         const { endpointRegistry } = references.get(references);
-        expect(endpointRegistry).toBeInstanceOf(EndpointRegistry)
+        expect(endpointRegistry).toBeInstanceOf(EndpointRegistry);
     });
 });

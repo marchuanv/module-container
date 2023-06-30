@@ -19,8 +19,8 @@ describe('when-activating-delete-class-endpoint', () => {
         const deleteClass = new DeleteClass({ utils, store });
         references.set(references, { deleteClass });
     });
-    it('should create an instace', () => {
+    it('should create an instance', () => {
         const { deleteClass } = references.get(references);
-        expect(deleteClass).toBeInstanceOf(DeleteClass)
+        expect(deleteClass).toBeInstanceOf(DeleteClass);
     });
 });

@@ -20,8 +20,8 @@ describe('when-activating-create-class-endpoint', () => {
         const createClass = new CreateClass({ utils, vm, store });
         references.set(references, { createClass });
     });
-    it('should create an instace', () => {
+    it('should create an instance', () => {
         const { createClass } = references.get(references);
-        expect(createClass).toBeInstanceOf(CreateClass)
+        expect(createClass).toBeInstanceOf(CreateClass);
     });
 });
