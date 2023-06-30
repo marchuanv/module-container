@@ -4,24 +4,21 @@ import {
     GithubBranch,
     Github,
     GithubFile,
-    CreateClass
+    CreateClass,
+    Container
 } from '../../../lib/index.mjs';
-import path from 'node:path'
-import utils from 'utils'
-import vm from 'node:v8'
 describe('when-activating-create-class-endpoint', () => {
-    const references = new WeakMap();
+    const container = new Container();
     beforeAll(() => {
-        const logging = new Logging();
-        const github = new Github();
-        const githubBranch = new GithubBranch({ logging, github });
-        const githubFile = new GithubFile({ utils, logging, github });
-        const store = new Store({ githubBranch, githubFile, utils, logging, path });
-        const createClass = new CreateClass({ utils, vm, store });
-        references.set(references, { createClass });
+        container.register(Github);
+        container.register(Logging);
+        container.register(GithubBranch);
+        container.register(GithubFile);
+        container.register(Store);
+        container.register(CreateClass);
     });
     it('should create an instance', () => {
-        const { createClass } = references.get(references);
-        expect(createClass).toBeInstanceOf(CreateClass);
+        const { instance } = container.get('$createClass');
+        expect(instance).toBeInstanceOf(CreateClass);
     });
 });

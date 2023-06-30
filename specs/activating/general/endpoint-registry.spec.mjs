@@ -4,21 +4,21 @@ import {
     GithubBranch,
     Github,
     GithubFile,
-    CreateConfig,
+    EndpointRegistry,
     Container
 } from '../../../lib/index.mjs';
-describe('when-activating-create-config-endpoint', () => {
+describe('when-activating-endpoint-registry', () => {
     const container = new Container();
     beforeAll(() => {
-        container.register(Github);
         container.register(Logging);
+        container.register(Github);
         container.register(GithubBranch);
         container.register(GithubFile);
         container.register(Store);
-        container.register(CreateConfig);
+        container.register(EndpointRegistry);
     });
     it('should create an instance', () => {
-        const { instance } = container.get('$createConfig');
-        expect(instance).toBeInstanceOf(CreateConfig);
+        const { instance } = container.get('$endpointRegistry');
+        expect(instance).toBeInstanceOf(EndpointRegistry);
     });
 });

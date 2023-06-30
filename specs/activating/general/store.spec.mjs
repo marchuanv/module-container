@@ -1,13 +1,13 @@
 import {
+    GithubBranch,
+    GithubFile,
+    Github,
     Logging,
     Store,
-    GithubBranch,
-    Github,
-    GithubFile,
-    CreateConfig,
     Container
 } from '../../../lib/index.mjs';
-describe('when-activating-create-config-endpoint', () => {
+import utils from 'utils'
+describe('when-activating-store', () => {
     const container = new Container();
     beforeAll(() => {
         container.register(Github);
@@ -15,10 +15,9 @@ describe('when-activating-create-config-endpoint', () => {
         container.register(GithubBranch);
         container.register(GithubFile);
         container.register(Store);
-        container.register(CreateConfig);
     });
     it('should create an instance', () => {
-        const { instance } = container.get('$createConfig');
-        expect(instance).toBeInstanceOf(CreateConfig);
+        const { instance } = container.get('$store');
+        expect(instance).toBeInstanceOf(Store);
     });
 });

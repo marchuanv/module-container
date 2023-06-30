@@ -6,7 +6,7 @@ import {
     DeleteConfig,
     GetClass,
     GetConfig
-} from '../../lib/index.mjs';
+} from '../../../lib/index.mjs';
 describe('when-activating-container', () => {
     const references = new WeakMap();
     beforeAll(() => {

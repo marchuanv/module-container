@@ -4,23 +4,21 @@ import {
     Store,
     GithubBranch,
     Github,
-    GithubFile
+    GithubFile,
+    Container
 } from '../../../lib/index.mjs';
-import path from 'node:path'
-import utils from 'utils'
 describe('when-activating-get-config-endpoint', () => {
-    const references = new WeakMap();
+    const container = new Container();
     beforeAll(() => {
-        const logging = new Logging();
-        const github = new Github();
-        const githubBranch = new GithubBranch({ logging, github });
-        const githubFile = new GithubFile({ utils, logging, github });
-        const store = new Store({ githubBranch, githubFile, utils, logging, path });
-        const getConfig = new GetConfig({ utils, store });
-        references.set(references, { getConfig });
+        container.register(Github);
+        container.register(Logging);
+        container.register(GithubBranch);
+        container.register(GithubFile);
+        container.register(Store);
+        container.register(GetConfig);
     });
     it('should create an instance', () => {
-        const { getConfig } = references.get(references);
-        expect(getConfig).toBeInstanceOf(GetConfig);
+        const { instance } = container.get('$getConfig');
+        expect(instance).toBeInstanceOf(GetConfig);
     });
 });

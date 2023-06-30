@@ -4,23 +4,21 @@ import {
     GithubBranch,
     Github,
     GithubFile,
-    DeleteClass
+    DeleteClass,
+    Container
 } from '../../../lib/index.mjs';
-import path from 'node:path'
-import utils from 'utils'
 describe('when-activating-delete-class-endpoint', () => {
-    const references = new WeakMap();
+    const container = new Container();
     beforeAll(() => {
-        const logging = new Logging();
-        const github = new Github();
-        const githubBranch = new GithubBranch({ logging, github });
-        const githubFile = new GithubFile({ utils, logging, github });
-        const store = new Store({ githubBranch, githubFile, utils, logging, path });
-        const deleteClass = new DeleteClass({ utils, store });
-        references.set(references, { deleteClass });
+        container.register(Github);
+        container.register(Logging);
+        container.register(GithubBranch);
+        container.register(GithubFile);
+        container.register(Store);
+        container.register(DeleteClass);
     });
     it('should create an instance', () => {
-        const { deleteClass } = references.get(references);
-        expect(deleteClass).toBeInstanceOf(DeleteClass);
+        const { instance } = container.get('$deleteClass');
+        expect(instance).toBeInstanceOf(DeleteClass);
     });
 });
