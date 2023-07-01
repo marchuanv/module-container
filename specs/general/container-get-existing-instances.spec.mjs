@@ -32,7 +32,7 @@ describe('when-getting-existing-instances', () => {
         expect(getConfigId).toBe(id);
         expect(instance).toBeInstanceOf(GetConfig);
     });
-    it('should retrieve previously created instance of GetConfig', () => {
+    it('should retrieve previously created instance of GetClass', () => {
         const { container } = references.get(references);
         const { instance, id } = container.get(getClassRef);
         expect(getClassId).toBeDefined();
