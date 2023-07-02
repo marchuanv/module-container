@@ -1,10 +1,11 @@
 import { Container } from './lib/registry.mjs'
-class Server extends Container {
+class Server {
     start() {
-        this.$logging.setLevel({ level: 'info' });
-        this.$logging.log({ info: `using ${rootHandler.name} root handler.` });
-        this.$endpointRegistry.getHandler(/v1/g);
-        const server = http.createServer();
+        const { $endpointRegistry, $logging, $http } = new Container();
+        const rootHandler = $endpointRegistry.findHandler(/v1/g);
+        $logging.setLevel({ level: 'info' });
+        $logging.log({ info: `using ${rootHandler.name} root handler.` });
+        const server = $http.createServer();
         server.on("request", (req, res) => {
             const path = req.url.toLowerCase();
             const headers = req.headers;
