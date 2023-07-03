@@ -7,10 +7,16 @@ describe('when-activating-github-branch', () => {
         const container = new Container();
         ({ $githubBranch } = container);
     });
-    it('should create an instance', () => {
+    it('should get an instance', () => {
         expect($githubBranch).toBeDefined();
+    });
+    it('should have a create member', () => {
         expect($githubBranch.create).toBeDefined();
+    });
+    it('should have a delete member', () => {
         expect($githubBranch.delete).toBeDefined();
-        expect($githubBranch.isExisting).toBeDefined();
+    });
+    it('should have an exists member', () => {
+        expect($githubBranch.exists).toBeDefined();
     });
 });
