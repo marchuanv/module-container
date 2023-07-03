@@ -19,15 +19,15 @@ describe('when-activating-store', () => {
         expect($store.exists).toBeDefined();
     });
 
-    it('should have a writeFile member', () => {
-        expect($store.writeFile).toBeDefined();
+    it('should have a write member', () => {
+        expect($store.write).toBeDefined();
     });
 
-    it('should have a readFile member', () => {
-        expect($store.readFile).toBeDefined();
+    it('should have a read member', () => {
+        expect($store.read).toBeDefined();
     });
 
-    it('should have a removeFile member', () => {
-        expect($store.removeFile).toBeDefined();
+    it('should have a remove member', () => {
+        expect($store.remove).toBeDefined();
     });
 });
