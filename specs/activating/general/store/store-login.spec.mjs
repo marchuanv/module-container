@@ -14,4 +14,9 @@ describe('when-logging-into-store', () => {
     it('should create a store session', () => {
         expect(isLoggedIn).toBeTrue();
     });
+    afterAll(async () => {
+        const container = new Container();
+        const { $store } = container;
+        await $store.logout();
+    });
 });
