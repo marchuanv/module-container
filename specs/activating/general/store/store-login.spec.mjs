@@ -15,8 +15,18 @@ describe('when-logging-into-store', () => {
         expect(isLoggedIn).toBeTrue();
     });
     afterAll(async () => {
-        const container = new Container();
-        const { $store } = container;
+        let container = new Container();
+        let { $store } = container;
         await $store.logout();
+        try {
+            ({ $store } = container);
+        } catch (err) {
+            expect(err.message).toBe(`$store was flagged for garbage collection.`);
+        }
+        try {
+            ({ $octokitWithDefaults } = container);
+        } catch (err) {
+            expect(err.message).toBe(`$octokitWithDefaults was flagged for garbage collection.`);
+        }
     });
 });
