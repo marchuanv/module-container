@@ -1,6 +1,6 @@
 import {
     Container,
-} from '../../../lib/registry.mjs';
+} from '../../../../lib/registry.mjs';
 describe('when-activating-store', () => {
     let $store;
     beforeAll(() => {
