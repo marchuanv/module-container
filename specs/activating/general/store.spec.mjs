@@ -7,12 +7,27 @@ describe('when-activating-store', () => {
         const container = new Container();
         ({ $store } = container);
     });
-    it('should create an instance', () => {
+    it('should get an instance', () => {
         expect($store).toBeDefined();
+    });
+
+    it('should have a login member', () => {
         expect($store.login).toBeDefined();
+    });
+
+    it('should have a exists member', () => {
         expect($store.exists).toBeDefined();
+    });
+
+    it('should have a writeFile member', () => {
         expect($store.writeFile).toBeDefined();
+    });
+
+    it('should have a readFile member', () => {
         expect($store.readFile).toBeDefined();
+    });
+
+    it('should have a removeFile member', () => {
         expect($store.removeFile).toBeDefined();
     });
 });
