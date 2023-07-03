@@ -35,12 +35,12 @@ describe('when-logout-from-store', () => {
     it('should garbage collect octokit', () => {
         const {  $octokitWithDefaults } = new Container();
         const $octokitId = $octokitWithDefaults.objectId;
-        expect($prevOctokitId ).not.toBe($octokitId);
+        expect($prevOctokitId).not.toBe($octokitId);
     });
     it('should garbage collect store', () => {
         const { $store } = new Container();
         const $storeId = $store.objectId;
-        expect($prevStoreId ).not.toBe($storeId);
+        expect($prevStoreId).not.toBe($storeId);
     });
     it('should garbage collect logging', () => {
         const { $logging } = new Container();
