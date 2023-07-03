@@ -1,24 +1,14 @@
 import {
-    Logging,
-    Store,
-    GithubBranch,
-    Github,
-    GithubFile,
-    EndpointRegistry,
-    Container
-} from '../../../lib/index.mjs';
+    Container,
+} from '../../../lib/registry.mjs';
 describe('when-activating-endpoint-registry', () => {
-    const container = new Container();
+    let $endpointRegistry;
     beforeAll(() => {
-        container.register(Logging);
-        container.register(Github);
-        container.register(GithubBranch);
-        container.register(GithubFile);
-        container.register(Store);
-        container.register(EndpointRegistry);
+        const container = new Container();
+        ({ $endpointRegistry } = container);
     });
     it('should create an instance', () => {
-        const { instance } = container.get('$endpointRegistry');
-        expect(instance).toBeInstanceOf(EndpointRegistry);
+        expect($endpointRegistry).toBeDefined();
+        expect($endpointRegistry.findHandler).toBeDefined();
     });
 });

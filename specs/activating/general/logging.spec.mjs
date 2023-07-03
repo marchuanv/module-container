@@ -1,14 +1,15 @@
 import {
-    Logging,
-    Container
-} from '../../../lib/index.mjs';
+    Container,
+} from '../../../lib/registry.mjs';
 describe('when-activating-logging', () => {
-    const container = new Container();
+    let $logging;
     beforeAll(() => {
-        container.register(Logging);
+        const container = new Container();
+        ({ $logging } = container);
     });
     it('should create an instance', () => {
-        const { instance } = container.get('$logging');
-        expect(instance).toBeInstanceOf(Logging);
+        expect($logging).toBeDefined();
+        expect($logging.setLevel).toBeDefined();
+        expect($logging.log).toBeDefined();
     });
 });

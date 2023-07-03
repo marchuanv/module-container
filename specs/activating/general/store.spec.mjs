@@ -1,23 +1,18 @@
 import {
-    GithubBranch,
-    GithubFile,
-    Github,
-    Logging,
-    Store,
-    Container
-} from '../../../lib/index.mjs';
-import utils from 'utils'
+    Container,
+} from '../../../lib/registry.mjs';
 describe('when-activating-store', () => {
-    const container = new Container();
+    let $store;
     beforeAll(() => {
-        container.register(Github);
-        container.register(Logging);
-        container.register(GithubBranch);
-        container.register(GithubFile);
-        container.register(Store);
+        const container = new Container();
+        ({ $store } = container);
     });
     it('should create an instance', () => {
-        const { instance } = container.get('$store');
-        expect(instance).toBeInstanceOf(Store);
+        expect($store).toBeDefined();
+        expect($store.login).toBeDefined();
+        expect($store.exists).toBeDefined();
+        expect($store.writeFile).toBeDefined();
+        expect($store.readFile).toBeDefined();
+        expect($store.removeFile).toBeDefined();
     });
 });

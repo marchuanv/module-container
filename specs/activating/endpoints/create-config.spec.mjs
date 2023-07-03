@@ -1,24 +1,16 @@
 import {
-    Logging,
-    Store,
-    GithubBranch,
-    Github,
-    GithubFile,
-    CreateConfig,
     Container
-} from '../../../lib/index.mjs';
+} from '../../../lib/registry.mjs';
 describe('when-activating-create-config-endpoint', () => {
-    const container = new Container();
+    let $createConfigEndpoint;
     beforeAll(() => {
-        container.register(Github);
-        container.register(Logging);
-        container.register(GithubBranch);
-        container.register(GithubFile);
-        container.register(Store);
-        container.register(CreateConfig);
+        const container = new Container();
+        ({ $createConfigEndpoint } = container);
     });
-    it('should create an instance', () => {
-        const { instance } = container.get('$createConfig');
-        expect(instance).toBeInstanceOf(CreateConfig);
+    it('should get an instance', () => {
+        expect($createConfigEndpoint).toBeDefined();
+    });
+    it('should verify class members', () => {
+        expect($createConfigEndpoint.name).toBe('active-object-config-create');
     });
 });

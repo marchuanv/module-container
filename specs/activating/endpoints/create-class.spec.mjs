@@ -1,24 +1,16 @@
 import {
-    Logging,
-    Store,
-    GithubBranch,
-    Github,
-    GithubFile,
-    CreateClass,
     Container
-} from '../../../lib/index.mjs';
+} from '../../../lib/registry.mjs';
 describe('when-activating-create-class-endpoint', () => {
-    const container = new Container();
+    let $createClassEndpoint;
     beforeAll(() => {
-        container.register(Github);
-        container.register(Logging);
-        container.register(GithubBranch);
-        container.register(GithubFile);
-        container.register(Store);
-        container.register(CreateClass);
+        const container = new Container();
+        ({ $createClassEndpoint } = container);
     });
-    it('should create an instance', () => {
-        const { instance } = container.get('$createClass');
-        expect(instance).toBeInstanceOf(CreateClass);
+    it('should get an instance', () => {
+        expect($createClassEndpoint).toBeDefined();
+    });
+    it('should verify class members', () => {
+        expect($createClassEndpoint.name).toBe('active-object-class-create');
     });
 });

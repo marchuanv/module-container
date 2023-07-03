@@ -1,19 +1,18 @@
 import {
-    GithubFile,
-    Github,
-    Logging,
-    Container
-} from '../../../lib/index.mjs';
-import utils from 'utils'
+    Container,
+} from '../../../lib/registry.mjs';
 describe('when-activating-github-file', () => {
-    const container = new Container();
+    let $githubFile;
     beforeAll(() => {
-        container.register(Github);
-        container.register(Logging);
-        container.register(GithubFile);
+        const container = new Container();
+        ({ $githubFile } = container);
     });
     it('should create an instance', () => {
-        const { instance } = container.get('$githubFile');
-        expect(instance).toBeInstanceOf(GithubFile);
+        expect($githubFile).toBeDefined();
+        expect($githubFile.getFileMetadata).toBeDefined();
+        expect($githubFile.isExisting).toBeDefined();
+        expect($githubFile.getFileContent).toBeDefined();
+        expect($githubFile.ensureFileContent).toBeDefined();
+        expect($githubFile.deleteFile).toBeDefined();
     });
 });

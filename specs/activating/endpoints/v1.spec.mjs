@@ -1,26 +1,16 @@
 import {
-    Logging,
-    Store,
-    GithubBranch,
-    Github,
-    GithubFile,
-    EndpointRegistry,
-    v1,
     Container
-} from '../../../lib/index.mjs';
+} from '../../../lib/registry.mjs';
 describe('when-activating-v1-endpoint', () => {
-    const container = new Container();
+    let $v1Endpoint;
     beforeAll(() => {
-        container.register(Github);
-        container.register(Logging);
-        container.register(GithubBranch);
-        container.register(GithubFile);
-        container.register(Store);
-        container.register(EndpointRegistry);
-        container.register(v1);
+        const container = new Container();
+        ({ $v1Endpoint } = container);
     });
-    it('should create an instance', () => {
-        const { instance } = container.get('$v1');
-        expect(instance).toBeInstanceOf(v1);
+    it('should get an instance', () => {
+        expect($v1Endpoint).toBeDefined();
+    });
+    it('should verify class members', () => {
+        expect($v1Endpoint.name).toBe('v1');
     });
 });

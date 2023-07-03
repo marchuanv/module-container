@@ -1,24 +1,16 @@
 import {
-    Logging,
-    Store,
-    GithubBranch,
-    Github,
-    GithubFile,
-    GetClass,
     Container
-} from '../../../lib/index.mjs';
+} from '../../../lib/registry.mjs';
 describe('when-activating-get-config-endpoint', () => {
-    const container = new Container();
+    let $getClassEndpoint;
     beforeAll(() => {
-        container.register(Github);
-        container.register(Logging);
-        container.register(GithubBranch);
-        container.register(GithubFile);
-        container.register(Store);
-        container.register(GetClass);
+        const container = new Container();
+        ({ $getClassEndpoint } = container);
     });
-    it('should create an instance', () => {
-        const { instance } = container.get('$getClass');
-        expect(instance).toBeInstanceOf(GetClass);
+    it('should get an instance', () => {
+        expect($getClassEndpoint).toBeDefined();
+    });
+    it('should verify class members', () => {
+        expect($getClassEndpoint.name).toBe('active-object-class-get');
     });
 });

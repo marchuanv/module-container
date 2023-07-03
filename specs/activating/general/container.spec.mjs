@@ -1,20 +1,13 @@
 import {
     Container,
-    CreateClass,
-    CreateConfig,
-    DeleteClass,
-    DeleteConfig,
-    GetClass,
-    GetConfig
-} from '../../../lib/index.mjs';
+} from '../../../lib/registry.mjs';
 describe('when-activating-container', () => {
-    const references = new WeakMap();
+    let container;
     beforeAll(() => {
-        const container = new Container();
-        references.set(references, { container });
+        container = new Container();
     });
     it('should create an instance', () => {
-        const { container } = references.get(references);
+        expect(container).toBeDefined();
         expect(container).toBeInstanceOf(Container);
     });
 });

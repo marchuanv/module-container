@@ -1,18 +1,16 @@
 import {
-    GithubBranch,
-    Github,
-    Logging,
-    Container
-} from '../../../lib/index.mjs';
+    Container,
+} from '../../../lib/registry.mjs';
 describe('when-activating-github-branch', () => {
-    const container = new Container();
+    let $githubBranch;
     beforeAll(() => {
-        container.register(Github);
-        container.register(Logging);
-        container.register(GithubBranch);
+        const container = new Container();
+        ({ $githubBranch } = container);
     });
     it('should create an instance', () => {
-        const { instance } = container.get('$githubBranch');
-        expect(instance).toBeInstanceOf(GithubBranch);
+        expect($githubBranch).toBeDefined();
+        expect($githubBranch.create).toBeDefined();
+        expect($githubBranch.delete).toBeDefined();
+        expect($githubBranch.isExisting).toBeDefined();
     });
 });
