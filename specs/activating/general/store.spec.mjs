@@ -1,11 +1,10 @@
 import {
     Container,
-} from '../../../../lib/registry.mjs';
+} from '../../../lib/registry.mjs';
 describe('when-activating-store', () => {
     let $store;
     beforeAll(() => {
-        const container = new Container();
-        ({ $store } = container);
+        ({ $store } = new Container());
     });
     it('should get an instance', () => {
         expect($store).toBeDefined();

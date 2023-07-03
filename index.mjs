@@ -18,8 +18,8 @@ class Server {
                 try {
                     ({ statusCode, statusMessage, responseContent, contentType } = await rootHandler.handle({ path, content, headers }));
                 } catch (error) {
-                    logging.log({ info: 'root handler should handle all errors, this should not happen.' });
-                    logging.log({ error });
+                    $logging.log({ info: 'root handler should handle all errors, this should not happen.' });
+                    $logging.log({ error });
                 }
                 res.writeHead(statusCode, statusMessage, {
                     'Content-Length': Buffer.byteLength(responseContent),
