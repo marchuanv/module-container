@@ -20,8 +20,9 @@ describe('when getting existing active object class from the store', () => {
             });
             expect(statusMessage).toBe('200 Success');
         }
-        const { statusMessage, responseContent } = await $getClassEndpoint.handle();
+        const { statusMessage, responseContent, contentType } = await $getClassEndpoint.handle();
         expect(statusMessage).toBe('200 Success');
+        expect(contentType).toBe('application/json');
         ({ message, content } = JSON.parse(responseContent));
     });
     it('should return message', async () => {
