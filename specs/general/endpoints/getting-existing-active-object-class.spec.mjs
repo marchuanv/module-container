@@ -2,23 +2,25 @@ import {
     Container
 } from '../../../lib/registry.mjs';
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
-describe('when getting existing active object config from the store', () => {
+describe('when getting existing active object class from the store', () => {
+    let expectedClass = `
+        class HelloWorld {
+            sayHello() {
+                console.log("hello");
+            }
+        }`;
     let { message, content } = {};
     beforeAll(async () => {
-        let { $logging, $store, $getConfigEndpoint, $createConfigEndpoint } = new Container();
+        let { $logging, $store, $getClassEndpoint, $createClassEndpoint } = new Container();
         $logging.setToInfo();
         await $store.login();
         {
-            const { statusMessage } = await $createConfigEndpoint.handle({
-                content: JSON.stringify({
-                    className: 'HelloWorld',
-                    language: 'JavaScript',
-                    dependencyInjection: false
-                })
+            const { statusMessage } = await $createClassEndpoint.handle({
+                content: expectedClass
             });
             expect(statusMessage).toBe('200 Success');
         }
-        const { statusMessage, responseContent } = await $getConfigEndpoint.handle();
+        const { statusMessage, responseContent } = await $getClassEndpoint.handle();
         expect(statusMessage).toBe('200 Success');
         ({ message, content } = JSON.parse(responseContent));
     });
@@ -28,9 +30,7 @@ describe('when getting existing active object config from the store', () => {
     });
     it('should return content', async () => {
         expect(content).toBeDefined();
-        expect(content.className).toBe('HelloWorld');
-        expect(content.language).toBe('JavaScript');
-        expect(content.dependencyInjection).toBeFalse();
+        expect(content).toBe(expectedClass);
     });
     afterAll(async () => {
         let { $store } = new Container();
