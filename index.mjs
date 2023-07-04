@@ -1,8 +1,8 @@
 import { Container } from './lib/registry.mjs'
 class Server {
     start() {
-        const { $endpointRegistry, $logging, $http, $store } = new Container();
-        const rootHandler = $endpointRegistry.findHandler(/v1/g);
+        process.env.ApiVersion = 1;
+        const { $routing, $logging, $http, $store } = new Container();
         $logging.setToInfo();
         const server = $http.createServer();
         server.on("request", (req, res) => {
@@ -16,7 +16,7 @@ class Server {
                 await $store.login();
                 let { statusCode, statusMessage, responseContent, contentType } = {};
                 try {
-                    ({ statusCode, statusMessage, responseContent, contentType } = await rootHandler.handle({ path, content, headers }));
+                    ({ statusCode, statusMessage, responseContent, contentType } = await $routing.handle({ path, content, headers }));
                 } catch (error) {
                     $logging.log({ error });
                 }
