@@ -32,22 +32,22 @@ describe('when logging out of the store', () => {
 
         await $store.logout();
     });
-    it('should garbage collect octokit', () => {
+    it('should destroy octokit', () => {
         const { $octokitWithDefaults } = new Container();
         const $octokitId = $octokitWithDefaults.objectId;
         expect($prevOctokitId).not.toBe($octokitId);
     });
-    it('should garbage collect store', () => {
+    it('should destroy store', () => {
         const { $store } = new Container();
         const $storeId = $store.objectId;
         expect($prevStoreId).not.toBe($storeId);
     });
-    it('should garbage collect githubFile', () => {
+    it('should destroy githubFile', () => {
         const { $githubFile } = new Container();
         const $githubFileId = $githubFile.objectId;
         expect($prevGithubFileId).not.toBe($githubFileId);
     });
-    it('should garbage collect githubBranch', () => {
+    it('should destroy githubBranch', () => {
         const { $githubBranch } = new Container();
         const $githubBranchId = $githubBranch.objectId;
         expect($prevGithubBranchId).not.toBe($githubBranchId);
