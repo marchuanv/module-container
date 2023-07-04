@@ -1,8 +1,8 @@
 import {
     Container
-} from '../../../lib/registry.mjs';
+} from '../../../../lib/registry.mjs';
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
-describe('when getting existing active object class from the store', () => {
+describe('when getting a class from the store given that the file exists', () => {
     let expectedClass = `
         class HelloWorld {
             sayHello() {
@@ -10,8 +10,8 @@ describe('when getting existing active object class from the store', () => {
             }
         }`;
     let { message, content } = {};
+    let { $logging, $store, $getClassEndpoint, $createClassEndpoint } = new Container();
     beforeAll(async () => {
-        let { $logging, $store, $getClassEndpoint, $createClassEndpoint } = new Container();
         $logging.setToInfo();
         await $store.login();
         {
@@ -25,16 +25,15 @@ describe('when getting existing active object class from the store', () => {
         expect(contentType).toBe('application/json');
         ({ message, content } = JSON.parse(responseContent));
     });
-    it('should return message', async () => {
+    it('should return a message', async () => {
         expect(message).toBeDefined();
         expect(message).toBe('Success');
     });
-    it('should return content', async () => {
+    it('should provide the file content', async () => {
         expect(content).toBeDefined();
         expect(content).toBe(expectedClass);
     });
     afterAll(async () => {
-        let { $store } = new Container();
         await $store.logout();
     });
 });

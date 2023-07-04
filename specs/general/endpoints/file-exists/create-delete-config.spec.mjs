@@ -1,11 +1,11 @@
 import {
     Container
-} from '../../../lib/registry.mjs';
+} from '../../../../lib/registry.mjs';
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
-describe('when getting existing active object config from the store', () => {
+describe('when deleting config from the store given that the file exists', () => {
     let { message, content } = {};
+    let { $logging, $store, $deleteConfigEndpoint, $createConfigEndpoint } = new Container();
     beforeAll(async () => {
-        let { $logging, $store, $getConfigEndpoint, $createConfigEndpoint } = new Container();
         $logging.setToInfo();
         await $store.login();
         {
@@ -18,23 +18,19 @@ describe('when getting existing active object config from the store', () => {
             });
             expect(statusMessage).toBe('200 Success');
         }
-        const { statusMessage, responseContent, contentType } = await $getConfigEndpoint.handle();
+        const { statusMessage, responseContent, contentType } = await $deleteConfigEndpoint.handle();
         expect(statusMessage).toBe('200 Success');
         expect(contentType).toBe('application/json');
         ({ message, content } = JSON.parse(responseContent));
     });
-    it('should return message', async () => {
+    it('should return a message', async () => {
         expect(message).toBeDefined();
-        expect(message).toBe('Success');
+        expect(message).toBe(`active-object-config.json was removed`);
     });
-    it('should return content', async () => {
-        expect(content).toBeDefined();
-        expect(content.className).toBe('HelloWorld');
-        expect(content.language).toBe('JavaScript');
-        expect(content.dependencyInjection).toBeFalse();
+    it('should NOT provide the file content', async () => {
+        expect(content).not.toBeDefined();
     });
     afterAll(async () => {
-        let { $store } = new Container();
         await $store.logout();
     });
 });
