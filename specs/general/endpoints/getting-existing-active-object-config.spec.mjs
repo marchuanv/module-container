@@ -18,8 +18,9 @@ describe('when getting existing active object config from the store', () => {
             });
             expect(statusMessage).toBe('200 Success');
         }
-        const { statusMessage, responseContent } = await $getConfigEndpoint.handle();
+        const { statusMessage, responseContent, contentType } = await $getConfigEndpoint.handle();
         expect(statusMessage).toBe('200 Success');
+        expect(contentType).toBe('application/json');
         ({ message, content } = JSON.parse(responseContent));
     });
     it('should return message', async () => {
