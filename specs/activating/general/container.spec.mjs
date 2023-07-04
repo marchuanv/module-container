@@ -6,7 +6,7 @@ describe('when-activating-container', () => {
     beforeAll(() => {
         container = new Container();
     });
-    it('should create an instance', () => {
+    it('should get an instance', () => {
         expect(container).toBeDefined();
         expect(container).toBeInstanceOf(Container);
     });

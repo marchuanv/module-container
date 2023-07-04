@@ -10,7 +10,7 @@ describe('when-activating-create-config-endpoint', () => {
     it('should get an instance', () => {
         expect($createConfigEndpoint).toBeDefined();
     });
-    it('should verify class members', () => {
+    it('should have a name member', () => {
         expect($createConfigEndpoint.name).toBe('active-object-config-create');
     });
 });

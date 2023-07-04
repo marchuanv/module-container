@@ -10,7 +10,7 @@ describe('when-activating-create-class-endpoint', () => {
     it('should get an instance', () => {
         expect($createClassEndpoint).toBeDefined();
     });
-    it('should verify class members', () => {
+    it('should have a name member', () => {
         expect($createClassEndpoint.name).toBe('active-object-class-create');
     });
 });

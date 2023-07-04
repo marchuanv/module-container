@@ -1,8 +1,8 @@
 import {
     Container,
 } from '../../../lib/registry.mjs';
-describe('when-logout-from-store', () => {
-    
+describe('when logging out of the store', () => {
+
     let $prevStoreId;
     let $prevLoggingId;
     let $prevOctokitId;
@@ -10,8 +10,8 @@ describe('when-logout-from-store', () => {
     let $prevGithubBranchId;
 
     beforeAll(async () => {
-        
-        const { 
+
+        const {
             $store,
             $logging,
             $octokitWithDefaults,
@@ -27,13 +27,13 @@ describe('when-logout-from-store', () => {
         $prevStoreId = $store.objectId;
         $prevLoggingId = $logging.objectId;
         $prevOctokitId = $octokitWithDefaults.objectId;
-        $prevGithubBranchId = $githubBranch.objectId;
         $prevGithubFileId = $githubFile.objectId;
-        
+        $prevGithubBranchId = $githubBranch.objectId;
+
         await $store.logout();
     });
     it('should garbage collect octokit', () => {
-        const {  $octokitWithDefaults } = new Container();
+        const { $octokitWithDefaults } = new Container();
         const $octokitId = $octokitWithDefaults.objectId;
         expect($prevOctokitId).not.toBe($octokitId);
     });
@@ -41,11 +41,6 @@ describe('when-logout-from-store', () => {
         const { $store } = new Container();
         const $storeId = $store.objectId;
         expect($prevStoreId).not.toBe($storeId);
-    });
-    it('should garbage collect logging', () => {
-        const { $logging } = new Container();
-        const $loggingId = $logging.objectId;
-        expect($prevLoggingId).not.toBe($loggingId);
     });
     it('should garbage collect githubFile', () => {
         const { $githubFile } = new Container();

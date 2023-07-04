@@ -10,7 +10,7 @@ describe('when-activating-get-config-endpoint', () => {
     it('should get an instance', () => {
         expect($getClassEndpoint).toBeDefined();
     });
-    it('should verify class members', () => {
+    it('should have a name member', () => {
         expect($getClassEndpoint.name).toBe('active-object-class-get');
     });
 });

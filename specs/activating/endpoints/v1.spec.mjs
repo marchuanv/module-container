@@ -10,7 +10,7 @@ describe('when-activating-v1-endpoint', () => {
     it('should get an instance', () => {
         expect($v1Endpoint).toBeDefined();
     });
-    it('should verify class members', () => {
+    it('should have a name member', () => {
         expect($v1Endpoint.name).toBe('v1');
     });
 });

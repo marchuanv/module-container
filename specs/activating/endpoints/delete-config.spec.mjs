@@ -10,7 +10,7 @@ describe('when-activating-delete-config-endpoint', () => {
     it('should get an instance', () => {
         expect($deleteConfigEndpoint).toBeDefined();
     });
-    it('should verify class members', () => {
+    it('should have a name member', () => {
         expect($deleteConfigEndpoint.name).toBe('active-object-config-delete');
     });
 });
