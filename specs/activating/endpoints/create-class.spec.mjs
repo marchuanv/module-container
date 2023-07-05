@@ -1,6 +1,6 @@
 import {
     allEndpoints
-} from '../../../lib/endpoints/registry.mjs';
+} from '../../../lib/endpoints/registry.mjs'
 describe('when-activating-create-class-endpoint', () => {
     let instance;
     beforeAll(() => {
