@@ -1,14 +1,12 @@
 import {
-    Container
-} from '../../../../lib/registry.mjs';
+    allEndpoints
+} from '../../../../lib/endpoints/registry.mjs';
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
 describe('when getting a class from the store given that the file does NOT exist', () => {
     let { message, content } = {};
-    let { $logging, $store, $getClassEndpoint } = new Container();
     beforeAll(async () => {
-        $logging.setToInfo();
-        await $store.login();
-        const { statusMessage, responseContent, contentType } = await $getClassEndpoint.handle();
+        let getClassEndpoint = new allEndpoints.v1.GetClassEndpoint();
+        const { statusMessage, responseContent, contentType } = await getClassEndpoint.handle();
         expect(statusMessage).toBe('404 Not Found');
         expect(contentType).toBe('application/json');
         ({ message, content } = JSON.parse(responseContent));
@@ -19,8 +17,5 @@ describe('when getting a class from the store given that the file does NOT exist
     });
     it('should NOT provide the file content', async () => {
         expect(content).not.toBeDefined();
-    });
-    afterAll(async () => {
-        await $store.logout();
     });
 });

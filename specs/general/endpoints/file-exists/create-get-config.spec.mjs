@@ -1,24 +1,25 @@
 import {
-    Container
-} from '../../../../lib/registry.mjs';
+    allEndpoints
+} from '../../../../lib/endpoints/registry.mjs';
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
 describe('when getting config from the store given that the file exists', () => {
     let { message, content } = {};
-    let { $logging, $store, $getConfigEndpoint, $createConfigEndpoint } = new Container();
     beforeAll(async () => {
-        $logging.setToInfo();
-        await $store.login();
+        let createConfigEndpoint = new allEndpoints.v1.CreateConfigEndpoint({
+            path: '/api/v1/config/create',
+            content: JSON.stringify({
+                className: 'HelloWorld',
+                language: 'JavaScript',
+                dependencyInjection: false
+            }),
+            headers: {}
+        });
+        let getConfigEndpoint = new allEndpoints.v1.GetConfigEndpoint();
         {
-            const { statusMessage } = await $createConfigEndpoint.handle({
-                content: JSON.stringify({
-                    className: 'HelloWorld',
-                    language: 'JavaScript',
-                    dependencyInjection: false
-                })
-            });
+            const { statusMessage } = await createConfigEndpoint.handle();
             expect(statusMessage).toBe('200 Success');
         }
-        const { statusMessage, responseContent, contentType } = await $getConfigEndpoint.handle();
+        const { statusMessage, responseContent, contentType } = await getConfigEndpoint.handle();
         expect(statusMessage).toBe('200 Success');
         expect(contentType).toBe('application/json');
         ({ message, content } = JSON.parse(responseContent));
@@ -32,8 +33,5 @@ describe('when getting config from the store given that the file exists', () => 
         expect(content.className).toBe('HelloWorld');
         expect(content.language).toBe('JavaScript');
         expect(content.dependencyInjection).toBeFalse();
-    });
-    afterAll(async () => {
-        await $store.logout();
     });
 });

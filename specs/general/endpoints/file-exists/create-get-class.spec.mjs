@@ -1,26 +1,26 @@
 import {
-    Container
-} from '../../../../lib/registry.mjs';
+    allEndpoints
+} from '../../../../lib/endpoints/registry.mjs';
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
 describe('when getting a class from the store given that the file exists', () => {
-    let expectedClass = `
-        class HelloWorld {
-            sayHello() {
-                console.log("hello");
-            }
-        }`;
     let { message, content } = {};
-    let { $logging, $store, $getClassEndpoint, $createClassEndpoint } = new Container();
     beforeAll(async () => {
-        $logging.setToInfo();
-        await $store.login();
+        let createClassEndpoint = new allEndpoints.v1.CreateClassEndpoint({
+            path: '/api/v1/class/create',
+            content: `
+            class HelloWorld {
+                sayHello() {
+                    console.log("hello");
+                }
+            }`,
+            headers: {}
+        });
+        let getClassEndpoint = new allEndpoints.v1.GetClassEndpoint();
         {
-            const { statusMessage } = await $createClassEndpoint.handle({
-                content: expectedClass
-            });
+            const { statusMessage } = await createClassEndpoint.handle();
             expect(statusMessage).toBe('200 Success');
         }
-        const { statusMessage, responseContent, contentType } = await $getClassEndpoint.handle();
+        const { statusMessage, responseContent, contentType } = await getClassEndpoint.handle();
         expect(statusMessage).toBe('200 Success');
         expect(contentType).toBe('application/json');
         ({ message, content } = JSON.parse(responseContent));
@@ -32,8 +32,5 @@ describe('when getting a class from the store given that the file exists', () =>
     it('should provide the file content', async () => {
         expect(content).toBeDefined();
         expect(content).toBe(expectedClass);
-    });
-    afterAll(async () => {
-        await $store.logout();
     });
 });

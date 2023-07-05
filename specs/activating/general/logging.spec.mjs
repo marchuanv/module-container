@@ -1,22 +1,21 @@
 import {
-    Container,
+    Logging,
 } from '../../../lib/registry.mjs';
 describe('when-activating-logging', () => {
-    let $logging;
+    let logging;
     beforeAll(() => {
-        const container = new Container();
-        ({ $logging } = container);
+        logging = new Logging();
     });
-    it('should get an instance', () => {
-        expect($logging).toBeDefined();
+    it('should create an instance', () => {
+        expect(logging).toBeDefined();
     });
     it('should have a setToInfo member', () => {
-        expect($logging.setToInfo).toBeDefined();
+        expect(logging.setToInfo).toBeDefined();
     });
     it('should have a setToError member', () => {
-        expect($logging.setToError).toBeDefined();
+        expect(logging.setToError).toBeDefined();
     });
     it('should have a log member', () => {
-        expect($logging.log).toBeDefined();
+        expect(logging.log).toBeDefined();
     });
 });

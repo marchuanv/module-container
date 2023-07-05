@@ -1,25 +1,26 @@
 import {
-    Container
-} from '../../../../lib/registry.mjs';
+    allEndpoints
+} from '../../../../lib/endpoints/registry.mjs';
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
 describe('when deleting a class from the store given that the file exists', () => {
     let { message, content } = {};
-    let { $logging, $store, $deleteClassEndpoint, $createClassEndpoint } = new Container();
     beforeAll(async () => {
-        $logging.setToInfo();
-        await $store.login();
+        let createClassEndpoint = new allEndpoints.v1.CreateClassEndpoint({
+            path: '/api/v1/class/create',
+            content: `
+        class HelloWorld {
+            sayHello() {
+                console.log("hello");
+            }
+        }`,
+            headers: {}
+        });
+        let deleteClassEndpoint = new allEndpoints.v1.DeleteClassEndpoint();
         {
-            const { statusMessage } = await $createClassEndpoint.handle({
-                content: `
-                    class HelloWorld {
-                        sayHello() {
-                            console.log("hello");
-                        }
-                    }`
-            });
+            const { statusMessage } = await createClassEndpoint.handle();
             expect(statusMessage).toBe('200 Success');
         }
-        const { statusMessage, responseContent, contentType } = await $deleteClassEndpoint.handle();
+        const { statusMessage, responseContent, contentType } = await deleteClassEndpoint.handle();
         expect(statusMessage).toBe('200 Success');
         expect(contentType).toBe('application/json');
         ({ message, content } = JSON.parse(responseContent));

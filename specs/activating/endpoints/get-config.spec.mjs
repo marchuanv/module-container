@@ -1,16 +1,19 @@
 import {
-    Container
-} from '../../../lib/registry.mjs';
+    allEndpoints
+} from '../../../lib/endpoints/registry.mjs';
 describe('when-activating-get-config-endpoint', () => {
-    let $getConfigEndpoint;
+    let instance;
     beforeAll(() => {
-        const container = new Container();
-        ({ $getConfigEndpoint } = container);
+        instance = new allEndpoints.v1.GetConfigEndpoint({
+            path: '/api/v1/config/get',
+            content: '',
+            headers: {}
+        });
     });
     it('should get an instance', () => {
-        expect($getConfigEndpoint).toBeDefined();
+        expect(instance).toBeDefined();
     });
-    it('should have a name member', () => {
-        expect($getConfigEndpoint.name).toBe('active-object-config-get');
+    it('should have a matchPath member', () => {
+        expect(instance.matchPath).toBeDefined();
     });
 });

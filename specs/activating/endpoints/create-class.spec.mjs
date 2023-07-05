@@ -1,16 +1,19 @@
 import {
-    Container
-} from '../../../lib/registry.mjs';
+    allEndpoints
+} from '../../../lib/endpoints/registry.mjs';
 describe('when-activating-create-class-endpoint', () => {
-    let $createClassEndpoint;
+    let instance;
     beforeAll(() => {
-        const container = new Container();
-        ({ $createClassEndpoint } = container);
+        instance = new allEndpoints.v1.CreateClassEndpoint({
+            path: '/api/v1/class/create',
+            content: 'class HelloWorld() {}',
+            headers: {}
+        });
     });
     it('should get an instance', () => {
-        expect($createClassEndpoint).toBeDefined();
+        expect(instance).toBeDefined();
     });
-    it('should have a name member', () => {
-        expect($createClassEndpoint.name).toBe('active-object-class-create');
+    it('should have a matchPath member', () => {
+        expect(instance.matchPath).toBeDefined();
     });
 });

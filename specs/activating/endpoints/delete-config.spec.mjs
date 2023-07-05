@@ -1,16 +1,19 @@
 import {
-    Container
-} from '../../../lib/registry.mjs';
+    allEndpoints
+} from '../../../lib/endpoints/registry.mjs';
 describe('when-activating-delete-config-endpoint', () => {
-    let $deleteConfigEndpoint;
+    let instance;
     beforeAll(() => {
-        const container = new Container();
-        ({ $deleteConfigEndpoint } = container);
+        instance = new allEndpoints.v1.DeleteConfigEndpoint({
+            path: '/api/v1/config/delete',
+            content: '',
+            headers: {}
+        });
     });
     it('should get an instance', () => {
-        expect($deleteConfigEndpoint).toBeDefined();
+        expect(instance).toBeDefined();
     });
-    it('should have a name member', () => {
-        expect($deleteConfigEndpoint.name).toBe('active-object-config-delete');
+    it('should have a matchPath member', () => {
+        expect(instance.matchPath).toBeDefined();
     });
 });

@@ -1,16 +1,19 @@
 import {
-    Container
-} from '../../../lib/registry.mjs';
+    allEndpoints
+} from '../../../lib/endpoints/registry.mjs';
 describe('when-activating-delete-class-endpoint', () => {
-    let $deleteClassEndpoint;
+    let instance;
     beforeAll(() => {
-        const container = new Container();
-        ({ $deleteClassEndpoint } = container);
+        instance = new allEndpoints.v1.DeleteClassEndpoint({
+            path: '/api/v1/class/delete',
+            content: '',
+            headers: {}
+        });
     });
     it('should get an instance', () => {
-        expect($deleteClassEndpoint).toBeDefined();
+        expect(instance).toBeDefined();
     });
-    it('should have a name member', () => {
-        expect($deleteClassEndpoint.name).toBe('active-object-class-delete');
+    it('should have a matchPath member', () => {
+        expect(instance.matchPath).toBeDefined();
     });
 });

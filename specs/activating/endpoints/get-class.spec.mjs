@@ -1,16 +1,19 @@
 import {
-    Container
-} from '../../../lib/registry.mjs';
-describe('when-activating-get-config-endpoint', () => {
-    let $getClassEndpoint;
+    allEndpoints
+} from '../../../lib/endpoints/registry.mjs';
+describe('when-activating-get-class-endpoint', () => {
+    let instance;
     beforeAll(() => {
-        const container = new Container();
-        ({ $getClassEndpoint } = container);
+        instance = new allEndpoints.v1.GetClassEndpoint({
+            path: '/api/v1/class/get',
+            content: '',
+            headers: {}
+        });
     });
     it('should get an instance', () => {
-        expect($getClassEndpoint).toBeDefined();
+        expect(instance).toBeDefined();
     });
-    it('should have a name member', () => {
-        expect($getClassEndpoint.name).toBe('active-object-class-get');
+    it('should have a matchPath member', () => {
+        expect(instance.matchPath).toBeDefined();
     });
 });

@@ -1,23 +1,24 @@
 import {
-    Container
-} from '../../../../lib/registry.mjs';
+    allEndpoints
+} from '../../../../lib/endpoints/registry.mjs';
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
 describe('when getting config from the store given that the file exists', () => {
-    let expectedConfig = JSON.stringify({
-        className: 'HelloWorld',
-        language: 'JavaScript',
-        dependencyInjection: false
-    });
     let { message, content } = {};
-    let { $logging, $store, $createConfigEndpoint } = new Container();
     beforeAll(async () => {
-        $logging.setToInfo();
-        await $store.login();
+        let createConfigEndpoint = new allEndpoints.v1.CreateConfigEndpoint({
+            path: '/api/v1/config/create',
+            content: JSON.stringify({
+                className: 'HelloWorld',
+                language: 'JavaScript',
+                dependencyInjection: false
+            }),
+            headers: {}
+        });
         {
-            const { statusMessage } = await $createConfigEndpoint.handle({ content: expectedConfig });
+            const { statusMessage } = await createConfigEndpoint.handle();
             expect(statusMessage).toBe('200 Success');
         }
-        const { statusMessage, responseContent, contentType } = await $createConfigEndpoint.handle({ content: expectedConfig });
+        const { statusMessage, responseContent, contentType } = await createConfigEndpoint.handle();
         expect(statusMessage).toBe('409 Conflict');
         expect(contentType).toBe('application/json');
         ({ message, content } = JSON.parse(responseContent));
@@ -28,8 +29,5 @@ describe('when getting config from the store given that the file exists', () => 
     });
     it('should NOT provide file content', async () => {
         expect(content).not.toBeDefined();
-    });
-    afterAll(async () => {
-        await $store.logout();
     });
 });

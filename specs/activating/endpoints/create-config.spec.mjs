@@ -1,16 +1,19 @@
 import {
-    Container
-} from '../../../lib/registry.mjs';
+    allEndpoints
+} from '../../../lib/endpoints/registry.mjs';
 describe('when-activating-create-config-endpoint', () => {
-    let $createConfigEndpoint;
+    let instance;
     beforeAll(() => {
-        const container = new Container();
-        ({ $createConfigEndpoint } = container);
+        instance = new allEndpoints.v1.CreateConfigEndpoint({
+            path: '/api/v1/config/create',
+            content: JSON.stringify({ className: 'HelloWorld', language: 'JavaScript', dependencyInjection: false }),
+            headers: {}
+        });
     });
     it('should get an instance', () => {
-        expect($createConfigEndpoint).toBeDefined();
+        expect(instance).toBeDefined();
     });
-    it('should have a name member', () => {
-        expect($createConfigEndpoint.name).toBe('active-object-config-create');
+    it('should have a matchPath member', () => {
+        expect(instance.matchPath).toBeDefined();
     });
 });
