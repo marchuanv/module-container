@@ -4,7 +4,7 @@ import {
 describe('when-activating-endpoint-registry', () => {
     let route;
     beforeAll(() => {
-        route = new Route();
+        route = new Route({ path: '/api/v1/config/get', content: '', token: process.env.GIT });
     });
     it('should create an instance', () => {
         expect(route).toBeDefined();

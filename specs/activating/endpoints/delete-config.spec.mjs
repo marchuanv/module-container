@@ -6,8 +6,7 @@ describe('when-activating-delete-config-endpoint', () => {
     beforeAll(() => {
         instance = new allEndpoints.v1.DeleteConfigEndpoint({
             path: '/api/v1/config/delete',
-            content: '',
-            headers: {}
+            token: process.env.GIT
         });
     });
     it('should get an instance', () => {

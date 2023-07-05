@@ -5,16 +5,17 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
 describe('when getting config from the store given that the file exists', () => {
     let { message, content } = {};
     beforeAll(async () => {
-        let createConfigEndpoint = new allEndpoints.v1.CreateConfigEndpoint({
+        const args = {
+            token: process.env.GIT,
             path: '/api/v1/config/create',
             content: JSON.stringify({
                 className: 'HelloWorld',
                 language: 'JavaScript',
                 dependencyInjection: false
-            }),
-            headers: {}
-        });
-        let getConfigEndpoint = new allEndpoints.v1.GetConfigEndpoint();
+            })
+        };
+        let createConfigEndpoint = new allEndpoints.v1.CreateConfigEndpoint(args);
+        let getConfigEndpoint = new allEndpoints.v1.GetConfigEndpoint(args);
         {
             const { statusMessage } = await createConfigEndpoint.handle();
             expect(statusMessage).toBe('200 Success');

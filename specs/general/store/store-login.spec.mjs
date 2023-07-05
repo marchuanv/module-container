@@ -4,7 +4,7 @@ import {
 describe('when-logging-into-store', () => {
     let isLoggedIn;
     beforeAll(async () => {
-        const store = new Storage();
+        store = new Store({ branchName: 'tests', filePath: 'store-file-test.json', token: process.env.GIT });
         expect(store).toBeDefined();
         expect(store.login).toBeDefined();
         isLoggedIn = await store.login();

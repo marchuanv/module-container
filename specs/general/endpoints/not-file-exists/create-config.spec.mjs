@@ -6,13 +6,13 @@ describe('when getting config from the store given that the file does NOT exist'
     let { message, content } = {};
     beforeAll(async () => {
         let createConfigEndpoint = new allEndpoints.v1.CreateConfigEndpoint({
+            token: process.env.GIT,
             path: '/api/v1/config/create',
             content: JSON.stringify({
                 className: 'HelloWorld',
                 language: 'JavaScript',
                 dependencyInjection: false
-            }),
-            headers: {}
+            })
         });
         const { statusMessage, responseContent, contentType } = await createConfigEndpoint.handle();
         expect(statusMessage).toBe('200 Success');

@@ -5,7 +5,10 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
 describe('when deleting a class from the store given that the file does NOT exist', () => {
     let { message, content } = {};
     beforeAll(async () => {
-        let deleteClassEndpoint = new allEndpoints.v1.DeleteClassEndpoint();
+        let deleteClassEndpoint = new allEndpoints.v1.DeleteClassEndpoint({
+            token: process.env.GIT,
+            path: '/api/v1/class/delete'
+        });
         const { statusMessage, responseContent, contentType } = await deleteClassEndpoint.handle();
         expect(statusMessage).toBe('404 Not Found');
         expect(contentType).toBe('application/json');

@@ -6,8 +6,7 @@ describe('when-activating-get-class-endpoint', () => {
     beforeAll(() => {
         instance = new allEndpoints.v1.GetClassEndpoint({
             path: '/api/v1/class/get',
-            content: '',
-            headers: {}
+            token: process.env.GIT
         });
     });
     it('should get an instance', () => {

@@ -4,7 +4,7 @@ import {
 describe('when-activating-store', () => {
     let store;
     beforeAll(() => {
-        store = new Store();
+        store = new Store({ branchName: 'tests', filePath: 'specification-file-test.json', token: process.env.GIT });
     });
     it('should create an instance', () => {
         expect(store).toBeDefined();

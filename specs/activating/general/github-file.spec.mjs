@@ -4,7 +4,7 @@ import {
 describe('when-activating-github-file', () => {
     let githubFile;
     beforeAll(() => {
-        githubFile = new GithubFile();
+        githubFile = new GithubFile({ branchName: 'tests', fileName: 'github-file-test.json', token: process.env.GIT });
     });
     it('should create an instance', () => {
         expect(githubFile).toBeDefined();

@@ -7,7 +7,7 @@ describe('when-activating-create-class-endpoint', () => {
         instance = new allEndpoints.v1.CreateClassEndpoint({
             path: '/api/v1/class/create',
             content: 'class HelloWorld() {}',
-            headers: {}
+            token: process.env.GIT
         });
     });
     it('should get an instance', () => {

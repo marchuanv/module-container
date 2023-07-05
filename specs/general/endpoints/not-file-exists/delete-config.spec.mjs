@@ -5,7 +5,10 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
 describe('when deleting config from the store given that the file does NOT exist', () => {
     let { message, content } = {};
     beforeAll(async () => {
-        let deleteConfigEndpoint = new allEndpoints.v1.DeleteClassEndpoint();
+        let deleteConfigEndpoint = new allEndpoints.v1.DeleteClassEndpoint({
+            token: process.env.GIT,
+            path: '/api/v1/config/delete'
+        });
         const { statusMessage, responseContent, contentType } = await deleteConfigEndpoint.handle();
         expect(statusMessage).toBe('404 Not Found');
         expect(contentType).toBe('application/json');

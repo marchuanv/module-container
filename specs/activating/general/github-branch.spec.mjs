@@ -4,7 +4,7 @@ import {
 describe('when-activating-github-branch', () => {
     let githubBranch;
     beforeAll(() => {
-        githubBranch = new GithubBranch();
+        githubBranch = new GithubBranch({ branchName: 'tests', token: process.env.GIT });
     });
     it('should create an instance', () => {
         expect(githubBranch).toBeDefined();

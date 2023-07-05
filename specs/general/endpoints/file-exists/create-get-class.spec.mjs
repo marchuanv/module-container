@@ -5,17 +5,18 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
 describe('when getting a class from the store given that the file exists', () => {
     let { message, content } = {};
     beforeAll(async () => {
-        let createClassEndpoint = new allEndpoints.v1.CreateClassEndpoint({
+        const args = {
+            token: process.env.GIT,
             path: '/api/v1/class/create',
             content: `
             class HelloWorld {
                 sayHello() {
                     console.log("hello");
                 }
-            }`,
-            headers: {}
-        });
-        let getClassEndpoint = new allEndpoints.v1.GetClassEndpoint();
+            }`
+        };
+        let createClassEndpoint = new allEndpoints.v1.CreateClassEndpoint(args);
+        let getClassEndpoint = new allEndpoints.v1.GetClassEndpoint(args);
         {
             const { statusMessage } = await createClassEndpoint.handle();
             expect(statusMessage).toBe('200 Success');

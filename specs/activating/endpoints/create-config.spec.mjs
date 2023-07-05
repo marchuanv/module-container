@@ -7,7 +7,7 @@ describe('when-activating-create-config-endpoint', () => {
         instance = new allEndpoints.v1.CreateConfigEndpoint({
             path: '/api/v1/config/create',
             content: JSON.stringify({ className: 'HelloWorld', language: 'JavaScript', dependencyInjection: false }),
-            headers: {}
+            token: process.env.GIT
         });
     });
     it('should get an instance', () => {

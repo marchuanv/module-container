@@ -6,8 +6,7 @@ describe('when-activating-delete-class-endpoint', () => {
     beforeAll(() => {
         instance = new allEndpoints.v1.DeleteClassEndpoint({
             path: '/api/v1/class/delete',
-            content: '',
-            headers: {}
+            token: process.env.GIT
         });
     });
     it('should get an instance', () => {

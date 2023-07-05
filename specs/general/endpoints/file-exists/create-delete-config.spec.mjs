@@ -5,16 +5,17 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
 describe('when deleting config from the store given that the file exists', () => {
     let { message, content } = {};
     beforeAll(async () => {
-        let createConfigEndpoint = new allEndpoints.v1.CreateConfigEndpoint({
+        const args = {
+            token: process.env.GIT,
             path: '/api/v1/config/create',
             content: JSON.stringify({
                 className: 'HelloWorld',
                 language: 'JavaScript',
                 dependencyInjection: false
-            }),
-            headers: {}
-        });
-        let deleteConfigEndpoint = new allEndpoints.v1.DeleteClassEndpoint();
+            })
+        };
+        let createConfigEndpoint = new allEndpoints.v1.CreateConfigEndpoint(args);
+        let deleteConfigEndpoint = new allEndpoints.v1.DeleteClassEndpoint(args);
         {
             const { statusMessage } = await createConfigEndpoint.handle();
             expect(statusMessage).toBe('200 Success');
