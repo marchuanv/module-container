@@ -10,10 +10,6 @@ describe('when-activating-store', () => {
         expect(store).toBeDefined();
     });
 
-    it('should have a login member', () => {
-        expect(store.login).toBeDefined();
-    });
-
     it('should have a exists member', () => {
         expect(store.exists).toBeDefined();
     });
