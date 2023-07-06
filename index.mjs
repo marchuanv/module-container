@@ -1,2 +1,3 @@
-import { Server } from './lib/registry.mjs'
-const server = new Server();
+import { ActiveObjectServer } from './lib/registry.mjs'
+const server = new ActiveObjectServer();
+server.start();

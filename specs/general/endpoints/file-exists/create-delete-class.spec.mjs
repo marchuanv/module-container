@@ -33,7 +33,4 @@ describe('when deleting a class from the store given that the file exists', () =
     it('should NOT provide file content', async () => {
         expect(content).not.toBeDefined();
     });
-    afterAll(async () => {
-        await $store.logout();
-    });
 });
