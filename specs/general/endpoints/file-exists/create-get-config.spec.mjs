@@ -2,7 +2,7 @@ import {
     allEndpoints
 } from '../../../../lib/endpoints/registry.mjs';
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
-fdescribe('when getting config from the store given that the file exists', () => {
+describe('when getting config from the store given that the file exists', () => {
     let { message, content } = {};
     beforeAll(async () => {
         const args = {
