@@ -5,7 +5,7 @@ describe('when-activating-container', () => {
     let error;
     beforeAll(() => {
         try {
-            container = new Container();
+            new Container();
         } catch (err) {
             error = err;
         }
@@ -13,6 +13,7 @@ describe('when-activating-container', () => {
     it('should get an error', () => {
         expect(error).toBeDefined();
         expect(error).toBeInstanceOf(Error);
+        expect(error.message).toBeDefined();
         expect(error.message).toBe('Container is an abstract class');
     });
 });
