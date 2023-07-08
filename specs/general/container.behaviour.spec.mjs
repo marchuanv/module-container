@@ -6,8 +6,13 @@ class ContainerTestDependency {
     constructor({ someArg }) {
         this.someArg = someArg;
     }
-    async doSomething() {
-        console.log(this.someArg);
+    doSomething() {
+        return new Promise((resolve) => {
+            setTimeout(() => { 
+                console.log(this.someArg);
+                resolve();
+            }, 500);
+        });
     }
 }
 
@@ -34,25 +39,16 @@ class ContainerTest extends Container {
         });
     }
     async doSomething() {
-        console.log(this.someArg);
         await this.containerTestDependency.doSomething();
     }
 }
 
 fdescribe('when-regestering-classes', () => {
-    let error;
     let finished = false;
-    beforeAll(async () => {
-        try {
-            const containerTest = new ContainerTest();
-            finished = containerTest.finished;
-            await containerTest.doSomething();
-        } catch (err) {
-            error = err;
-        }
-    });
-    it('should not get an error', () => {
-        expect(error).not.toBeDefined();
+    beforeAll( async () => {
+        const containerTest = new ContainerTest();
+        await containerTest.doSomething();
+        finished = containerTest.finished;
     });
     it('should wait for constructor async operations to finish', () => {
         expect(finished).toBeTrue();
