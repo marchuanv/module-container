@@ -3,12 +3,12 @@ import { Github } from '../../../lib/registry.mjs';
 import { GithubFake } from '../../fakes/registry.mjs';
 describe('when-activating-get-class-endpoint', () => {
     let instance;
-    beforeAll(() => {
+    beforeAll(async () => {
         instance = new allEndpoints.v1.GetClassEndpoint({
             path: '/api/v1/class/get',
             token: process.env.GIT
         });
-        instance.mock({ Class: Github, FakeClass: GithubFake });
+        await instance.mock({ Class: Github, FakeClass: GithubFake });
     });
     it('should get an instance', () => {
         expect(instance).toBeDefined();

@@ -18,9 +18,9 @@ describe('when getting a class from the store given that the file exists', () =>
             }`
         };
         let createClassEndpoint = new allEndpoints.v1.CreateClassEndpoint(args);
-        createClassEndpoint.mock({ Class: Github, FakeClass: GithubFake });
+        await createClassEndpoint.mock({ Class: Github, FakeClass: GithubFake });
         let getClassEndpoint = new allEndpoints.v1.GetClassEndpoint(args);
-        getClassEndpoint.mock({ Class: Github, FakeClass: GithubFake });
+        await getClassEndpoint.mock({ Class: Github, FakeClass: GithubFake });
         {
             const { statusMessage } = await createClassEndpoint.handle();
             expect(statusMessage).toBe('200 Success');

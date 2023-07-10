@@ -11,7 +11,7 @@ describe('when getting config from the store given that the file does NOT exist'
             token: process.env.GIT,
             path: '/api/v1/config/get'
         });
-        getConfigEndpoint.mock({ Class: Github, FakeClass: GithubFake });
+        await getConfigEndpoint.mock({ Class: Github, FakeClass: GithubFake });
         const { statusMessage, responseContent, contentType } = await getConfigEndpoint.handle();
         expect(statusMessage).toBe('404 Not Found');
         expect(contentType).toBe('application/json');

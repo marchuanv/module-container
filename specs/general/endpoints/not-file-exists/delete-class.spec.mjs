@@ -11,7 +11,7 @@ describe('when deleting a class from the store given that the file does NOT exis
             token: process.env.GIT,
             path: '/api/v1/class/delete'
         });
-        deleteClassEndpoint.mock({ Class: Github, FakeClass: GithubFake });
+        await deleteClassEndpoint.mock({ Class: Github, FakeClass: GithubFake });
         const { statusMessage, responseContent, contentType } = await deleteClassEndpoint.handle();
         expect(statusMessage).toBe('404 Not Found');
         expect(contentType).toBe('application/json');

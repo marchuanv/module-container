@@ -16,7 +16,7 @@ describe('when getting config from the store given that the file does NOT exist'
                 dependencyInjection: false
             })
         });
-        createConfigEndpoint.mock({ Class: Github, FakeClass: GithubFake });
+        await createConfigEndpoint.mock({ Class: Github, FakeClass: GithubFake });
         const { statusMessage, responseContent, contentType } = await createConfigEndpoint.handle();
         expect(statusMessage).toBe('200 Success');
         expect(contentType).toBe('application/json');

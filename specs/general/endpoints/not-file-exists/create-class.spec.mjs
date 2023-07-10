@@ -17,7 +17,7 @@ describe('when getting a class from the store given that the file does NOT exist
                 }
             }`
         });
-        createClassEndpoint.mock({ Class: Github, FakeClass: GithubFake });
+        await createClassEndpoint.mock({ Class: Github, FakeClass: GithubFake });
         const { statusMessage, responseContent, contentType } = await createClassEndpoint.handle();
         expect(statusMessage).toBe('200 Success');
         expect(contentType).toBe('application/json');

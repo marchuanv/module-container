@@ -4,9 +4,9 @@ import {
 import { GithubFake } from '../../fakes/registry.mjs';
 describe('when-accessing-non-declared-members', () => {
     let error;
-    beforeAll(() => {
+    beforeAll(async () => {
         const server = new ActiveObjectServer();
-        server.mock({ Class: Github, FakeClass: GithubFake });
+        await server.mock({ Class: Github, FakeClass: GithubFake });
         expect(server).toBeDefined();
         expect(server).toBeInstanceOf(ActiveObjectServer);
         try {

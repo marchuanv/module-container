@@ -17,9 +17,9 @@ describe('when getting config from the store given that the file exists', () => 
             })
         };
         let createConfigEndpoint = new allEndpoints.v1.CreateConfigEndpoint(args);
-        createConfigEndpoint.mock({ Class: Github, FakeClass: GithubFake });
+        await createConfigEndpoint.mock({ Class: Github, FakeClass: GithubFake });
         let getConfigEndpoint = new allEndpoints.v1.GetConfigEndpoint(args);
-        getConfigEndpoint.mock({ Class: Github, FakeClass: GithubFake });
+        await getConfigEndpoint.mock({ Class: Github, FakeClass: GithubFake });
         {
             const { statusMessage } = await createConfigEndpoint.handle();
             expect(statusMessage).toBe('200 Success');

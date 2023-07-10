@@ -3,13 +3,13 @@ import { Github } from '../../../lib/registry.mjs';
 import { GithubFake } from '../../fakes/registry.mjs';
 describe('when-activating-create-config-endpoint', () => {
     let instance;
-    beforeAll(() => {
+    beforeAll(async () => {
         instance = new allEndpoints.v1.CreateConfigEndpoint({
             path: '/api/v1/config/create',
             content: JSON.stringify({ className: 'HelloWorld', language: 'JavaScript', dependencyInjection: false }),
             token: process.env.GIT
         });
-        instance.mock({ Class: Github, FakeClass: GithubFake });
+        await instance.mock({ Class: Github, FakeClass: GithubFake });
     });
     it('should get an instance', () => {
         expect(instance).toBeDefined();
