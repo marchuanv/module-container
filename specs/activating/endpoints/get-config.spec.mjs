@@ -1,5 +1,6 @@
 import { allEndpoints } from '../../../lib/endpoints/registry.mjs';
 import { Github } from '../../../lib/registry.mjs';
+import { GithubFake } from '../../fakes/registry.mjs';
 describe('when-activating-get-config-endpoint', () => {
     let instance;
     beforeAll(() => {
@@ -7,7 +8,7 @@ describe('when-activating-get-config-endpoint', () => {
             path: '/api/v1/config/get',
             token: process.env.GIT
         });
-        instance.mock({ Class: Github });
+        instance.mock({ Class: Github, FakeClass: GithubFake });
     });
     it('should get an instance', () => {
         expect(instance).toBeDefined();

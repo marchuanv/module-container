@@ -1,7 +1,8 @@
 import {
     allEndpoints
 } from '../../../../lib/endpoints/registry.mjs';
-import { Github } from '../../../../lib/github.mjs';
+import { Github } from '../../../../lib/registry.mjs';
+import { GithubFake } from '../../../fakes/registry.mjs';
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
 describe('when getting config from the store given that the file does NOT exist', () => {
     let { message, content } = {};
@@ -15,7 +16,7 @@ describe('when getting config from the store given that the file does NOT exist'
                 dependencyInjection: false
             })
         });
-        createConfigEndpoint.mock({ Class: Github });
+        createConfigEndpoint.mock({ Class: Github, FakeClass: GithubFake });
         const { statusMessage, responseContent, contentType } = await createConfigEndpoint.handle();
         expect(statusMessage).toBe('200 Success');
         expect(contentType).toBe('application/json');

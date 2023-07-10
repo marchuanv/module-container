@@ -1,7 +1,8 @@
 import {
     allEndpoints
 } from '../../../../lib/endpoints/registry.mjs';
-import { Github } from '../../../../lib/github.mjs';
+import { GithubFake } from '../../../fakes/registry.mjs';
+import { Github } from '../../../../lib/registry.mjs';
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
 describe('when getting a class from the store given that the file does NOT exist', () => {
     let { message, content } = {};
@@ -10,7 +11,7 @@ describe('when getting a class from the store given that the file does NOT exist
             token: process.env.GIT,
             path: '/api/v1/class/get'
         });
-        getClassEndpoint.mock({ Class: Github });
+        getClassEndpoint.mock({ Class: Github, FakeClass: GithubFake });
         const { statusMessage, responseContent, contentType } = await getClassEndpoint.handle();
         expect(statusMessage).toBe('404 Not Found');
         expect(contentType).toBe('application/json');

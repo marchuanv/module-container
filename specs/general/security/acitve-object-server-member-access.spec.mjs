@@ -1,11 +1,12 @@
 import {
     ActiveObjectServer, Github,
 } from '../../../lib/registry.mjs';
+import { GithubFake } from '../../fakes/registry.mjs';
 describe('when-accessing-non-declared-members', () => {
     let error;
     beforeAll(() => {
         const server = new ActiveObjectServer();
-        server.mock({ Class: Github });
+        server.mock({ Class: Github, FakeClass: GithubFake });
         expect(server).toBeDefined();
         expect(server).toBeInstanceOf(ActiveObjectServer);
         try {
