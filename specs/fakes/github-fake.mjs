@@ -9,55 +9,67 @@ export class GithubFake extends Container {
             },
             data: new Map(),
             heads: new Map(),
-            branches: new Map()
+            branches: new Map(),
+            locked: false
         });
     }
-    async request({ route, parameters }) {
-        this.heads.delete('heads');
-        this.heads.set('heads', { data: [{ object: { sha: 12345678 } }] });
-        let isBranch = /\/branch/g.test(route);
-        let isBranchRef = /git\/refs\/heads/g.test(route);
-        if (!isBranchRef) {
-            isBranchRef = /\/git\/refs/g.test(route);
-        }
-        let fileMatches = /[a-zA-Z0-9\-]+\.((json)|(js))/g.exec(route);
-        if (route.indexOf('GET /repos') > -1) {
-            if (isBranch) {
-                let branch = this.branches.get('testing');
-                if (branch) {
-                    return true;
-                } else {
-                    throw new Error('branch does not exist');
+    request({ route, parameters }) {
+        return new Promise(async (resolve, reject) => {
+            if (this.locked) {
+                setTimeout(async () => {
+                    resolve((await request({ route, parameters })));
+                }, 1000);
+            } else {
+                this.locked = true;
+                this.heads.delete('heads');
+                this.heads.set('heads', { data: [{ object: { sha: 12345678 } }] });
+                let isBranch = /\/branch/g.test(route);
+                let isBranchRef = /git\/refs\/heads/g.test(route);
+                if (!isBranchRef) {
+                    isBranchRef = /\/git\/refs/g.test(route);
                 }
-            }
-            if (isBranchRef) {
-                return this.heads.get('heads');
-            }
-            if (fileMatches.length > 0) {
-                const id = fileMatches[0];
-                let data = this.data.get(id);
-                if (data) {
-                    data = utils.base64ToString(data);
+                let fileMatches = /[a-zA-Z0-9\-]+\.((json)|(js))/g.exec(route);
+                if (route.indexOf('GET /repos') > -1) {
+                    if (isBranch) {
+                        let branch = this.branches.get('testing');
+                        if (branch) {
+                            return resolve(true);
+                        } else {
+                            this.locked = false;
+                            return reject(new Error('branch does not exist'));
+                        }
+                    }
+                    if (isBranchRef) {
+                        return resolve(this.heads.get('heads'));
+                    }
+                    if (fileMatches.length > 0) {
+                        const id = fileMatches[0];
+                        let data = this.data.get(id);
+                        if (data) {
+                            data = utils.base64ToString(data);
+                        }
+                        return resolve({ data });
+                    }
                 }
-                return { data };
+                if (route.indexOf('PUT /repos') > -1) {
+                    if (fileMatches.length > 0) {
+                        const id = fileMatches[0];
+                        this.data.delete(id);
+                        this.data.set(id, parameters.content);
+                        return resolve();
+                    }
+                }
+                if (route.indexOf('POST /repos') > -1) {
+                    if (isBranchRef) {
+                        const id = 'testing';
+                        this.branches.delete(id);
+                        this.branches.set(id, 'testing');
+                        return resolve();
+                    }
+                }
+                this.locked = false;
+                return reject(new Error('Not Implemented'));
             }
-        }
-        if (route.indexOf('PUT /repos') > -1) {
-            if (fileMatches.length > 0) {
-                const id = fileMatches[0];
-                this.data.delete(id);
-                this.data.set(id, parameters.content);
-                return;
-            }
-        }
-        if (route.indexOf('POST /repos') > -1) {
-            if (isBranchRef) {
-                const id = 'testing';
-                this.branches.delete(id);
-                this.branches.set(id, 'testing');
-                return;
-            }
-        }
-        throw new Error('Not Implemented');
+        });
     }
 }
