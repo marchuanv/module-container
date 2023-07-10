@@ -1,6 +1,7 @@
 import {
     allEndpoints
 } from '../../../../lib/endpoints/registry.mjs';
+import { Github } from '../../../../lib/github.mjs';
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
 describe('when deleting config from the store given that the file exists', () => {
     let { message, content } = {};
@@ -15,7 +16,9 @@ describe('when deleting config from the store given that the file exists', () =>
             })
         };
         let createConfigEndpoint = new allEndpoints.v1.CreateConfigEndpoint(args);
+        createConfigEndpoint.mock({ Class: Github });
         let deleteConfigEndpoint = new allEndpoints.v1.DeleteClassEndpoint(args);
+        deleteConfigEndpoint.mock({ Class: Github });
         {
             const { statusMessage } = await createConfigEndpoint.handle();
             expect(statusMessage).toBe('200 Success');

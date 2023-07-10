@@ -1,5 +1,5 @@
 import {
-    Logging,
+    Logging
 } from '../../../lib/registry.mjs';
 describe('when-activating-logging', () => {
     let logging;

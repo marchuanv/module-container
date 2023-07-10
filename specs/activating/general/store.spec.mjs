@@ -1,10 +1,12 @@
 import {
     Store,
+    Github
 } from '../../../lib/registry.mjs';
 describe('when-activating-store', () => {
     let store;
     beforeAll(() => {
         store = new Store({ branchName: 'tests', filePath: 'specification-file-test.json', token: process.env.GIT });
+        store.mock({ Class: Github });
     });
     it('should create an instance', () => {
         expect(store).toBeDefined();

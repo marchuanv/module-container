@@ -1,10 +1,12 @@
 import {
+    Github,
     GithubFile,
 } from '../../../lib/registry.mjs';
 describe('when-activating-github-file', () => {
     let githubFile;
     beforeAll(() => {
         githubFile = new GithubFile({ branchName: 'tests', fileName: 'github-file-test.json', token: process.env.GIT });
+        githubFile.mock({ Class: Github });
     });
     it('should create an instance', () => {
         expect(githubFile).toBeDefined();

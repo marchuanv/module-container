@@ -1,6 +1,7 @@
 import {
     allEndpoints
 } from '../../../../lib/endpoints/registry.mjs';
+import { Github } from '../../../../lib/github.mjs';
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
 fdescribe('when getting a class from the store given that the file exists', () => {
     let { message, content } = {};
@@ -16,6 +17,7 @@ fdescribe('when getting a class from the store given that the file exists', () =
                 }`
         };
         let createClassEndpoint = new allEndpoints.v1.CreateClassEndpoint(args);
+        createClassEndpoint.mock({ Class: Github });
         {
             const { statusMessage } = await createClassEndpoint.handle();
             expect(statusMessage).toBe('200 Success');
