@@ -1,5 +1,11 @@
 import utils from 'utils';
 import { Container, Logging } from '../../lib/registry.mjs'
+const octokit = {
+    refs: new Map(),
+    branches: new Map(),
+    files: new Map(),
+};
+octokit.refs.set('heads', { data: [{ object: { sha: 12345678 } }] })
 export class GithubFake extends Container {
     constructor({ }) {
         super({
@@ -7,9 +13,6 @@ export class GithubFake extends Container {
                 Logging,
                 ctorArgs: { logLevel: 'error' }
             },
-            data: new Map(),
-            heads: new Map(),
-            branches: new Map(),
             locked: false
         });
     }
@@ -27,8 +30,6 @@ export class GithubFake extends Container {
             } else {
                 try {
                     this.locked = true;
-                    this.heads.delete('heads');
-                    this.heads.set('heads', { data: [{ object: { sha: 12345678 } }] });
                     let isBranch = /\/branch/g.test(route);
                     let isBranchRef = /git\/refs\/heads/g.test(route);
                     if (!isBranchRef) {
@@ -37,7 +38,7 @@ export class GithubFake extends Container {
                     let fileMatches = /[a-zA-Z0-9\-]+\.((json)|(js))/g.exec(route);
                     if (route.indexOf('GET /repos') > -1) {
                         if (isBranch) {
-                            let branch = this.branches.get('testing');
+                            let branch = octokit.branches.get('testing');
                             if (branch) {
                                 return resolve(true);
                             } else {
@@ -45,30 +46,28 @@ export class GithubFake extends Container {
                             }
                         }
                         if (isBranchRef) {
-                            return resolve(this.heads.get('heads'));
+                            return resolve(octokit.refs.get('heads'));
                         }
                         if (fileMatches.length > 0) {
                             const id = fileMatches[0];
-                            let data = this.data.get(id);
-                            if (data) {
-                                data = utils.base64ToString(data);
+                            let file = octokit.files.get(id);
+                            if (file) {
+                                file = utils.base64ToString(file);
                             }
-                            return resolve({ data });
+                            return resolve({ data: file });
                         }
                     }
                     if (route.indexOf('PUT /repos') > -1) {
                         if (fileMatches.length > 0) {
                             const id = fileMatches[0];
-                            this.data.delete(id);
-                            this.data.set(id, parameters.content);
+                            octokit.files.set(id, parameters.content);
                             return resolve();
                         }
                     }
                     if (route.indexOf('POST /repos') > -1) {
                         if (isBranchRef) {
                             const id = 'testing';
-                            this.branches.delete(id);
-                            this.branches.set(id, 'testing');
+                            octokit.branches.set(id, 'testing');
                             return resolve();
                         }
                     }
