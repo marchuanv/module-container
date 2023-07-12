@@ -47,7 +47,7 @@ export class GithubFake extends Container {
                                 if (file) {
                                     return resolve({ data: { content: file } });
                                 } else {
-                                    return resolve(null);
+                                    return resolve();
                                 }
                             }
                         }
