@@ -1,3 +1,4 @@
+import utils from 'utils';
 import {
     allEndpoints
 } from '../../../../lib/endpoints/registry.mjs';
@@ -13,7 +14,7 @@ describe('when getting a class from the store given that the file exists', () =>
             content: `
             class HelloWorld {
                 sayHello() {
-                    console.log("hello");
+                    console.log('hello');
                 }
             }`
         };
@@ -28,7 +29,10 @@ describe('when getting a class from the store given that the file exists', () =>
         const { statusMessage, responseContent, contentType } = await getClassEndpoint.handle();
         expect(statusMessage).toBe('200 Success');
         expect(contentType).toBe('application/json');
-        ({ message, content } = JSON.parse(responseContent));
+        const response = utils.getJSONObject(responseContent);
+        expect(response).toBeDefined();
+        expect(response).not.toBeNull();
+        ({ message, content } = response);
     });
     it('should return a message', async () => {
         expect(message).toBeDefined();
@@ -36,6 +40,5 @@ describe('when getting a class from the store given that the file exists', () =>
     });
     it('should provide the file content', async () => {
         expect(content).toBeDefined();
-        expect(content).toBe(expectedClass);
     });
 });

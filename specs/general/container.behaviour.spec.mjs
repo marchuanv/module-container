@@ -39,7 +39,7 @@ class ContainerTest extends Container {
         await this.containerTestDependency.doSomething();
     }
 }
-fdescribe('when-regestering-classes', () => {
+describe('when-regestering-classes', () => {
     let finished = false;
     beforeAll(async () => {
         const containerTest = new ContainerTest();

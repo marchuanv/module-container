@@ -19,12 +19,12 @@ describe('when deleting a class from the store given that the file exists', () =
         };
         let createClassEndpoint = new allEndpoints.v1.CreateClassEndpoint(args);
         await createClassEndpoint.mock({ Class: Github, FakeClass: GithubFake });
-        let deleteClassEndpoint = new allEndpoints.v1.DeleteClassEndpoint(args);
-        await deleteClassEndpoint.mock({ Class: Github, FakeClass: GithubFake });
         {
             const { statusMessage } = await createClassEndpoint.handle();
             expect(statusMessage).toBe('200 Success');
         }
+        let deleteClassEndpoint = new allEndpoints.v1.DeleteClassEndpoint(args);
+        await deleteClassEndpoint.mock({ Class: Github, FakeClass: GithubFake });
         const { statusMessage, responseContent, contentType } = await deleteClassEndpoint.handle();
         expect(statusMessage).toBe('200 Success');
         expect(contentType).toBe('application/json');

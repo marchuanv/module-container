@@ -1,3 +1,4 @@
+import utils from 'utils';
 import {
     allEndpoints
 } from '../../../../lib/endpoints/registry.mjs';
@@ -7,7 +8,7 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
 describe('when deleting config from the store given that the file does NOT exist', () => {
     let { message, content } = {};
     beforeAll(async () => {
-        let deleteConfigEndpoint = new allEndpoints.v1.DeleteClassEndpoint({
+        let deleteConfigEndpoint = new allEndpoints.v1.DeleteConfigEndpoint({
             token: process.env.GIT,
             path: '/api/v1/config/delete'
         });
@@ -15,7 +16,10 @@ describe('when deleting config from the store given that the file does NOT exist
         const { statusMessage, responseContent, contentType } = await deleteConfigEndpoint.handle();
         expect(statusMessage).toBe('404 Not Found');
         expect(contentType).toBe('application/json');
-        ({ message, content } = JSON.parse(responseContent));
+        const response = utils.getJSONObject(responseContent);
+        expect(response).toBeDefined();
+        expect(response).not.toBeNull();
+        ({ message, content } = response);
     });
     it('should return a message', async () => {
         expect(message).toBeDefined();

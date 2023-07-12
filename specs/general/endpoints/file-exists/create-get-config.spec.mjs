@@ -3,6 +3,7 @@ import {
 } from '../../../../lib/endpoints/registry.mjs';
 import { Github } from '../../../../lib/registry.mjs';
 import { GithubFake } from '../../../fakes/registry.mjs';
+import utils from 'utils';
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
 describe('when getting config from the store given that the file exists', () => {
     let { message, content } = {};
@@ -27,7 +28,10 @@ describe('when getting config from the store given that the file exists', () => 
         const { statusMessage, responseContent, contentType } = await getConfigEndpoint.handle();
         expect(statusMessage).toBe('200 Success');
         expect(contentType).toBe('application/json');
-        ({ message, content } = JSON.parse(responseContent));
+        const response = utils.getJSONObject(responseContent);
+        expect(response).toBeDefined();
+        expect(response).not.toBeNull();
+        ({ message, content } = response);
     });
     it('should return a message', async () => {
         expect(message).toBeDefined();

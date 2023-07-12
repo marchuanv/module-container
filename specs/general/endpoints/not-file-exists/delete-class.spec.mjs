@@ -1,3 +1,4 @@
+import utils from 'utils';
 import {
     allEndpoints
 } from '../../../../lib/endpoints/registry.mjs';
@@ -15,7 +16,10 @@ describe('when deleting a class from the store given that the file does NOT exis
         const { statusMessage, responseContent, contentType } = await deleteClassEndpoint.handle();
         expect(statusMessage).toBe('404 Not Found');
         expect(contentType).toBe('application/json');
-        ({ message, content } = JSON.parse(responseContent));
+        const response = utils.getJSONObject(responseContent);
+        expect(response).toBeDefined();
+        expect(response).not.toBeNull();
+        ({ message, content } = response);
     });
     it('should return a message', async () => {
         expect(message).toBeDefined();

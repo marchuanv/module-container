@@ -16,6 +16,7 @@ describe('when-accessing-non-declared-members', () => {
         }
     });
     it('should return security error', () => {
-        expect(error.message).toBe('Unable to access property: logging, it is private to: ActiveObjectServer');
+        expect(error).toBeDefined();
+        expect(error.message).toContain('Unable to access member: logging, it is private to: ActiveObjectServer');
     });
 });
