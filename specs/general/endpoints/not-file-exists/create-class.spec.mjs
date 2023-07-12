@@ -7,7 +7,7 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
 describe('when creating a class in the store given that the file does NOT exist', () => {
     let { message, content } = {};
     beforeAll(async () => {
-        let createClassEndpoint = new allEndpoints.v1.CreateClassEndpoint({
+        const args = {
             token: process.env.GIT,
             path: '/api/v1/class/create',
             content: `
@@ -16,7 +16,8 @@ describe('when creating a class in the store given that the file does NOT exist'
                     console.log("hello");
                 }
             }`
-        });
+        }
+        let createClassEndpoint = new allEndpoints.v1.CreateClassEndpoint(args);
         await createClassEndpoint.mock({ Class: Github, FakeClass: GithubFake });
         const { statusMessage, responseContent, contentType } = await createClassEndpoint.handle();
         expect(statusMessage).toBe('200 Success');
@@ -29,5 +30,16 @@ describe('when creating a class in the store given that the file does NOT exist'
     });
     it('should NOT provide file content', async () => {
         expect(content).not.toBeDefined();
+    });
+    afterAll(async () => {
+        const args = {
+            token: process.env.GIT,
+            path: '/api/v1/class/delete'
+        }
+        const deleteClassEndpoint = new allEndpoints.v1.DeleteClassEndpoint(args);
+        await deleteClassEndpoint.mock({ Class: Github, FakeClass: GithubFake });
+        const { statusMessage, contentType } = await deleteClassEndpoint.handle();
+        expect(statusMessage).toBe('200 Success');
+        expect(contentType).toBe('application/json');
     });
 });

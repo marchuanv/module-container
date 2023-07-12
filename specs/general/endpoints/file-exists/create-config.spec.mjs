@@ -34,4 +34,15 @@ describe('when getting config from the store given that the file exists', () => 
     it('should NOT provide file content', async () => {
         expect(content).not.toBeDefined();
     });
+    afterAll(async () => {
+        const args = {
+            token: process.env.GIT,
+            path: '/api/v1/config/delete'
+        };
+        const deleteConfigEndpoint = new allEndpoints.v1.DeleteConfigEndpoint(args);
+        await deleteConfigEndpoint.mock({ Class: Github, FakeClass: GithubFake });
+        const { statusMessage, contentType } = await deleteConfigEndpoint.handle();
+        expect(statusMessage).toBe('200 Success');
+        expect(contentType).toBe('application/json');
+    });
 });
