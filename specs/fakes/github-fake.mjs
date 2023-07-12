@@ -28,21 +28,27 @@ export class GithubFake extends Container {
                 if (isBranch) {
                     let branch = octokit.branches.get('testing');
                     if (branch) {
-                        return resolve(true);
+                        return setTimeout(() => {
+                            resolve(true);
+                        }, 1000);
                     } else {
                         return reject(new Error('branch does not exist'));
                     }
                 }
                 if (isBranchRef) {
-                    return resolve(octokit.refs.get('heads'));
+                    return setTimeout(() => {
+                        resolve(octokit.refs.get('heads'));
+                    }, 1000);
                 }
                 if (fileMatches.length > 0) {
                     const id = fileMatches[0];
                     let file = octokit.files.get(id);
                     if (file) {
-                        return resolve({ data: { content: file } });
+                        return setTimeout(() => {
+                            return resolve({ data: { content: file } });
+                        }, 1000);
                     } else {
-                        return resolve();
+                        return setTimeout(resolve, 1000);
                     }
                 }
             }
@@ -50,14 +56,14 @@ export class GithubFake extends Container {
                 if (fileMatches.length > 0) {
                     const id = fileMatches[0];
                     octokit.files.set(id, parameters.content);
-                    return resolve();
+                    return setTimeout(resolve, 1000);
                 }
             }
             if (route.indexOf('POST /repos') > -1) {
                 if (isBranchRef) {
                     const id = 'testing';
                     octokit.branches.set(id, 'testing');
-                    return resolve();
+                    return setTimeout(resolve, 1000);
                 }
             }
             if (route.indexOf('DELETE /repos') > -1) {
@@ -65,7 +71,7 @@ export class GithubFake extends Container {
                     const id = fileMatches[0];
                     if (octokit.files.has(id)) {
                         octokit.files.delete(id);
-                        return resolve();
+                        return setTimeout(resolve, 1000);
                     } else {
                         reject(new Error('file does not exist'));
                     }
