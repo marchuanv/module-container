@@ -54,7 +54,7 @@ export class GithubFake extends Container {
                             if (file) {
                                 file = utils.base64ToString(file);
                             }
-                            return resolve({ data: file });
+                            return resolve({ data: { content: file } });
                         }
                     }
                     if (route.indexOf('PUT /repos') > -1) {

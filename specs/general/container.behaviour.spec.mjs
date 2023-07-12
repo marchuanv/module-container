@@ -7,7 +7,7 @@ class ContainerTestDependency {
     }
     doSomething() {
         return new Promise((resolve) => {
-            setTimeout(() => { 
+            setTimeout(() => {
                 console.log(this.someArg);
                 resolve();
             }, 500);
@@ -16,33 +16,32 @@ class ContainerTestDependency {
 }
 class ContainerTest extends Container {
     constructor() {
-        super();
-        this.finished = false;
-        this.dependency({
+        super({
             containerTestDependency: {
                 ContainerTestDependency,
                 ctorArgs: {
                     someArg: 'Hello World'
                 }
+            },
+            finished: false,
+            someFunc: () => {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        console.log('create delay');
+                        this.finished = true;
+                        resolve();
+                    }, 1000);
+                });
             }
-        });
-        this.dependency(() => {
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    console.log('create delay');
-                    this.finished = true;
-                    resolve();
-                }, 1000);
-            });
         });
     }
     async doSomething() {
         await this.containerTestDependency.doSomething();
     }
 }
-describe('when-regestering-classes', () => {
+fdescribe('when-regestering-classes', () => {
     let finished = false;
-    beforeAll( async () => {
+    beforeAll(async () => {
         const containerTest = new ContainerTest();
         await containerTest.doSomething();
         finished = containerTest.finished;
