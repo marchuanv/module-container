@@ -1,3 +1,4 @@
+import utils from 'utils';
 import {
     allEndpoints
 } from '../../../../lib/endpoints/registry.mjs';
@@ -5,31 +6,33 @@ import { Github } from '../../../../lib/registry.mjs';
 import { GithubFake } from '../../../fakes/registry.mjs';
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
 describe('when creating a class in the store given that the file does NOT exist', () => {
-    let { message, content } = {};
     beforeAll(async () => {
-        const args = {
+        const createClassEndpoint = new allEndpoints.v1.CreateClassEndpoint({
             token: process.env.GIT,
             path: '/api/v1/class/create',
-            content: `
-            class HelloWorld {
+            content: `class HelloWorld {
                 sayHello() {
                     console.log("hello");
                 }
             }`
-        }
-        let createClassEndpoint = new allEndpoints.v1.CreateClassEndpoint(args);
+        });
         await createClassEndpoint.mock({ Class: Github, FakeClass: GithubFake });
         const { statusMessage, responseContent, contentType } = await createClassEndpoint.handle();
         expect(statusMessage).toBe('200 Success');
         expect(contentType).toBe('application/json');
-        ({ message, content } = JSON.parse(responseContent));
-    });
-    it('should return a message', async () => {
-        expect(message).toBeDefined();
+        const { message } = utils.getJSONObject(responseContent);
         expect(message).toBe('active-object-class.js was created');
     });
-    it('should NOT provide file content', async () => {
-        expect(content).not.toBeDefined();
+    it('should succesfully create the class', async () => {
+        const getClassEndpoint = new allEndpoints.v1.GetClassEndpoint({
+            token: process.env.GIT,
+            path: '/api/v1/class/get'
+        });
+        await getClassEndpoint.mock({ Class: Github, FakeClass: GithubFake });
+        const { statusMessage, responseContent, contentType } = await getClassEndpoint.handle();
+        expect(statusMessage).toBe('200 Success');
+        expect(contentType).toBe('application/json');
+        expect(responseContent).toBeDefined();
     });
     afterAll(async () => {
         const args = {

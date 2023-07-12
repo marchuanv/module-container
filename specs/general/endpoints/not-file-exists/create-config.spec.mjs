@@ -1,3 +1,4 @@
+import utils from 'utils';
 import {
     allEndpoints
 } from '../../../../lib/endpoints/registry.mjs';
@@ -5,7 +6,6 @@ import { Github } from '../../../../lib/registry.mjs';
 import { GithubFake } from '../../../fakes/registry.mjs';
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
 describe('when creating config in the store given that the file does NOT exist', () => {
-    let { message, content } = {};
     beforeAll(async () => {
         const args = {
             token: process.env.GIT,
@@ -21,15 +21,22 @@ describe('when creating config in the store given that the file does NOT exist',
         const { statusMessage, responseContent, contentType } = await createConfigEndpoint.handle();
         expect(statusMessage).toBe('200 Success');
         expect(contentType).toBe('application/json');
-        ({ message, content } = JSON.parse(responseContent));
-    });
-    it('should return a message', async () => {
-        expect(message).toBeDefined();
+        const { message } = utils.getJSONObject(responseContent);
         expect(message).toBe('active-object-config.json was created');
     });
-    it('should NOT provide file content', async () => {
-        expect(content).not.toBeDefined();
+
+    it('should succesfully create the config', async () => {
+        const getConfigEndpoint = new allEndpoints.v1.GetConfigEndpoint({
+            token: process.env.GIT,
+            path: '/api/v1/config/get'
+        });
+        await getConfigEndpoint.mock({ Class: Github, FakeClass: GithubFake });
+        const { statusMessage, responseContent, contentType } = await getConfigEndpoint.handle();
+        expect(statusMessage).toBe('200 Success');
+        expect(contentType).toBe('application/json');
+        expect(responseContent).toBeDefined();
     });
+
     afterAll(async () => {
         const args = {
             token: process.env.GIT,

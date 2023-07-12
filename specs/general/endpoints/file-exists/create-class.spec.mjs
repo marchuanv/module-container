@@ -1,3 +1,4 @@
+import utils from 'utils';
 import {
     allEndpoints
 } from '../../../../lib/endpoints/registry.mjs';
@@ -5,35 +6,40 @@ import { Github } from '../../../../lib/registry.mjs';
 import { GithubFake } from '../../../fakes/registry.mjs';
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
 describe('when getting a class from the store given that the file exists', () => {
-    let { message, content } = {};
-    const args = {
-        token: process.env.GIT,
-        path: '/api/v1/class/create',
-        content: `class HelloWorld {
+    beforeAll(async () => {
+        const createClassEndpoint = new allEndpoints.v1.CreateClassEndpoint({
+            token: process.env.GIT,
+            path: '/api/v1/class/create',
+            content: `class HelloWorld {
                     sayHello() {
                         console.log("hello");
                     }
                 }`
-    };
-    beforeAll(async () => {
-        let createClassEndpoint = new allEndpoints.v1.CreateClassEndpoint(args);
+        });
         await createClassEndpoint.mock({ Class: Github, FakeClass: GithubFake });
         {
-            const { statusMessage } = await createClassEndpoint.handle();
+            const { statusMessage, responseContent, contentType } = await createClassEndpoint.handle();
             expect(statusMessage).toBe('200 Success');
+            expect(contentType).toBe('application/json');
+            const { message } = utils.getJSONObject(responseContent);
+            expect(message).toBe('active-object-class.js was created');
         }
         const { statusMessage, responseContent, contentType } = await createClassEndpoint.handle();
         expect(statusMessage).toBe('409 Conflict');
         expect(contentType).toBe('application/json');
-        ({ message, content } = JSON.parse(responseContent));
-
-    });
-    it('should return a message', async () => {
-        expect(message).toBeDefined();
+        const { message } = utils.getJSONObject(responseContent);
         expect(message).toBe('active-object-class.js already exist');
     });
-    it('should NOT provide file content', async () => {
-        expect(content).not.toBeDefined();
+    it('should succesfully create the class', async () => {
+        const getClassEndpoint = new allEndpoints.v1.GetClassEndpoint({
+            token: process.env.GIT,
+            path: '/api/v1/class/get'
+        });
+        await getClassEndpoint.mock({ Class: Github, FakeClass: GithubFake });
+        const { statusMessage, responseContent, contentType } = await getClassEndpoint.handle();
+        expect(statusMessage).toBe('200 Success');
+        expect(contentType).toBe('application/json');
+        expect(responseContent).toBeDefined();
     });
     afterAll(async () => {
         const args = {
