@@ -4,7 +4,7 @@ import {
 import { Github } from '../../../../lib/registry.mjs';
 import { GithubFake } from '../../../fakes/registry.mjs';
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
-describe('when getting a class from the store given that the file does NOT exist', () => {
+describe('when creating a class in the store given that the file does NOT exist', () => {
     let { message, content } = {};
     beforeAll(async () => {
         let createClassEndpoint = new allEndpoints.v1.CreateClassEndpoint({

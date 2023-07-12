@@ -4,7 +4,7 @@ import {
 import { Github } from '../../../../lib/registry.mjs';
 import { GithubFake } from '../../../fakes/registry.mjs';
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
-describe('when getting config from the store given that the file does NOT exist', () => {
+describe('when creating config in the store given that the file does NOT exist', () => {
     let { message, content } = {};
     beforeAll(async () => {
         let createConfigEndpoint = new allEndpoints.v1.CreateConfigEndpoint({
