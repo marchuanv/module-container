@@ -20,5 +20,7 @@ fdescribe('when-handling-routing-given-get-config-endpoint', () => {
     });
     it('should instruct get-config-endpoint to handle the request and return the response', () => {
         expect(response).toBeDefined();
+        expect(response.statusCode).not.toBe(404);
+        expect(response.statusCode).not.toBe(500);
     });
 });
