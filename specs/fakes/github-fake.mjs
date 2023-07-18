@@ -48,7 +48,9 @@ export class GithubFake extends Container {
                             return resolve({ data: { content: file } });
                         }, 1000);
                     } else {
-                        return setTimeout(resolve, 1000);
+                        return setTimeout(() => {
+                            return resolve({ data: { content: null } });
+                        }, 1000);
                     }
                 }
             }
