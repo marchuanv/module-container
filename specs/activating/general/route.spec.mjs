@@ -1,5 +1,5 @@
 import { Route } from '../../../lib/registry.mjs';
-describe('when-activating-endpoint-registry', () => {
+fdescribe('when-activating-endpoint-registry', () => {
     let route;
     beforeAll(async () => {
         route = new Route({ path: '/api/v1/config/get', content: '', token: process.env.GIT });
