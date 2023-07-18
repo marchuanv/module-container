@@ -6,8 +6,8 @@ import { GithubFake } from '../fakes/registry.mjs';
 fdescribe('when-handling-routing-given-get-config-endpoint', () => {
     let response;
     beforeAll(async () => {
-        const route = new Route({
-            path: '/api/v1/config/get',
+        const route_create = new Route({
+            path: '/api/v1/config/create',
             content: JSON.stringify({
                 className: 'HelloWorld',
                 language: 'JavaScript',
@@ -15,12 +15,14 @@ fdescribe('when-handling-routing-given-get-config-endpoint', () => {
             }),
             token: process.env.GIT
         });
-        await route.mock({ Class: Github, FakeClass: GithubFake });
-        response = await route.handle();
+        await route_create.mock({ Class: Github, FakeClass: GithubFake });
+        await route_create.handle();
+        const route_get = new Route({ path: '/api/v1/config/get', token: process.env.GIT });
+        await route_get.mock({ Class: Github, FakeClass: GithubFake });
+        response = await route_get.handle();
     });
-    it('should instruct get-config-endpoint to handle the request and return the response', () => {
+    it('should instruct get-config-endpoint to handle the request and return a success response', () => {
         expect(response).toBeDefined();
-        expect(response.statusCode).not.toBe(404);
-        expect(response.statusCode).not.toBe(500);
+        expect(response.statusCode).toBe(200);
     });
 });
