@@ -1,14 +1,11 @@
-import { allEndpoints } from '../../../lib/endpoints/registry.mjs';
-import { Github } from '../../../lib/registry.mjs';
-import { GithubFake } from '../../fakes/registry.mjs';
+import { v1Endpoints } from '../../../lib/registry.mjs';
 describe('when-activating-delete-class-endpoint', () => {
     let instance;
     beforeAll(async () => {
-        instance = new allEndpoints.v1.DeleteClassEndpoint({
+        instance = new v1Endpoints.DeleteClassEndpoint({
             path: '/api/v1/class/delete',
             token: process.env.GIT
         });
-        await instance.mock({ Class: Github, FakeClass: GithubFake });
     });
     it('should get an instance', () => {
         expect(instance).toBeDefined();

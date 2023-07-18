@@ -1,6 +1,4 @@
-import {
-    Container,
-} from '../../../lib/registry.mjs';
+import { Container } from '../../../lib/registry.mjs';
 describe('when-activating-container', () => {
     let error;
     beforeAll(() => {

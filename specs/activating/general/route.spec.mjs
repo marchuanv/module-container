@@ -1,13 +1,8 @@
-import {
-    Route,
-    Github
-} from '../../../lib/registry.mjs';
-import { GithubFake } from '../../fakes/registry.mjs';
+import { Route } from '../../../lib/registry.mjs';
 describe('when-activating-endpoint-registry', () => {
     let route;
     beforeAll(async () => {
         route = new Route({ path: '/api/v1/config/get', content: '', token: process.env.GIT });
-        await route.mock({ Class: Github, FakeClass: GithubFake });
     });
     it('should create an instance', () => {
         expect(route).toBeDefined();

@@ -1,13 +1,8 @@
-import {
-    Store,
-    Github
-} from '../../../lib/registry.mjs';
-import { GithubFake } from '../../fakes/registry.mjs';
+import { Store } from '../../../lib/registry.mjs';
 describe('when-activating-store', () => {
     let store;
     beforeAll(async () => {
         store = new Store({ branchName: 'tests', filePath: 'specification-file-test.json', token: process.env.GIT });
-        await store.mock({ Class: Github, FakeClass: GithubFake });
     });
     it('should create an instance', () => {
         expect(store).toBeDefined();

@@ -1,13 +1,8 @@
-import {
-    Github,
-    GithubBranch,
-} from '../../../lib/registry.mjs';
-import { GithubFake } from '../../fakes/registry.mjs';
+import { GithubBranch } from '../../../lib/registry.mjs';
 describe('when-activating-github-branch', () => {
     let githubBranch;
     beforeAll(async () => {
         githubBranch = new GithubBranch({ branchName: 'tests', token: process.env.GIT });
-        await githubBranch.mock({ Class: Github, FakeClass: GithubFake });
     });
     it('should create an instance', () => {
         expect(githubBranch).toBeDefined();
