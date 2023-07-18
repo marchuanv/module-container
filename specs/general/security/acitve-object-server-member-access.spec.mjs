@@ -1,18 +1,35 @@
-import { ActiveObjectServer } from '../../../lib/registry.mjs';
-describe('when-accessing-non-declared-members', () => {
+import { ActiveObjectServer, GithubFake } from '../../../lib/registry.mjs';
+describe('when-accessing-server-member-from-different-context', () => {
     let error;
     beforeAll(async () => {
-        const server = new ActiveObjectServer();
-        expect(server).toBeDefined();
-        expect(server).toBeInstanceOf(ActiveObjectServer);
+        const oas = new ActiveObjectServer();
+        expect(oas).toBeDefined();
+        expect(oas).toBeInstanceOf(ActiveObjectServer);
         try {
-            server.logging;
+            oas.server;
         } catch (err) {
             error = err;
         }
     });
     it('should return security error', () => {
         expect(error).toBeDefined();
-        expect(error.message).toContain('Unable to access member: logging, it is private to: ActiveObjectServer');
+        expect(error.message).toContain('Unable to access member: server, it is private to: ActiveObjectServer');
+    });
+});
+describe('when-accessing-github-fake-member-from-different-context', () => {
+    let error;
+    beforeAll(async () => {
+        const github = new GithubFake({ auth: process.env.GIT });
+        expect(github).toBeDefined();
+        expect(github).toBeInstanceOf(GithubFake);
+        try {
+            github.octokit;
+        } catch (err) {
+            error = err;
+        }
+    });
+    it('should return security error', () => {
+        expect(error).toBeDefined();
+        expect(error.message).toContain('Unable to access member: octokit, it is private to: GithubFake');
     });
 });

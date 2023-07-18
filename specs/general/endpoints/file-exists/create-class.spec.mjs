@@ -1,7 +1,7 @@
 import utils from 'utils';
 import { v1Endpoints } from '../../../../lib/registry.mjs';
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
-describe('when getting a class from the store given that the file exists', () => {
+fdescribe('when getting a class from the store given that the file exists', () => {
     beforeAll(async () => {
         const createClassEndpoint = new v1Endpoints.CreateClassEndpoint({
             token: process.env.GIT,
