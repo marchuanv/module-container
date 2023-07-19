@@ -6,14 +6,14 @@ describe('when-accessing-server-member-from-different-context', () => {
         expect(oas).toBeDefined();
         expect(oas).toBeInstanceOf(ActiveObjectServer);
         try {
-            oas.server;
+            await oas.server;
         } catch (err) {
             error = err;
         }
     });
     it('should return security error', () => {
         expect(error).toBeDefined();
-        expect(error.message).toContain('Unable to access member: server, it is private to: ActiveObjectServer');
+        expect(error.message).toContain('Unable to access member: server, no public members of ActiveObjectServer were called');
     });
 });
 describe('when-accessing-github-fake-member-from-different-context', () => {
@@ -23,13 +23,13 @@ describe('when-accessing-github-fake-member-from-different-context', () => {
         expect(github).toBeDefined();
         expect(github).toBeInstanceOf(GithubFake);
         try {
-            github.octokit;
+            await github.octokit;
         } catch (err) {
             error = err;
         }
     });
     it('should return security error', () => {
         expect(error).toBeDefined();
-        expect(error.message).toContain('Unable to access member: octokit, it is private to: GithubFake');
+        expect(error.message).toContain('Unable to access member: octokit, no public members of GithubFake were called');
     });
 });

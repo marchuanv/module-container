@@ -16,25 +16,34 @@ class ContainerTest extends Container {
     constructor() {
         super({
             containerTestDependency: {
-                ContainerTestDependency,
-                ctorArgs: {
+                type: { ContainerTestDependency },
+                args: {
                     someArg: 'Hello World'
                 }
             },
-            finished: false,
-            someFunc: () => {
-                return new Promise((resolve) => {
-                    setTimeout(() => {
-                        console.log('create delay');
-                        this.finished = true;
-                        resolve();
-                    }, 1000);
-                });
+            finished: {
+                name: 'finished',
+                value: false
+            },
+            someFunc: {
+                callback: {
+                    func: () => {
+                        return new Promise((resolve) => {
+                            setTimeout(() => {
+                                console.log('create delay');
+                                this.finished = true;
+                                resolve();
+                            }, 1000);
+                        });
+                    }
+                },
+                args: {}
             }
         });
     }
     async doSomething() {
-        await this.containerTestDependency.doSomething();
+        const containerTestDependency = await this.containerTestDependency;
+        await containerTestDependency.doSomething();
     }
 }
 describe('when-regestering-classes', () => {
@@ -42,7 +51,7 @@ describe('when-regestering-classes', () => {
     beforeAll(async () => {
         const containerTest = new ContainerTest();
         await containerTest.doSomething();
-        finished = containerTest.finished;
+        finished = await containerTest.finished;
     });
     it('should wait for constructor async operations to finish', () => {
         expect(finished).toBeTrue();
