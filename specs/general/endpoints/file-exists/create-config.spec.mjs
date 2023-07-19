@@ -1,7 +1,7 @@
 import utils from 'utils';
 import { v1Endpoints } from '../../../../lib/registry.mjs';
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
-fdescribe('when getting config from the store given that the file exists', () => {
+describe('when getting config from the store given that the file exists', () => {
     beforeAll(async () => {
         const createConfigEndpoint = new v1Endpoints.CreateConfigEndpoint({
             token: process.env.GIT,

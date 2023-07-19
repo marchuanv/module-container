@@ -1,7 +1,7 @@
 import utils from 'utils';
 import { v1Endpoints } from '../../../../lib/registry.mjs';
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
-fdescribe('when creating config in the store given that the file does NOT exist', () => {
+describe('when creating config in the store given that the file does NOT exist', () => {
     beforeAll(async () => {
         const args = {
             token: process.env.GIT,
