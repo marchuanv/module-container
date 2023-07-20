@@ -13,7 +13,7 @@ describe('when-accessing-server-member-from-different-context', () => {
     });
     it('should return security error', () => {
         expect(error).toBeDefined();
-        expect(error.message).toContain('Unable to access member: server, no public members of ActiveObjectServer were called');
+        expect(error.message).toBe('Unable to access member: server, no public member events was on the event stack');
     });
 });
 describe('when-accessing-github-fake-member-from-different-context', () => {
@@ -30,6 +30,6 @@ describe('when-accessing-github-fake-member-from-different-context', () => {
     });
     it('should return security error', () => {
         expect(error).toBeDefined();
-        expect(error.message).toContain('Unable to access member: octokit, no public members of GithubFake were called');
+        expect(error.message).toBe('Unable to access member: octokit, no public member events was on the event stack');
     });
 });
