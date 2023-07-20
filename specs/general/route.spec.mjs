@@ -1,15 +1,7 @@
 import { Route } from '../../lib/registry.mjs';
-describe('when-handling-routing-given-get-config-endpoint', () => {
-    let response;
+describe('when-getting-config-given-a-route', () => {
     beforeAll(async () => {
-        const route_delete = new Route({
-            path: '/api/v1/config/delete',
-            token: process.env.GIT
-        });
-        response = await route_delete.handle();
-        expect(response).toBeDefined();
-        expect(response.statusCode).toBe(200);
-        const route_create = new Route({
+        const createRoute = new Route({
             path: '/api/v1/config/create',
             content: JSON.stringify({
                 className: 'HelloWorld',
@@ -18,44 +10,66 @@ describe('when-handling-routing-given-get-config-endpoint', () => {
             }),
             token: process.env.GIT
         });
-        response = await route_create.handle();
-        expect(response).toBeDefined();
-        expect(response.statusCode).toBe(200);
-        const route_get = new Route({ path: '/api/v1/config/get', token: process.env.GIT });
-        response = await route_get.handle();
+        const res = await createRoute.handle();
+        expect(res).toBeDefined();
+        expect(res.statusCode).toBe(200);
+        expect(res.statusMessage).toBe('200 Success');
+        expect(res.responseContent).toBe('{\n    "message": "active-object-config.json was created"\n}');
     });
-    it('should instruct get-config-endpoint to handle the request and return a success response', () => {
-        expect(response).toBeDefined();
-        expect(response.statusCode).toBe(200);
+    it('should instruct the get-config-endpoint to handle the request and return a success response', async () => {
+        const getRoute = new Route({ path: '/api/v1/config/get', token: process.env.GIT });
+        const res = await getRoute.handle();
+        expect(res).toBeDefined();
+        expect(res.statusCode).toBe(200);
+        expect(res.statusMessage).toBe('200 Success');
+        expect(res.responseContent).toBe(`{\n    \"message\": \"Success\",\n    \"content\": {\n        \"className\": \"HelloWorld\",\n        \"language\": \"JavaScript\",\n        \"dependencyInjection\": false\n    }\n}`);
+    });
+    afterAll(async () => {
+        const deleteRoute = new Route({
+            path: '/api/v1/config/delete',
+            token: process.env.GIT
+        });
+        const res = await deleteRoute.handle();
+        expect(res).toBeDefined();
+        expect(res.statusCode).toBe(200);
+        expect(res.statusMessage).toBe('200 Success');
+        expect(res.responseContent).toBe(`{\n    "message": "active-object-config.json was removed"\n}`);
     });
 });
-describe('when-handling-routing-given-get-class-endpoint', () => {
-    let response;
+describe('when-getting-a-class-given-a-route', () => {
     beforeAll(async () => {
-        const route_delete = new Route({
+        const createRoute = new Route({
+            path: '/api/v1/class/create',
+            content: `class HelloWorld {
+                sayHello() {
+                    console.log('Hello');
+                }
+            }`,
+            token: process.env.GIT
+        });
+        const res = await createRoute.handle();
+        expect(res).toBeDefined();
+        expect(res.statusCode).toBe(200);
+        expect(res.statusMessage).toBe('200 Success');
+        expect(res.responseContent).toBe('{\n    "message": "active-object-class.js was created"\n}');
+    });
+    it('should instruct the get-class-endpoint to handle the request and return a success response', async () => {
+        const getRoute = new Route({ path: '/api/v1/class/get', token: process.env.GIT });
+        const res = await getRoute.handle();
+        expect(res).toBeDefined();
+        expect(res.statusCode).toBe(200);
+        expect(res.statusMessage).toBe('200 Success');
+        expect(res.responseContent).toBe(`{\n    "message": "Success",\n    "content": "class HelloWorld {                sayHello() {                    console.log('Hello');                }            }"\n}`);
+    });
+    afterAll(async () => {
+        const deleteRoute = new Route({
             path: '/api/v1/class/delete',
             token: process.env.GIT
         });
-        response = await route_delete.handle();
-        expect(response).toBeDefined();
-        expect(response.statusCode).toBe(200);
-        const route_create = new Route({
-            path: '/api/v1/class/create',
-            content: JSON.stringify({
-                className: 'HelloWorld',
-                language: 'JavaScript',
-                dependencyInjection: false
-            }),
-            token: process.env.GIT
-        });
-        response = await route_create.handle();
-        expect(response).toBeDefined();
-        expect(response.statusCode).toBe(200);
-        const route_get = new Route({ path: '/api/v1/class/get', token: process.env.GIT });
-        response = await route_get.handle();
-    });
-    it('should instruct get-class-endpoint to handle the request and return a success response', () => {
-        expect(response).toBeDefined();
-        expect(response.statusCode).toBe(200);
+        const res = await deleteRoute.handle();
+        expect(res).toBeDefined();
+        expect(res.statusCode).toBe(200);
+        expect(res.statusMessage).toBe('200 Success');
+        expect(res.responseContent).toBe(`{\n    "message": "active-object-class.js was removed"\n}`);
     });
 });

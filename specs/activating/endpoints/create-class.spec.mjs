@@ -4,7 +4,11 @@ describe('when-activating-create-class-endpoint', () => {
     beforeAll(async () => {
         instance = new v1Endpoints.CreateClassEndpoint({
             path: '/api/v1/class/create',
-            content: 'class HelloWorld() {}',
+            content: `class HelloWorld 
+                {
+                    sayHello() { console.log('Hello');
+                }
+            }`,
             token: process.env.GIT
         });
     });
