@@ -16,7 +16,7 @@ describe('when-accessing-server-member-from-different-context', () => {
         expect(error.message).toBe('Unable to access member: server, no public member events was on the event stack');
     });
 });
-fdescribe('when-accessing-github-fake-member-from-different-context', () => {
+describe('when-accessing-github-fake-member-from-different-context', () => {
     let error;
     beforeAll(async () => {
         const github = new GithubFake({ auth: process.env.GIT });
