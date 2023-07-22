@@ -1,6 +1,4 @@
 name: build-active-object
-env:
-  PORT:3000
 on:
   push:
     branches: [ "main" ]
@@ -8,6 +6,8 @@ on:
     branches: [ "main" ]
 jobs:
   build:
+    env:
+      PORT: 3000
     runs-on: ubuntu-latest
     strategy:
       matrix:
