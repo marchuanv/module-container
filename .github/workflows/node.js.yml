@@ -1,4 +1,6 @@
 name: build-active-object
+env:
+  PORT:3000
 on:
   push:
     branches: [ "main" ]
