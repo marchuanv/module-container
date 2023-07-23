@@ -6,7 +6,7 @@ class ContainerTestDependency {
     doSomething() {
         return new Promise((resolve) => {
             setTimeout(() => {
-                console.log(this.someArg);
+                this.logging.log(this.someArg);
                 resolve();
             }, 500);
         });
@@ -30,7 +30,7 @@ class ContainerTest extends Container {
                     func: () => {
                         return new Promise((resolve) => {
                             setTimeout(() => {
-                                console.log('create delay');
+                                this.logging.log('create delay');
                                 this.finished = true;
                                 resolve();
                             }, 1000);
