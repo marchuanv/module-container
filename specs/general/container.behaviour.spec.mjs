@@ -1,4 +1,4 @@
-import { Container } from '../../lib/registry.mjs';
+import { Container, Logging } from '../../lib/registry.mjs';
 class ContainerTestDependency {
     constructor({ someArg }) {
         this.someArg = someArg;
@@ -6,7 +6,6 @@ class ContainerTestDependency {
     doSomething() {
         return new Promise((resolve) => {
             setTimeout(() => {
-                this.logging.log(this.someArg);
                 resolve();
             }, 500);
         });
@@ -29,7 +28,7 @@ class ContainerTest extends Container {
                 callback: {
                     func: () => {
                         return new Promise((resolve) => {
-                            setTimeout(() => {
+                            setTimeout(async () => {
                                 this.logging.log('create delay');
                                 this.finished = true;
                                 resolve();

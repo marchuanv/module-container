@@ -9,10 +9,10 @@ describe('when logging messages given context', () => {
         logging.log('Hello World 4');
         setTimeout(() => {
             logging = new Logging({ contextId: 'CONTEXT B' });
-            logging.log('Hello World 5');
-            logging.log('Hello World 6');
-            logging.log('Hello World 7');
-            logging.log('Hello World 8');
+            logging.error('Hello World 5');
+            logging.error('Hello World 6');
+            logging.error('Hello World 7');
+            logging.error('Hello World 8');
             setTimeout(() => {
                 done();
             } ,1000);
