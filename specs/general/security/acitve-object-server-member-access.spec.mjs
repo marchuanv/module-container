@@ -1,5 +1,5 @@
-import { ActiveObjectServer, GithubFake } from '../../../lib/registry.mjs';
-describe('when-accessing-server-member-from-different-context', () => {
+import { ActiveObjectServer, GithubMock } from '../../../lib/registry.mjs';
+describe('when-accessing-server-member-from-a-different-context', () => {
     let error;
     beforeAll(async () => {
         const oas = new ActiveObjectServer();
@@ -16,12 +16,12 @@ describe('when-accessing-server-member-from-different-context', () => {
         expect(error.message).toContain(`'server' member is private for context`);
     });
 });
-describe('when-accessing-github-fake-member-from-different-context', () => {
+describe('when-accessing-github-mock-member-from-a-different-context', () => {
     let error;
     beforeAll(async () => {
-        const github = new GithubFake({ auth: process.env.GIT });
+        const github = new GithubMock({ auth: process.env.GIT });
         expect(github).toBeDefined();
-        expect(github).toBeInstanceOf(GithubFake);
+        expect(github).toBeInstanceOf(GithubMock);
         try {
             await github.octokit;
         } catch (err) {
