@@ -1,4 +1,4 @@
-import { Container, Logging } from '../../lib/registry.mjs';
+import { Container } from '../../lib/registry.mjs';
 class ContainerTestDependency {
     constructor({ someArg }) {
         this.someArg = someArg;
