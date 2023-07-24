@@ -29,7 +29,8 @@ class ContainerTest extends Container {
                     func: () => {
                         return new Promise((resolve) => {
                             setTimeout(async () => {
-                                this.logging.log('create delay');
+                                const logging = await this.logging;
+                                await logging.log('create delay');
                                 this.finished = true;
                                 resolve();
                             }, 1000);

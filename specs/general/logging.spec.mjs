@@ -1,4 +1,4 @@
-import { Logging } from '../../lib/logging.mjs';
+import { Logging } from '../../lib/container/logging.mjs';
 describe('when logging messages given context', () => {
     let logging;
     beforeAll((done) => {
@@ -15,8 +15,8 @@ describe('when logging messages given context', () => {
             logging.log('Hello World 8');
             setTimeout(() => {
                 done();
-            } ,1000);
-        } ,1000);
+            }, 1000);
+        }, 1000);
     });
     it('should display messages', async () => {
     });
