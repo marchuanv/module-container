@@ -1,4 +1,4 @@
-import { Route } from '../../../lib/registry.mjs';
+import { Route, UserSession } from '../../../lib/registry.mjs';
 describe('when-activating-endpoint-registry', () => {
     let route;
     beforeAll(async () => {

@@ -30,6 +30,7 @@ describe('when creating a class in the store given that the file does NOT exist'
     it('should succesfully create the class', async () => {
         const getClassEndpoint = new v1Endpoints.GetClassEndpoint({
             username: 'JOE',
+            sessionAuthToken,
             storeAuthToken: process.env.GIT,
             path: '/api/v1/class/get'
         });
@@ -41,6 +42,7 @@ describe('when creating a class in the store given that the file does NOT exist'
     afterAll(async () => {
         const args = {
             username: 'JOE',
+            sessionAuthToken,
             storeAuthToken: process.env.GIT,
             path: '/api/v1/class/delete'
         }

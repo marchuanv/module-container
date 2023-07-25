@@ -1,4 +1,4 @@
-import { Route } from '../../lib/registry.mjs';
+import { Route, UserSession } from '../../lib/registry.mjs';
 describe('when-getting-config-given-a-route', () => {
     let sessionAuthToken;
     beforeAll(async () => {
