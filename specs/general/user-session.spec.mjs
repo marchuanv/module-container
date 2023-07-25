@@ -10,17 +10,17 @@ fdescribe('when registering a user given a valid username', () => {
         const user = new UserSession(userCredentials);
         isRegistered = await user.register();
     });
-    it('should register user', async () => {
+    it('should register the user', async () => {
         expect(isRegistered).toBeTrue();
     });
 });
-fdescribe('when registering a user given an existing user', () => {
+fdescribe('when registering a user given that it is an existing user', () => {
     let isRegistered;
     beforeAll(async() => {
         const user = new UserSession(userCredentials);
         isRegistered = await user.register();
     });
-    it('should NOT register user', async () => {
+    it('should NOT register the user', async () => {
         expect(isRegistered).toBeFalse();
     });
 });
