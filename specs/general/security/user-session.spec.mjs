@@ -4,11 +4,8 @@ fdescribe('when authenticating a user given clear text passphrase', () => {
     beforeAll(async() => {
         const userSession = new UserSession(userCredentials);
         await userSession.register();
-        const isAuthenticated = await userSession.authenticate();
-        expect(isAuthenticated).toBeTrue();
-        const sessionAuthToken = await userSession.getAuthToken();
-        expect(sessionAuthToken).toBeDefined();
-        userCredentials.sessionAuthToken = sessionAuthToken;
+        userCredentials.sessionAuthToken = await userSession.authenticate();
+        expect(userCredentials.sessionAuthToken).toBeDefined();
     });
     it('should succesfully authenticate', async () => {
         const userSession = new UserSession(userCredentials);
