@@ -1,5 +1,5 @@
-import { UserSession } from '../../../lib/registry.mjs';
-fdescribe('when authenticating a user given clear text passphrase', () => {
+import { UserSession, Store } from '../../../lib/registry.mjs';
+describe('when authenticating a user given clear text passphrase', () => {
     const userCredentials = { username:'Joe', passphrase: 'Joe1234', storeAuthToken: 12345, sessionAuthToken: null };
     beforeAll(async() => {
         const userSession = new UserSession(userCredentials);
@@ -13,23 +13,33 @@ fdescribe('when authenticating a user given clear text passphrase', () => {
         expect(isAuthenticated).toBeTrue();
     });
 });
-describe('when authorising a session given valid cridentials', () => {
-    let isAuthorised;
+describe('when authenticating a user given a hashed passphrase', () => {
+    const userCredentials = { username:'Joe', passphrase: 'Joe1234', storeAuthToken: 12345, sessionAuthToken: null };
     beforeAll(async() => {
-        const session = new UserSession(user);
-        isAuthorised = await session.authenticate();
+        
+        //create user session
+        const userSession = new UserSession(userCredentials);
+        await userSession.register();
+
+        //get stored hashed passphrase
+        const store = new Store({ filePath: `${userCredentials.username}.json`, storeAuthToken: userCredentials.storeAuthToken });
+        let content = await store.read();
+        content = JSON.parse(content);
+        expect(content).toBeDefined();
+        const userContent = content[userCredentials.username.toLowerCase()];
+        expect(userContent).toBeDefined();
+        expect(userContent.storedHashedPassphrase).toBeDefined();
+        userCredentials.hashedPassphrase = userContent.storedHashedPassphrase;
+        userCredentials.passphrase = null;
+
+        //create user session with hashed passphrase
+        const userSession2 = new UserSession(userCredentials);
+        userCredentials.sessionAuthToken = await userSession2.authenticate();
+        expect(userCredentials.sessionAuthToken).toBeDefined();
     });
-    it('should authorise the session ', async () => {
-        expect(isAuthorised).toBeTrue();
-    });
-});
-describe('when authorising a session given invalid cridentials', () => {
-    let isAuthorised;
-    beforeAll(async() => {
-        const session = new UserSession(user);
-        isAuthorised = await session.authenticate();
-    });
-    it('should NOT authorise the session ', async () => {
-        expect(isAuthorised).toBeFalse();
+    it('should succesfully authenticate', async () => {
+        const userSession = new UserSession(userCredentials);
+        const isAuthenticated = await userSession.isAuthenticated();
+        expect(isAuthenticated).toBeTrue();
     });
 });
