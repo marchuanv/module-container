@@ -8,7 +8,7 @@ describe('when-getting-config-given-a-route', () => {
                 language: 'JavaScript',
                 dependencyInjection: false
             }),
-            token: process.env.GIT
+            storeAuthToken: process.env.GIT
         });
         const res = await createRoute.handle();
         expect(res).toBeDefined();
@@ -17,7 +17,7 @@ describe('when-getting-config-given-a-route', () => {
         expect(res.responseContent).toBe('{\n    "message": "active-object-config.json was created"\n}');
     });
     it('should instruct the get-config-endpoint to handle the request and return a success response', async () => {
-        const getRoute = new Route({ path: '/api/v1/config/get', token: process.env.GIT });
+        const getRoute = new Route({ path: '/api/v1/config/get', storeAuthToken: process.env.GIT });
         const res = await getRoute.handle();
         expect(res).toBeDefined();
         expect(res.statusCode).toBe(200);
@@ -27,7 +27,7 @@ describe('when-getting-config-given-a-route', () => {
     afterAll(async () => {
         const deleteRoute = new Route({
             path: '/api/v1/config/delete',
-            token: process.env.GIT
+            storeAuthToken: process.env.GIT
         });
         const res = await deleteRoute.handle();
         expect(res).toBeDefined();
@@ -45,7 +45,7 @@ describe('when-getting-a-class-given-a-route', () => {
                     console.log('Hello');
                 }
             }`,
-            token: process.env.GIT
+            storeAuthToken: process.env.GIT
         });
         const res = await createRoute.handle();
         expect(res).toBeDefined();
@@ -54,7 +54,7 @@ describe('when-getting-a-class-given-a-route', () => {
         expect(res.responseContent).toBe('{\n    "message": "active-object-class.js was created"\n}');
     });
     it('should instruct the get-class-endpoint to handle the request and return a success response', async () => {
-        const getRoute = new Route({ path: '/api/v1/class/get', token: process.env.GIT });
+        const getRoute = new Route({ path: '/api/v1/class/get', storeAuthToken: process.env.GIT });
         const res = await getRoute.handle();
         expect(res).toBeDefined();
         expect(res.statusCode).toBe(200);
@@ -64,7 +64,7 @@ describe('when-getting-a-class-given-a-route', () => {
     afterAll(async () => {
         const deleteRoute = new Route({
             path: '/api/v1/class/delete',
-            token: process.env.GIT
+            storeAuthToken: process.env.GIT
         });
         const res = await deleteRoute.handle();
         expect(res).toBeDefined();

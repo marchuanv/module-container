@@ -4,7 +4,7 @@ describe('when-activating-delete-config-endpoint', () => {
     beforeAll(async () => {
         instance = new v1Endpoints.DeleteConfigEndpoint({
             path: '/api/v1/config/delete',
-            token: process.env.GIT
+            storeAuthToken: process.env.GIT
         });
     });
     it('should get an instance', () => {

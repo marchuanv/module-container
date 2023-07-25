@@ -9,7 +9,7 @@ describe('when-activating-create-class-endpoint', () => {
                     sayHello() { console.log('Hello');
                 }
             }`,
-            token: process.env.GIT
+            storeAuthToken: process.env.GIT
         });
     });
     it('should get an instance', () => {

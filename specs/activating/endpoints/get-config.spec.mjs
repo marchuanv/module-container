@@ -4,7 +4,7 @@ describe('when-activating-get-config-endpoint', () => {
     beforeAll(async () => {
         instance = new v1Endpoints.GetConfigEndpoint({
             path: '/api/v1/config/get',
-            token: process.env.GIT
+            storeAuthToken: process.env.GIT
         });
     });
     it('should get an instance', () => {

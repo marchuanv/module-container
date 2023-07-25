@@ -4,7 +4,7 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
 describe('when creating config in the store given that the file does NOT exist', () => {
     beforeAll(async () => {
         const args = {
-            token: process.env.GIT,
+            storeAuthToken: process.env.GIT,
             path: '/api/v1/config/create',
             content: JSON.stringify({
                 className: 'HelloWorld',
@@ -22,7 +22,7 @@ describe('when creating config in the store given that the file does NOT exist',
 
     it('should succesfully create the config', async () => {
         const getConfigEndpoint = new v1Endpoints.GetConfigEndpoint({
-            token: process.env.GIT,
+            storeAuthToken: process.env.GIT,
             path: '/api/v1/config/get'
         });
         const { statusMessage, responseContent, contentType } = await getConfigEndpoint.handle();
@@ -33,7 +33,7 @@ describe('when creating config in the store given that the file does NOT exist',
 
     afterAll(async () => {
         const args = {
-            token: process.env.GIT,
+            storeAuthToken: process.env.GIT,
             path: '/api/v1/config/delete'
         }
         const deleteConfigEndpoint = new v1Endpoints.DeleteConfigEndpoint(args);

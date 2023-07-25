@@ -4,7 +4,7 @@ describe('when-activating-get-class-endpoint', () => {
     beforeAll(async () => {
         instance = new v1Endpoints.GetClassEndpoint({
             path: '/api/v1/class/get',
-            token: process.env.GIT
+            storeAuthToken: process.env.GIT
         });
     });
     it('should get an instance', () => {

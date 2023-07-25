@@ -2,7 +2,7 @@ import { GithubFile } from '../../../lib/registry.mjs';
 describe('when-activating-github-file', () => {
     let githubFile;
     beforeAll(async () => {
-        githubFile = new GithubFile({ branchName: 'tests', fileName: 'github-file-test.json', token: process.env.GIT });
+        githubFile = new GithubFile({ branchName: 'tests', fileName: 'github-file-test.json', storeAuthToken: process.env.GIT });
     });
     it('should create an instance', () => {
         expect(githubFile).toBeDefined();

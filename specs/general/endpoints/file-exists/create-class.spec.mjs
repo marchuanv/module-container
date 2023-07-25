@@ -4,7 +4,7 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
 describe('when getting a class from the store given that the file exists', () => {
     beforeAll(async () => {
         const createClassEndpoint = new v1Endpoints.CreateClassEndpoint({
-            token: process.env.GIT,
+            storeAuthToken: process.env.GIT,
             path: '/api/v1/class/create',
             content: `class HelloWorld {
                     sayHello() {
@@ -27,7 +27,7 @@ describe('when getting a class from the store given that the file exists', () =>
     });
     it('should succesfully create the class', async () => {
         const getClassEndpoint = new v1Endpoints.GetClassEndpoint({
-            token: process.env.GIT,
+            storeAuthToken: process.env.GIT,
             path: '/api/v1/class/get'
         });
         const { statusMessage, responseContent, contentType } = await getClassEndpoint.handle();
@@ -37,7 +37,7 @@ describe('when getting a class from the store given that the file exists', () =>
     });
     afterAll(async () => {
         const args = {
-            token: process.env.GIT,
+            storeAuthToken: process.env.GIT,
             path: '/api/v1/class/delete'
         }
         const deleteClassEndpoint = new v1Endpoints.DeleteClassEndpoint(args);

@@ -2,7 +2,7 @@ import { GithubBranch } from '../../../lib/registry.mjs';
 describe('when-activating-github-branch', () => {
     let githubBranch;
     beforeAll(async () => {
-        githubBranch = new GithubBranch({ branchName: 'tests', token: process.env.GIT });
+        githubBranch = new GithubBranch({ branchName: 'tests', storeAuthToken: process.env.GIT });
     });
     it('should create an instance', () => {
         expect(githubBranch).toBeDefined();
