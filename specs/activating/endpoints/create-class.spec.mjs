@@ -3,6 +3,7 @@ describe('when-activating-create-class-endpoint', () => {
     let instance;
     beforeAll(async () => {
         instance = new v1Endpoints.CreateClassEndpoint({
+            username: 'JOE',
             path: '/api/v1/class/create',
             content: `class HelloWorld 
                 {

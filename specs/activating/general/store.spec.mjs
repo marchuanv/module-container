@@ -2,7 +2,7 @@ import { Store } from '../../../lib/registry.mjs';
 describe('when-activating-store', () => {
     let store;
     beforeAll(async () => {
-        store = new Store({ branchName: 'tests', filePath: 'specification-file-test.json', storeAuthToken: process.env.GIT });
+        store = new Store({ filePath: 'specification-file-test.json', storeAuthToken: process.env.GIT });
     });
     it('should create an instance', () => {
         expect(store).toBeDefined();

@@ -4,6 +4,7 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
 describe('when creating a class in the store given that the file does NOT exist', () => {
     beforeAll(async () => {
         const createClassEndpoint = new v1Endpoints.CreateClassEndpoint({
+            username: 'JOE',
             storeAuthToken: process.env.GIT,
             path: '/api/v1/class/create',
             content: `class HelloWorld {
@@ -20,6 +21,7 @@ describe('when creating a class in the store given that the file does NOT exist'
     });
     it('should succesfully create the class', async () => {
         const getClassEndpoint = new v1Endpoints.GetClassEndpoint({
+            username: 'JOE',
             storeAuthToken: process.env.GIT,
             path: '/api/v1/class/get'
         });
@@ -30,6 +32,7 @@ describe('when creating a class in the store given that the file does NOT exist'
     });
     afterAll(async () => {
         const args = {
+            username: 'JOE',
             storeAuthToken: process.env.GIT,
             path: '/api/v1/class/delete'
         }

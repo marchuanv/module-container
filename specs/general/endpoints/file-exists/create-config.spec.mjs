@@ -4,6 +4,7 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
 describe('when getting config from the store given that the file exists', () => {
     beforeAll(async () => {
         const createConfigEndpoint = new v1Endpoints.CreateConfigEndpoint({
+            username: 'JOE',
             storeAuthToken: process.env.GIT,
             path: '/api/v1/config/create',
             content: JSON.stringify({
@@ -27,6 +28,7 @@ describe('when getting config from the store given that the file exists', () => 
     });
     it('should succesfully create the config', async () => {
         const getConfigEndpoint = new v1Endpoints.GetConfigEndpoint({
+            username: 'JOE',
             storeAuthToken: process.env.GIT,
             path: '/api/v1/config/get'
         });
@@ -37,6 +39,7 @@ describe('when getting config from the store given that the file exists', () => 
     });
     afterAll(async () => {
         const args = {
+            username: 'JOE',
             storeAuthToken: process.env.GIT,
             path: '/api/v1/config/delete'
         };
