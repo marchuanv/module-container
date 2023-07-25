@@ -2,9 +2,17 @@ import utils from 'utils';
 import { v1Endpoints } from '../../../../lib/registry.mjs';
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
 describe('when creating config in the store given that the file does NOT exist', () => {
+    let sessionAuthToken;
     beforeAll(async () => {
+        const userCredentials = { username:'Joe', passphrase: 'Joe1234', storeAuthToken: 12345 };
+        const userSession = new UserSession(userCredentials);
+        const isRegistered = await userSession.register();
+        expect(isRegistered).toBeTrue();
+        sessionAuthToken = await userSession.authenticate();
+        expect(sessionAuthToken).toBeDefined();
         const args = {
             username: 'JOE',
+            sessionAuthToken,
             storeAuthToken: process.env.GIT,
             path: '/api/v1/config/create',
             content: JSON.stringify({
@@ -24,6 +32,7 @@ describe('when creating config in the store given that the file does NOT exist',
     it('should succesfully create the config', async () => {
         const getConfigEndpoint = new v1Endpoints.GetConfigEndpoint({
             username: 'JOE',
+            sessionAuthToken,
             storeAuthToken: process.env.GIT,
             path: '/api/v1/config/get'
         });
@@ -36,6 +45,7 @@ describe('when creating config in the store given that the file does NOT exist',
     afterAll(async () => {
         const args = {
             username: 'JOE',
+            sessionAuthToken,
             storeAuthToken: process.env.GIT,
             path: '/api/v1/config/delete'
         }

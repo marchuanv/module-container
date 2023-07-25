@@ -1,10 +1,18 @@
 import utils from 'utils';
-import { v1Endpoints } from '../../../../lib/registry.mjs';
+import { v1Endpoints, UserSession } from '../../../../lib/registry.mjs';
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
 describe('when getting config from the store given that the file exists', () => {
+    let sessionAuthToken;
     beforeAll(async () => {
+        const userCredentials = { username:'Joe', passphrase: 'Joe1234', storeAuthToken: 12345 };
+        const userSession = new UserSession(userCredentials);
+        const isRegistered = await userSession.register();
+        expect(isRegistered).toBeTrue();
+        sessionAuthToken = await userSession.authenticate();
+        expect(sessionAuthToken).toBeDefined();
         const createConfigEndpoint = new v1Endpoints.CreateConfigEndpoint({
             username: 'JOE',
+            sessionAuthToken,
             storeAuthToken: process.env.GIT,
             path: '/api/v1/config/create',
             content: JSON.stringify({

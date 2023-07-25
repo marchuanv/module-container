@@ -1,5 +1,5 @@
-import { ActiveObjectServer, Route } from '../../lib/registry.mjs';
-fdescribe('when-creating-an-active-object-server-given-a-request-for-geting-config', () => {
+import { ActiveObjectServer } from '../../lib/registry.mjs';
+describe('when-creating-an-active-object-server-given-a-request-for-geting-config', () => {
     let response;
     beforeAll(async () => {
         const server = new ActiveObjectServer();
