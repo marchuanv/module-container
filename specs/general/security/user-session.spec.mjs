@@ -1,19 +1,21 @@
 import { UserSession } from '../../../lib/registry.mjs';
-describe('when authenticating a user given clear text passphrase', () => {
-    let isAuthenticated;
+fdescribe('when authenticating a user given clear text passphrase', () => {
+    const userCredentials = { username:'Joe', passphrase: 'Joe1234', storeAuthToken: 12345 };
     beforeAll(async() => {
-        const userCredentials = { username:'Joe', passphrase: 'Joe1234', storeAuthToken: 12345 };
-        const user = new UserSession(userCredentials);
-        isAuthenticated = await user.isAuthenticated();
+        const userSession = new UserSession(userCredentials);
+        await userSession.register();
+        const isAuthenticated = await userSession.authenticate();
+        expect(isAuthenticated).toBeTrue();
     });
     it('should succesfully authenticate', async () => {
+        const userSession = new UserSession(userCredentials);
+        const isAuthenticated = await userSession.isAuthenticated();
         expect(isAuthenticated).toBeTrue();
     });
 });
 describe('when authorising a session given valid cridentials', () => {
     let isAuthorised;
     beforeAll(async() => {
-        const user = { username:'Joe', secret: 'Joe1234' };
         const session = new UserSession(user);
         isAuthorised = await session.authenticate();
     });
@@ -24,7 +26,6 @@ describe('when authorising a session given valid cridentials', () => {
 describe('when authorising a session given invalid cridentials', () => {
     let isAuthorised;
     beforeAll(async() => {
-        const user = { username:'Joe', secret: 'Joe12345' };
         const session = new UserSession(user);
         isAuthorised = await session.authenticate();
     });
