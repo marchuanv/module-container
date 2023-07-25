@@ -37,6 +37,7 @@ describe('when getting config from the store given that the file exists', () => 
     it('should succesfully create the config', async () => {
         const getConfigEndpoint = new v1Endpoints.GetConfigEndpoint({
             username: 'JOE',
+            sessionAuthToken,
             storeAuthToken: process.env.GIT,
             path: '/api/v1/config/get'
         });
@@ -48,6 +49,7 @@ describe('when getting config from the store given that the file exists', () => 
     afterAll(async () => {
         const args = {
             username: 'JOE',
+            sessionAuthToken,
             storeAuthToken: process.env.GIT,
             path: '/api/v1/config/delete'
         };
