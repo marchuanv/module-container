@@ -1,5 +1,5 @@
 import { UserSession } from '../../../lib/registry.mjs';
-fdescribe('when authenticating a user given clear text passphrase', () => {
+describe('when authenticating a user given clear text passphrase', () => {
     let isAuthenticated;
     beforeAll(async() => {
         const userCredentials = { username:'Joe', passphrase: 'Joe1234', storeAuthToken: 12345 };
