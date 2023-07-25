@@ -1,11 +1,14 @@
 import { UserSession } from '../../../lib/registry.mjs';
 fdescribe('when authenticating a user given clear text passphrase', () => {
-    const userCredentials = { username:'Joe', passphrase: 'Joe1234', storeAuthToken: 12345 };
+    const userCredentials = { username:'Joe', passphrase: 'Joe1234', storeAuthToken: 12345, storeAuthToken: null };
     beforeAll(async() => {
         const userSession = new UserSession(userCredentials);
         await userSession.register();
         const isAuthenticated = await userSession.authenticate();
         expect(isAuthenticated).toBeTrue();
+        const storeAuthToken = await userSession.getAuthToken();
+        expect(authToken).toBeDefined();
+        userCredentials.storeAuthToken = storeAuthToken;
     });
     it('should succesfully authenticate', async () => {
         const userSession = new UserSession(userCredentials);
