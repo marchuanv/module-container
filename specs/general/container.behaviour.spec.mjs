@@ -14,19 +14,18 @@ class ContainerTestDependency {
 class ContainerTest extends Container {
     constructor() {
         super({
-            containerTestDependency: {
-                type: { ContainerTestDependency },
-                args: {
-                    someArg: 'Hello World'
-                }
-            },
-            finished: {
-                name: 'finished',
-                value: false
-            },
-            someFunc: {
-                callback: {
-                    func: () => {
+            members: {
+                containerTestDependency: {
+                    class: { ContainerTestDependency },
+                    args: {
+                        someArg: 'Hello World'
+                    }
+                },
+                finished: {
+                    value: false
+                },
+                someFunc: {
+                    callback: () => {
                         return new Promise((resolve) => {
                             setTimeout(async () => {
                                 const logging = await this.logging;
@@ -35,9 +34,9 @@ class ContainerTest extends Container {
                                 resolve();
                             }, 1000);
                         });
-                    }
-                },
-                args: {}
+                    },
+                    args: {}
+                }
             }
         });
     }
