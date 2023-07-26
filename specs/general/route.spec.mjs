@@ -2,9 +2,12 @@ import { Route, UserSession } from '../../lib/registry.mjs';
 describe('when-getting-config-given-a-route', () => {
     let sessionAuthToken;
     beforeAll(async () => {
-        const userCredentials = { username:'Joe', passphrase: 'Joe1234', storeAuthToken: 12345, sessionAuthToken: null };
+        const userCredentials = { username:'Joe', passphrase: 'Joe1234', storeAuthToken: 12345 };
         const userSession = new UserSession(userCredentials);
-        const isRegistered = await userSession.register();
+        if (!(await userSession.isRegistered())) {
+            await userSession.register();
+        }
+        const isRegistered = await userSession.isRegistered();
         expect(isRegistered).toBeTrue();
         sessionAuthToken = await userSession.authenticate();
         expect(sessionAuthToken).toBeDefined();

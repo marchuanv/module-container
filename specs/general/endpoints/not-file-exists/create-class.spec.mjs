@@ -6,7 +6,10 @@ describe('when creating a class in the store given that the file does NOT exist'
     beforeAll(async () => {
         const userCredentials = { username:'Joe', passphrase: 'Joe1234', storeAuthToken: 12345 };
         const userSession = new UserSession(userCredentials);
-        const isRegistered = await userSession.register();
+        if (!(await userSession.isRegistered())) {
+            await userSession.register();
+        }
+        const isRegistered = await userSession.isRegistered();
         expect(isRegistered).toBeTrue();
         sessionAuthToken = await userSession.authenticate();
         expect(sessionAuthToken).toBeDefined();

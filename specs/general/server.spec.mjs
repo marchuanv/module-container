@@ -4,7 +4,10 @@ describe('when-creating-an-active-object-server-given-a-request-for-geting-confi
     beforeAll(async () => {
         const userCredentials = { username:'Joe', passphrase: 'Joe1234', storeAuthToken: 12345 };
         const userSession = new UserSession(userCredentials);
-        const isRegistered = await userSession.register();
+        if (!(await userSession.isRegistered())) {
+            await userSession.register();
+        }
+        const isRegistered = await userSession.isRegistered();
         expect(isRegistered).toBeTrue();
         const sessionAuthToken = await userSession.authenticate();
         expect(sessionAuthToken).toBeDefined();
