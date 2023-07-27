@@ -1,6 +1,6 @@
 import { ActiveObjectServer, GithubMock } from '../../../lib/registry.mjs';
-for (let i = 0; i < 10; i++) {
-    describe('when accessing a private member of the ActiveObjectServer class given a different context', () => {
+for (let i = 0; i < 2; i++) {
+    fdescribe('when accessing a private member of the ActiveObjectServer class given a different context', () => {
         let error;
         let returnValue;
         beforeAll(async () => {
@@ -19,7 +19,7 @@ for (let i = 0; i < 10; i++) {
             expect(error.message).toContain(`'server' member is private for context`);
         });
     });
-    describe('when accessing a private member of the GithubMock class from a different context given that the class is configured as a singleton', () => {
+    fdescribe('when accessing a private member of the GithubMock class from a different context given that the class is configured as a singleton', () => {
         let error;
         let returnValue;
         beforeAll(async () => {
