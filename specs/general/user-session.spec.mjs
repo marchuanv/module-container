@@ -4,7 +4,7 @@ const userCredentials = {
     passphrase: 'Joe1234',
     storeAuthToken: 12345
 };
-fdescribe('when registering a user session given a valid username', () => {
+describe('when registering a user session given a valid username', () => {
     let completed;
     beforeAll(async () => {
         const userSession = new UserSession(userCredentials);
