@@ -1,5 +1,5 @@
 import { ActiveObjectServer, GithubMock } from '../../../lib/registry.mjs';
-for(let i = 0; i < 10; i++) {
+for (let i = 0; i < 10; i++) {
     describe('when accessing a private member of the ActiveObjectServer class given a different context', () => {
         let error;
         let returnValue;
@@ -35,7 +35,7 @@ for(let i = 0; i < 10; i++) {
         it('should NOT return any errors', () => {
             expect(error).not.toBeDefined();
         });
-        it('should return undefined as outpot from the member', () => {
+        it('should return undefined as output from the member', () => {
             expect(returnValue).not.toBeDefined();
         });
     });
