@@ -1,5 +1,5 @@
 import { SpecsHelper } from '../../specs-helper.mjs';
-fdescribe('when-starting-an-active-object-server-given-a-request-for-getting-config', () => {
+describe('when-starting-an-active-object-server-given-a-request-for-getting-config', () => {
     it('should instruct route to handle the request and respond with config not found', async () => {
         const response = await SpecsHelper.activeObjectServerHttpGetConfig();
         const content = await response.json();
@@ -9,7 +9,7 @@ fdescribe('when-starting-an-active-object-server-given-a-request-for-getting-con
         expect(content.message).toBe('active-object-config.json was not found');
     });
 });
-fdescribe('when-starting-an-active-object-server-given-a-request-for-create-config', () => {
+describe('when-starting-an-active-object-server-given-a-request-for-create-config', () => {
     it('should instruct route to handle the request and respond with config created', async () => {
         const response = await SpecsHelper.activeObjectServerHttpCreateConfig();
         const content = await response.json();
@@ -19,7 +19,7 @@ fdescribe('when-starting-an-active-object-server-given-a-request-for-create-conf
         expect(content.message).toBe('active-object-config.json was created');
     });
 });
-fdescribe('when-starting-an-active-object-server-given-a-request-for-deleting-config', () => {
+describe('when-starting-an-active-object-server-given-a-request-for-deleting-config', () => {
     it('should instruct route to handle the request and respond with config deleted', async () => {
         const response = await SpecsHelper.activeObjectServerHttpDeleteConfig();
         const content = await response.json();

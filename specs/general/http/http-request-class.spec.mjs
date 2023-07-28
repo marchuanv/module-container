@@ -1,5 +1,6 @@
 import { SpecsHelper } from '../../specs-helper.mjs';
-fdescribe('when-starting-an-active-object-server-given-a-request-for-getting-class', () => {
+
+describe('when making a request for get class given a started active object server', () => {
     it('should instruct route to handle the request and respond with class not found', async () => {
         const response = await SpecsHelper.activeObjectServerHttpGetClass();
         const content = await response.json();
@@ -9,7 +10,18 @@ fdescribe('when-starting-an-active-object-server-given-a-request-for-getting-cla
         expect(content.message).toBe('active-object-class.js was not found');
     });
 });
-fdescribe('when-starting-an-active-object-server-given-a-request-for-create-class', () => {
+describe('when making a request for get class given a started active object server and the class exists', () => {
+    it('should instruct route to handle the request and respond with class found', async () => {
+        const response = await SpecsHelper.activeObjectServerHttpGetClassExists();
+        const content = await response.text();
+        expect(response).toBeDefined();
+        expect(response.status).toBe(200);
+        expect(response.statusText).toBe('200 Success');
+        expect(content).toBe('{\n    "message": "Success",\n    "content": "class HelloWorld { sayHello() { console.log("hello"); }}"\n}');
+    });
+});
+
+describe('when making a request for create class given a started active object server', () => {
     it('should instruct route to handle the request and respond with class created', async () => {
         const response = await SpecsHelper.activeObjectServerHttpCreateClass();
         const content = await response.json();
@@ -19,13 +31,34 @@ fdescribe('when-starting-an-active-object-server-given-a-request-for-create-clas
         expect(content.message).toBe('active-object-class.js was created');
     });
 });
-fdescribe('when-starting-an-active-object-server-given-a-request-for-deleting-class', () => {
-    it('should instruct route to handle the request and respond with class deleted', async () => {
-        const response = await SpecsHelper.activeObjectServerHttpDeleteConfig();
+describe('when making a request for create class given a started active object server and the class exists', () => {
+    it('should instruct route to handle the request and respond with class conflict', async () => {
+        const response = await SpecsHelper.activeObjectServerHttpCreateClassExists();
+        const content = await response.json();
+        expect(response).toBeDefined();
+        expect(response.status).toBe(409);
+        expect(response.statusText).toBe('409 Conflict');
+        expect(content.message).toBe('active-object-class.js already exist');
+    });
+});
+
+describe('when making a request for delete class given a started active object server', () => {
+    it('should instruct route to handle the request and respond with class not found', async () => {
+        const response = await SpecsHelper.activeObjectServerHttpDeleteClass();
         const content = await response.json();
         expect(response).toBeDefined();
         expect(response.status).toBe(404);
         expect(response.statusText).toBe('404 Not Found');
-        expect(content.message).toBe('active-object-config.json was not found');
+        expect(content.message).toBe('active-object-class.js was not found');
+    });
+});
+describe('when making a request to delete a class given a started active object server and the class exists', () => {
+    it('should instruct route to handle the request and respond with class deleted', async () => {
+        const response = await SpecsHelper.activeObjectServerHttpDeleteClassExists();
+        const content = await response.json();
+        expect(response).toBeDefined();
+        expect(response.status).toBe(200);
+        expect(response.statusText).toBe('200 Success');
+        expect(content.message).toBe('active-object-class.js was removed');
     });
 });
