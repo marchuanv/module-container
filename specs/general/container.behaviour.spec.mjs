@@ -25,15 +25,10 @@ class ContainerTest extends Container {
                     value: false
                 },
                 someFunc: {
-                    callback: () => {
-                        return new Promise((resolve) => {
-                            setTimeout(async () => {
-                                const logging = await this.logging;
-                                await logging.log('create delay');
-                                this.finished = true;
-                                resolve();
-                            }, 1000);
-                        });
+                    callback: async () => {
+                        const logging = await this.logging;
+                        await logging.log('create delay');
+                        this.finished = true;
                     },
                     args: {}
                 }
@@ -44,13 +39,16 @@ class ContainerTest extends Container {
         const containerTestDependency = await this.containerTestDependency;
         await containerTestDependency.doSomething();
     }
+    async isFinished() {
+        return await this.finished;
+    }
 }
 describe('when-regestering-classes', () => {
     let finished = false;
     beforeAll(async () => {
         const containerTest = new ContainerTest();
         await containerTest.doSomething();
-        finished = await containerTest.finished;
+        finished = await containerTest.isFinished();
     });
     it('should wait for constructor async operations to finish', () => {
         expect(finished).toBeTrue();

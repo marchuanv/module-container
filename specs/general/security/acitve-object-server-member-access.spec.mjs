@@ -1,6 +1,6 @@
 import { ActiveObjectServer, GithubMock } from '../../../lib/registry.mjs';
 for (let i = 0; i < 2; i++) {
-    fdescribe('when accessing a private member of the ActiveObjectServer class given a different context', () => {
+    describe('when accessing a private member of the ActiveObjectServer class given a different context', () => {
         let error;
         let returnValue;
         beforeAll(async () => {
@@ -16,10 +16,10 @@ for (let i = 0; i < 2; i++) {
         it('should return a security error', () => {
             expect(returnValue).not.toBeDefined();
             expect(error).toBeDefined();
-            expect(error.message).toContain(`'server' member is private for context`);
+            expect(error.message).toContain(`server member is private for ActiveObjectServer`);
         });
     });
-    fdescribe('when accessing a private member of the GithubMock class from a different context given that the class is configured as a singleton', () => {
+    describe('when accessing a private member of the GithubMock class from a different context given that the class is configured as a singleton', () => {
         let error;
         let returnValue;
         beforeAll(async () => {
@@ -32,8 +32,9 @@ for (let i = 0; i < 2; i++) {
                 error = err;
             }
         });
-        it('should NOT return any errors', () => {
-            expect(error).not.toBeDefined();
+        it('should return a security error', () => {
+            expect(error).toBeDefined();
+            expect(error.message).toContain(`octokit member is private for GithubMock`);
         });
         it('should return undefined as output from the member', () => {
             expect(returnValue).not.toBeDefined();
