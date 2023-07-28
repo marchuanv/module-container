@@ -1,4 +1,4 @@
-import { UserSession } from '../../lib/registry.mjs';
+import { UserSession } from '../lib/registry.mjs';
 const userCredentials = {
     username: 'Joe1',
     passphrase: 'Joe1234',

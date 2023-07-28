@@ -1,4 +1,4 @@
-import { SpecsHelper } from '../../specs-helper.mjs';
+import { SpecsHelper } from './specs-helper.mjs';
 
 describe('when making a request for get class given a started active object server', () => {
     it('should instruct route to handle the request and respond with class not found', async () => {

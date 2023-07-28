@@ -1,4 +1,4 @@
-import { UserSession, Store } from '../../../lib/registry.mjs';
+import { UserSession, Store } from '../lib/registry.mjs';
 describe('when authenticating a user given clear text passphrase', () => {
     const userCredentials = { username:'Joe', passphrase: 'Joe1234', storeAuthToken: 12345, sessionAuthToken: null };
     beforeAll(async() => {

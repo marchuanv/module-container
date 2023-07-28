@@ -1,4 +1,4 @@
-import { ActiveObjectServer, GithubMock } from '../../../lib/registry.mjs';
+import { ActiveObjectServer, GithubMock } from '../lib/registry.mjs';
 for (let i = 0; i < 2; i++) {
     describe('when accessing a private member of the ActiveObjectServer class given a different context', () => {
         let error;

@@ -1,4 +1,4 @@
-import { SpecsHelper } from '../specs-helper.mjs';
+import { SpecsHelper } from './specs-helper.mjs';
 describe('when-getting-config-given-a-route', () => {
     it('should instruct the get-config-endpoint to handle the request and return a success response', async () => {
         const configFilePath = 'active-object-config.json';

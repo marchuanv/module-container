@@ -1,4 +1,4 @@
-import { GithubFile } from '../../lib/registry.mjs';
+import { GithubFile } from '../lib/registry.mjs';
 describe('when-activating-github-file', () => {
     let githubFile;
     beforeAll(async () => {

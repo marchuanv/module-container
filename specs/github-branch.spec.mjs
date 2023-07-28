@@ -1,4 +1,4 @@
-import { GithubBranch } from '../../../lib/registry.mjs';
+import { GithubBranch } from '../lib/registry.mjs';
 describe('when-activating-github-branch', () => {
     let githubBranch;
     beforeAll(async () => {

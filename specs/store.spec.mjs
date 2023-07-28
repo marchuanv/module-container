@@ -1,4 +1,4 @@
-import { Store } from '../../lib/registry.mjs';
+import { Store } from '../lib/registry.mjs';
 describe('when-activating-store', () => {
     let store;
     beforeAll(async () => {

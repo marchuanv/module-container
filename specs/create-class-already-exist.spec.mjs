@@ -1,5 +1,5 @@
 import utils from 'utils';
-import { v1Endpoints, UserSession } from '../../../../lib/registry.mjs';
+import { v1Endpoints, UserSession } from '../lib/registry.mjs';
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
 describe('when getting a class from the store given that the file exists', () => {
     let sessionAuthToken;
