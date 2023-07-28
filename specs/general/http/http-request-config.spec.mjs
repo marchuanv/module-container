@@ -1,5 +1,5 @@
 import { SpecsHelper } from '../../specs-helper.mjs';
-fdescribe('when making a request for getting config given a started active object server', () => {
+describe('when making a request for getting config given a started active object server', () => {
     it('should instruct route to handle the request and respond with config not found', async () => {
         const response = await SpecsHelper.activeObjectServerHttpGetConfig();
         const content = await response.json();
@@ -9,7 +9,7 @@ fdescribe('when making a request for getting config given a started active objec
         expect(content.message).toBe('active-object-config.json was not found');
     });
 });
-fdescribe('when making a request for getting config given a started active object server and config exists', () => {
+describe('when making a request for getting config given a started active object server and config exists', () => {
     it('should instruct route to handle the request and respond with config found', async () => {
         const response = await SpecsHelper.activeObjectServerHttpGetConfigExists();
         const content = await response.text();
@@ -19,7 +19,7 @@ fdescribe('when making a request for getting config given a started active objec
         expect(content).toBe('{\n    \"message\": \"Success\",\n    \"content\": {\n        \"className\": \"HelloWorld\",\n        \"language\": \"JavaScript\",\n        \"dependencyInjection\": false\n    }\n}');
     });
 });
-fdescribe('when making a request for creating config given a started active object server', () => {
+describe('when making a request for creating config given a started active object server', () => {
     it('should instruct route to handle the request and respond with config created', async () => {
         const response = await SpecsHelper.activeObjectServerHttpCreateConfig();
         const content = await response.json();
@@ -29,7 +29,7 @@ fdescribe('when making a request for creating config given a started active obje
         expect(content.message).toBe('active-object-config.json was created');
     });
 });
-fdescribe('when making a request for creating config given a started active object server and config exists', () => {
+describe('when making a request for creating config given a started active object server and config exists', () => {
     it('should instruct route to handle the request and respond with config exists', async () => {
         const response = await SpecsHelper.activeObjectServerHttpCreateConfigExists();
         const content = await response.json();
@@ -39,7 +39,7 @@ fdescribe('when making a request for creating config given a started active obje
         expect(content.message).toBe('active-object-config.json already exist');
     });
 });
-fdescribe('when making a request for deleting config given a started active object server', () => {
+describe('when making a request for deleting config given a started active object server', () => {
     it('should instruct route to handle the request and respond with config not found', async () => {
         const response = await SpecsHelper.activeObjectServerHttpDeleteConfig();
         const content = await response.json();
@@ -49,7 +49,7 @@ fdescribe('when making a request for deleting config given a started active obje
         expect(content.message).toBe('active-object-config.json was not found');
     });
 });
-fdescribe('when making a request for deleting config given a started active object server and config exists', () => {
+describe('when making a request for deleting config given a started active object server and config exists', () => {
     it('should instruct route to handle the request and respond with config deleted', async () => {
         const response = await SpecsHelper.activeObjectServerHttpDeleteConfigExists();
         const content = await response.json();
