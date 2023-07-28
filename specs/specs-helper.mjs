@@ -53,8 +53,10 @@ export class SpecsHelper {
         return new Route(args);
     }
 
-    static async activeObjectServerHttpGetConfig(args = { username: 'Joe', passphrase: 'Joe1234' }) {
-        await SpecsHelper.clearStore({ filePath: 'active-object-config.json' });
+    static async activeObjectServerHttpGetConfig(clearStore = true, args = { username: 'Joe', passphrase: 'Joe1234' }) {
+        if (clearStore) { 
+            await SpecsHelper.clearStore({ filePath: 'active-object-config.json' });
+        }
         const sessionAuthToken = await SpecsHelper.getUserSessionToken(args);
         const url = `http://localhost:${process.env.PORT || 80}/api/v1/config/get`;
         const headers = { username: args.username, sessionAuthToken };
@@ -65,8 +67,10 @@ export class SpecsHelper {
         await server.stop();
         return response;
     }
-    static async activeObjectServerHttpCreateConfig(args = { username: 'Joe', passphrase: 'Joe1234', content: { className: 'HelloWorld', language: 'JavaScript', dependencyInjection: false } }) {
-        await SpecsHelper.clearStore({ filePath: 'active-object-config.json' });
+    static async activeObjectServerHttpCreateConfig(clearStore = true, args = { username: 'Joe', passphrase: 'Joe1234', content: { className: 'HelloWorld', language: 'JavaScript', dependencyInjection: false } }) {
+        if (clearStore) { 
+            await SpecsHelper.clearStore({ filePath: 'active-object-config.json' });
+        }
         const sessionAuthToken = await SpecsHelper.getUserSessionToken(args);
         const url = `http://localhost:${process.env.PORT || 80}/api/v1/config/create`;
         const headers = { username: args.username, sessionAuthToken };
@@ -77,8 +81,10 @@ export class SpecsHelper {
         await server.stop();
         return response;
     }
-    static async activeObjectServerHttpDeleteConfig(args = { username: 'Joe', passphrase: 'Joe1234' }) {
-        await SpecsHelper.clearStore({ filePath: 'active-object-config.json' });
+    static async activeObjectServerHttpDeleteConfig(clearStore = true, args = { username: 'Joe', passphrase: 'Joe1234' }) {
+        if (clearStore) {
+            await SpecsHelper.clearStore({ filePath: 'active-object-config.json' });
+        }
         const sessionAuthToken = await SpecsHelper.getUserSessionToken(args);
         const url = `http://localhost:${process.env.PORT || 80}/api/v1/config/delete`;
         const headers = { username: args.username, sessionAuthToken };
@@ -88,6 +94,18 @@ export class SpecsHelper {
         const response = await fetch(url, { method, headers, body: JSON.stringify(args.content) });
         await server.stop();
         return response;
+    }
+    static async activeObjectServerHttpGetConfigExists() {
+        await SpecsHelper.activeObjectServerHttpCreateConfig(true);
+        return await SpecsHelper.activeObjectServerHttpGetConfig(false);
+    }
+    static async activeObjectServerHttpCreateConfigExists() {
+        await SpecsHelper.activeObjectServerHttpCreateConfig(true);
+        return SpecsHelper.activeObjectServerHttpCreateConfig(false);
+    }
+    static async activeObjectServerHttpDeleteConfigExists() {
+        await SpecsHelper.activeObjectServerHttpCreateConfig(true);
+        return await SpecsHelper.activeObjectServerHttpDeleteConfig(false);
     }
 
     static async activeObjectServerHttpGetClass(clearStore = true, args = { username: 'Joe', passphrase: 'Joe1234' }) {
