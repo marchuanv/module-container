@@ -9,7 +9,7 @@ fdescribe('when getting a class given a route and class does not exist', () => {
         expect(response.content).toBe('{\n    "message": "active-object-class.js was not found"\n}');
     });
 });
-fdescribe('when getting a class given a route and class does exist', () => {
+describe('when getting a class given a route and class does exist', () => {
     it('should instruct the get class endpoint to handle the request and return a success response', async () => {
         const route = await SpecsHelper.ctorGetClassRouteExists();
         const response = await route.handle();
