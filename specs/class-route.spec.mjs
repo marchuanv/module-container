@@ -1,5 +1,5 @@
 import { SpecsHelper } from './specs-helper.mjs';
-fdescribe('when getting a class given a route and class does not exist', () => {
+describe('when getting a class given a route and class does not exist', () => {
     it('should instruct the get class endpoint to handle the request and return a not found response', async () => {
         const route = await SpecsHelper.ctorGetClassRoute();
         const response = await route.handle();
