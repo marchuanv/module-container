@@ -1,4 +1,4 @@
-import { UserSession, Store, Route, ActiveObjectServer } from '../lib/registry.mjs';
+import { UserSession, Store, Route, ActiveObjectServer, v1Endpoints } from '../lib/registry.mjs';
 export class SpecsHelper {
     static async getStoreToken() {
         return process.env.GIT;
@@ -26,31 +26,53 @@ export class SpecsHelper {
         const store = new Store({ filePath, storeAuthToken: process.env.GIT });
         await store.remove();
     }
-    static async ctorGetConfigRoute(args = { username: 'Joe', passphrase: 'Joe1234' }) {
+    static async ctorGetConfigRoute(clearStore = true, args = { username: 'Joe', passphrase: 'Joe1234' }) {
+        if (clearStore) { 
+            await SpecsHelper.clearStore({ filePath: 'active-object-config.json' });
+        }
         args.sessionAuthToken = await SpecsHelper.getUserSessionToken(args);
         args.path = '/api/v1/config/get';
         args.storeAuthToken = await SpecsHelper.getStoreToken();
         return new Route(args);
     }
-    static async ctorGetClassRoute(args = { username: 'Joe', passphrase: 'Joe1234' }) {
+    static async ctorCreateConfigRoute(clearStore = true, args = { username: 'Joe', passphrase: 'Joe1234', content: { className: 'HelloWorld', language: 'JavaScript', dependencyInjection: false } }) {
+        if (clearStore) { 
+            await SpecsHelper.clearStore({ filePath: 'active-object-config.json' });
+        }
+        args.sessionAuthToken = await SpecsHelper.getUserSessionToken(args);
+        args.path = '/api/v1/config/create';
+        args.storeAuthToken = await SpecsHelper.getStoreToken();
+        args.content = JSON.stringify(args.content);
+        return new Route(args);
+    }
+    static async ctorGetClassRoute(clearStore = true, args = { username: 'Joe', passphrase: 'Joe1234' }) {
+        if (clearStore) { 
+            await SpecsHelper.clearStore({ filePath: 'active-object-class.js' });
+        }
         args.sessionAuthToken = await SpecsHelper.getUserSessionToken(args);
         args.path = '/api/v1/class/get';
         args.storeAuthToken = await SpecsHelper.getStoreToken();
         return new Route(args);
     }
-    static async ctorCreateConfigRoute(args = { username: 'Joe', passphrase: 'Joe1234', content: { className: 'HelloWorld', language: 'JavaScript', dependencyInjection: false } }) {
-        args.sessionAuthToken = await SpecsHelper.getUserSessionToken(args);
-        args.path = '/api/v1/config/create';
-        args.storeAuthToken = await SpecsHelper.getStoreToken();
-        args.content = JSON.stringify(content);
-        return new Route(args);
-    }
-    static async ctorCreateClassRoute(args = { username: 'Joe', passphrase: 'Joe1234', content: `class HelloWorld { sayHello() { console.log("hello"); }}` }) {
+    static async ctorCreateClassRoute(clearStore = true, args = { username: 'Joe', passphrase: 'Joe1234', content: `class HelloWorld { sayHello() { console.log("hello"); }}` }) {
+        if (clearStore) { 
+            await SpecsHelper.clearStore({ filePath: 'active-object-class.js' });
+        }
         args.sessionAuthToken = await SpecsHelper.getUserSessionToken(args);
         args.path = '/api/v1/class/create';
         args.storeAuthToken = await SpecsHelper.getStoreToken();
-        args.content = JSON.stringify(content);
         return new Route(args);
+    }
+
+    static async ctorGetConfigRouteExists() {
+        const route = await SpecsHelper.ctorCreateConfigRoute(true);
+        await route.handle();
+        return SpecsHelper.ctorGetConfigRoute(false);
+    }
+    static async ctorGetClassRouteExists() {
+        const route = await SpecsHelper.ctorCreateClassRoute(true);
+        await route.handle();
+        return SpecsHelper.ctorGetClassRoute(false);
     }
 
     static async activeObjectServerHttpGetConfig(clearStore = true, args = { username: 'Joe', passphrase: 'Joe1234' }) {
@@ -161,5 +183,92 @@ export class SpecsHelper {
     static async activeObjectServerHttpDeleteClassExists() {
         await SpecsHelper.activeObjectServerHttpCreateClass(true);
         return await SpecsHelper.activeObjectServerHttpDeleteClass(false);
+    }
+
+    static async ctorCreateConfigEndpoint(clearStore = true, args = { username: 'Joe', passphrase: 'Joe1234', content: { className: 'HelloWorld', language: 'JavaScript', dependencyInjection: false } }) {
+        if (clearStore) {
+            await SpecsHelper.clearStore({ filePath: 'active-object-config.json' });
+        }
+        args.sessionAuthToken = await SpecsHelper.getUserSessionToken(args);
+        args.storeAuthToken = await SpecsHelper.getStoreToken();
+        args.path = '/api/v1/config/create';
+        args.content = JSON.stringify(args.content);
+        return new v1Endpoints.CreateConfigEndpoint(args);
+    }
+    static async ctorGetConfigEndpoint(clearStore = true, args = { username: 'Joe', passphrase: 'Joe1234' }) {
+        if (clearStore) { 
+            await SpecsHelper.clearStore({ filePath: 'active-object-config.json' });
+        }
+        args.sessionAuthToken = await SpecsHelper.getUserSessionToken(args);
+        args.storeAuthToken = await SpecsHelper.getStoreToken();
+        args.path = '/api/v1/config/get';
+        return new v1Endpoints.GetConfigEndpoint(args);
+    }
+    static async ctorDeleteConfigEndpoint(clearStore = true, args = { username: 'Joe', passphrase: 'Joe1234' }) {
+        if (clearStore) { 
+            await SpecsHelper.clearStore({ filePath: 'active-object-config.json' });
+        }
+        args.sessionAuthToken = await SpecsHelper.getUserSessionToken(args);
+        args.storeAuthToken = await SpecsHelper.getStoreToken();
+        args.path = '/api/v1/config/delete';
+        return new v1Endpoints.DeleteConfigEndpoint(args);
+    }
+    static async ctorCreateConfigEndpointExists() {
+        const endpoint = await SpecsHelper.ctorCreateConfigEndpoint(true);
+        const response = await endpoint.handle();
+        return await SpecsHelper.ctorCreateConfigEndpoint(false);
+    }
+    static async ctorGetConfigEndpointExists() {
+        const endpoint = await SpecsHelper.ctorCreateConfigEndpoint(true);
+        await endpoint.handle();
+        return await SpecsHelper.ctorGetConfigEndpoint(false);
+    }
+    static async ctorDeleteConfigEndpointExists() {
+        const endpoint = await SpecsHelper.ctorCreateConfigEndpoint(true);
+        await endpoint.handle();
+        return await SpecsHelper.ctorDeleteConfigEndpoint(false);
+    }
+    
+    static async ctorCreateClassEndpoint(clearStore = true, args = { username: 'Joe', passphrase: 'Joe1234', content: `class HelloWorld { sayHello() { console.log("hello"); }}` }) {
+        if (clearStore) {
+            await SpecsHelper.clearStore({ filePath: 'active-object-class.js' });
+        }
+        args.sessionAuthToken = await SpecsHelper.getUserSessionToken(args);
+        args.storeAuthToken = await SpecsHelper.getStoreToken();
+        args.path = '/api/v1/class/create';
+        return new v1Endpoints.CreateClassEndpoint(args);
+    }
+    static async ctorGetClassEndpoint(clearStore = true, args = { username: 'Joe', passphrase: 'Joe1234' }) {
+        if (clearStore) { 
+            await SpecsHelper.clearStore({ filePath: 'active-object-class.js' });
+        }
+        args.sessionAuthToken = await SpecsHelper.getUserSessionToken(args);
+        args.storeAuthToken = await SpecsHelper.getStoreToken();
+        args.path = '/api/v1/class/get';
+        return new v1Endpoints.GetClassEndpoint(args);
+    }
+    static async ctorDeleteClassEndpoint(clearStore = true, args = { username: 'Joe', passphrase: 'Joe1234' }) {
+        if (clearStore) { 
+            await SpecsHelper.clearStore({ filePath: 'active-object-class.js' });
+        }
+        args.sessionAuthToken = await SpecsHelper.getUserSessionToken(args);
+        args.storeAuthToken = await SpecsHelper.getStoreToken();
+        args.path = '/api/v1/class/delete';
+        return new v1Endpoints.DeleteClassEndpoint(args);
+    }
+    static async ctorCreateClassEndpointExists() {
+        const endpoint = await SpecsHelper.ctorCreateClassEndpoint(true);
+        const response = await endpoint.handle();
+        return await SpecsHelper.ctorCreateClassEndpoint(false);
+    }
+    static async ctorGetClassEndpointExists() {
+        const endpoint = await SpecsHelper.ctorCreateClassEndpoint(true);
+        await endpoint.handle();
+        return await SpecsHelper.ctorGetClassEndpoint(false);
+    }
+    static async ctorDeleteClassEndpointExists() {
+        const endpoint = await SpecsHelper.ctorCreateClassEndpoint(true);
+        await endpoint.handle();
+        return await SpecsHelper.ctorDeleteClassEndpoint(false);
     }
 }

@@ -16,7 +16,7 @@ for (let i = 0; i < 2; i++) {
         it('should return a security error', () => {
             expect(returnValue).not.toBeDefined();
             expect(error).toBeDefined();
-            expect(error.message).toContain(`server member is private for ActiveObjectServer`);
+            expect(error.message).toBe('server member is private for ActiveObjectServer');
         });
     });
     describe('when accessing a private member of the GithubMock class from a different context given that the class is configured as a singleton', () => {

@@ -32,7 +32,12 @@ class ContainerTest extends Container {
                     },
                     args: {}
                 }
-            }
+            },
+            behaviour: {
+                singleton: false,
+                errorHalt: true
+            },
+            mocks: {}
         });
     }
     async doSomething() {
