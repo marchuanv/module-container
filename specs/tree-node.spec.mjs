@@ -1,31 +1,32 @@
-import { ContainerConfigNode, ObjectNodeTemplate } from '../lib/container/object-tree.mjs';
+import { ContainerConfig, ContainerConfigTemplate } from '../lib/container/container-config.mjs';
 import { Github, GithubMock } from '../lib/registry.mjs';
 fdescribe('when creating a', () => {
     it('should', () => {
-        const configTemplate = new ObjectNodeTemplate('container', [
-            new ObjectNodeTemplate('members', [
-                new ObjectNodeTemplate('any', [
-                    new ObjectNodeTemplate('class', {}),
-                    new ObjectNodeTemplate('args', {})
+        const containerConfigTemplate = new ContainerConfigTemplate('container', [
+            new ContainerConfigTemplate('members', [
+                new ContainerConfigTemplate('any', [
+                    new ContainerConfigTemplate('class', {}),
+                    new ContainerConfigTemplate('args', {})
                 ]),
-                new ObjectNodeTemplate('any', [
-                    new ObjectNodeTemplate('value', {})
+                new ContainerConfigTemplate('any', [
+                    new ContainerConfigTemplate('value', {})
                 ]),
-                new ObjectNodeTemplate('any', [
-                    new ObjectNodeTemplate('callback', {}),
-                    new ObjectNodeTemplate('args', {})
+                new ContainerConfigTemplate('any', [
+                    new ContainerConfigTemplate('callback', {}),
+                    new ContainerConfigTemplate('args', {})
                 ])
             ]),
-            new ObjectNodeTemplate('behavior', [
-                new ObjectNodeTemplate('singleton', false),
-                new ObjectNodeTemplate('errorHalt', true)
+            new ContainerConfigTemplate('behavior', [
+                new ContainerConfigTemplate('singleton', false),
+                new ContainerConfigTemplate('errorHalt', true)
             ]),
-            new ObjectNodeTemplate('mocks', [
-                new ObjectNodeTemplate('class', {}),
-                new ObjectNodeTemplate('classMock', {}),
-                new ObjectNodeTemplate('args', {})
+            new ContainerConfigTemplate('mocks', [
+                new ContainerConfigTemplate('class', {}),
+                new ContainerConfigTemplate('classMock', {}),
+                new ContainerConfigTemplate('args', {})
             ])
         ]);
+        // console.log(containerConfigTemplate.toString());
         const containerConfig = {
             container: {
                 members: {
@@ -59,7 +60,7 @@ fdescribe('when creating a', () => {
                 }
             }
         };
-        const containerConfigNode = new ContainerConfigNode(containerConfig, configTemplate);
-        console.log(containerConfigNode.toString());
+        const config = new ContainerConfig('root', containerConfig);
+        console.log(config.toString());
     });
 });
