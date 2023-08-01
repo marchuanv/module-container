@@ -1,11 +1,6 @@
 import { TreeNode, TreeNodeTemplate } from '../lib/container/tree-node.mjs';
 fdescribe('when creating a', () => {
-    it('should', async () => {
-        const config = {
-            members: {},
-            behavior: {},
-            mocks: {}
-        }
+    it('should', (done) => {
         const containerConfig = new TreeNodeTemplate('container', [
             new TreeNodeTemplate('members', [
                 new TreeNodeTemplate('any', [
@@ -34,12 +29,10 @@ fdescribe('when creating a', () => {
         ]);
 
         let child = containerConfig.child;
-        do {
-            expect(child).toBeDefined();
-            console.log();
-            console.log(`name: ${child.name}, value: ${child.value}`);
+        while (child) {
+            console.log(child.toString());
             child = child.child;
-        } while (child)
+        }
 
         // const node = new TreeNode(config, containerConfig);
         // if (node.matchTemplate()) {
