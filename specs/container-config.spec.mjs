@@ -3,7 +3,7 @@ import { Github, GithubMock } from '../lib/registry.mjs';
 import utils from 'utils'
 fdescribe('when creating a', () => {
     it('should', () => {
-        const containerConfigTemplate = new ContainerConfigTemplate('container', [
+        const containerConfigTemplate = new ContainerConfigTemplate('root', new ContainerConfigTemplate('container', [
             new ContainerConfigTemplate('members', [
                 new ContainerConfigTemplate('any', [
                     new ContainerConfigTemplate('class', {}),
@@ -26,9 +26,8 @@ fdescribe('when creating a', () => {
                 new ContainerConfigTemplate('classMock', {}),
                 new ContainerConfigTemplate('args', {})
             ])
-        ]);
-        // console.log(containerConfigTemplate.toString());
-        const containerConfig = {
+        ]));
+        const config = {
             container: {
                 members: {
                     github: {
@@ -64,7 +63,7 @@ fdescribe('when creating a', () => {
                 }
             }
         };
-        const config = new ContainerConfig('root', containerConfig);
-        console.log(config.toString());
+        const containerConfig = new ContainerConfig(containerConfigTemplate, config);
+        console.log(containerConfig.toString());
     });
 });
