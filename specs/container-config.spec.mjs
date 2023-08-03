@@ -1,5 +1,6 @@
 import { ContainerConfig, ContainerConfigTemplate } from '../lib/container/container-config.mjs';
 import { Github, GithubMock } from '../lib/registry.mjs';
+import utils from 'utils'
 fdescribe('when creating a', () => {
     it('should', () => {
         const containerConfigTemplate = new ContainerConfigTemplate('container', [
@@ -46,6 +47,9 @@ fdescribe('when creating a', () => {
                     jsonFileNameExp: {
                         value: /^.json$/g
                     },
+                    utils: {
+                        value: utils
+                    }
                 },
                 mocks: {
                     githubMock: {
