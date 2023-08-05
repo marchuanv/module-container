@@ -3,7 +3,7 @@ import { Github, GithubMock } from '../lib/registry.mjs';
 import utils from 'utils'
 fdescribe('when creating a', () => {
     it('should', () => {
-        const containerConfigTemplate = new ContainerConfigTemplate('root', new ContainerConfigTemplate('container', [
+        const containerConfigTemplate = new ContainerConfigTemplate('root', [new ContainerConfigTemplate('container', [
             new ContainerConfigTemplate('members', [
                 new ContainerConfigTemplate('any', [
                     new ContainerConfigTemplate('class', {}),
@@ -22,44 +22,48 @@ fdescribe('when creating a', () => {
                 new ContainerConfigTemplate('errorHalt', true)
             ]),
             new ContainerConfigTemplate('mocks', [
-                new ContainerConfigTemplate('class', {}),
-                new ContainerConfigTemplate('classMock', {}),
-                new ContainerConfigTemplate('args', {})
+                new ContainerConfigTemplate('any', [
+                    new ContainerConfigTemplate('class', {}),
+                    new ContainerConfigTemplate('classMock', {}),
+                    new ContainerConfigTemplate('args', {})
+                ])
             ])
-        ]));
+        ])]);
         const config = {
-            container: {
-                members: {
-                    github: {
-                        class: { Github },
-                        args: { auth: 'storeAuthToken' }
+            root: {
+                container: {
+                    members: {
+                        github: {
+                            class: { Github },
+                            args: { auth: 'storeAuthToken' }
+                        },
+                        branchName: {
+                            value: 'branchName'
+                        },
+                        fileName: {
+                            value: 'fileName'
+                        },
+                        jsFileNameExp: {
+                            value: /^.js$/g
+                        },
+                        jsonFileNameExp: {
+                            value: /^.json$/g
+                        },
+                        utils: {
+                            value: utils
+                        }
                     },
-                    branchName: {
-                        value: 'branchName'
+                    mocks: {
+                        githubMock: {
+                            class: { Github },
+                            classMock: { GithubMock },
+                            args: { auth: 'storeAuthToken' }
+                        }
                     },
-                    fileName: {
-                        value: 'fileName'
-                    },
-                    jsFileNameExp: {
-                        value: /^.js$/g
-                    },
-                    jsonFileNameExp: {
-                        value: /^.json$/g
-                    },
-                    utils: {
-                        value: utils
+                    behaviour: {
+                        singleton: false,
+                        errorHalt: false
                     }
-                },
-                mocks: {
-                    githubMock: {
-                        class: { Github },
-                        mockClass: { GithubMock },
-                        args: { auth: 'storeAuthToken' }
-                    }
-                },
-                behaviour: {
-                    singleton: false,
-                    errorHalt: false
                 }
             }
         };
