@@ -68,15 +68,11 @@ fdescribe('when creating a', () => {
             }
         };
         const containerConfig = new ContainerConfig(containerConfigTemplate, config);
-        containerConfig.reset();
-        let node = containerConfig;
-        while (node) {
-            console.log(`peeking at ${node.key}`);
+        containerConfig.walkTree((node) => {
             if (node.key === 'class') {
                 console.log(node.Id);
                 console.log(node.value);
             }
-            node = node.nextChild;
-        }
+        });
     });
 });
