@@ -1,7 +1,7 @@
 import { ContainerConfig, ContainerConfigTemplate } from '../lib/container/container-config.mjs';
 import { Github, GithubMock } from '../lib/registry.mjs';
 import utils from 'utils'
-fdescribe('when creating a', () => {
+describe('when creating a', () => {
     it('should', () => {
         const containerConfigTemplate = new ContainerConfigTemplate('root', [new ContainerConfigTemplate('container', [
             new ContainerConfigTemplate('members', [
@@ -67,12 +67,6 @@ fdescribe('when creating a', () => {
                 }
             }
         };
-        const containerConfig = new ContainerConfig(containerConfigTemplate, config);
-        containerConfig.walkTree((node) => {
-            if (node.key === 'value') {
-                console.log(node.Id);
-                console.log(node.value);
-            }
-        });
+       new ContainerConfig(containerConfigTemplate, config);
     });
 });
