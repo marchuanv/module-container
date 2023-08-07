@@ -24,7 +24,7 @@ describe('when creating a', () => {
             new ContainerConfigTemplate('mocks', [
                 new ContainerConfigTemplate('any', [
                     new ContainerConfigTemplate('class', {}),
-                    new ContainerConfigTemplate('classMock', {}),
+                    new ContainerConfigTemplate('mockClass', {}),
                     new ContainerConfigTemplate('args', {})
                 ])
             ])
@@ -56,7 +56,7 @@ describe('when creating a', () => {
                     mocks: {
                         githubMock: {
                             class: { Github },
-                            classMock: { GithubMock },
+                            mockClass: { GithubMock },
                             args: { auth: 'storeAuthToken' }
                         }
                     },

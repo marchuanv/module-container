@@ -14,30 +14,34 @@ class ContainerTestDependency {
 class ContainerTest extends Container {
     constructor() {
         super({
-            members: {
-                containerTestDependency: {
-                    class: { ContainerTestDependency },
-                    args: {
-                        someArg: 'Hello World'
-                    }
-                },
-                finished: {
-                    value: false
-                },
-                someFunc: {
-                    callback: async () => {
-                        const logging = await this.logging;
-                        await logging.log('create delay');
-                        this.finished = true;
+            root: {
+                container: {
+                    members: {
+                        containerTestDependency: {
+                            class: { ContainerTestDependency },
+                            args: {
+                                someArg: 'Hello World'
+                            }
+                        },
+                        finished: {
+                            value: false
+                        },
+                        someFunc: {
+                            callback: async () => {
+                                const logging = await this.logging;
+                                await logging.log('create delay');
+                                this.finished = true;
+                            },
+                            args: {}
+                        }
                     },
-                    args: {}
+                    behaviour: {
+                        singleton: false,
+                        errorHalt: true
+                    },
+                    mocks: {}
                 }
-            },
-            behaviour: {
-                singleton: false,
-                errorHalt: true
-            },
-            mocks: {}
+            }
         });
     }
     async doSomething() {
