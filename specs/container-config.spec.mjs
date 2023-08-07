@@ -69,7 +69,7 @@ fdescribe('when creating a', () => {
         };
         const containerConfig = new ContainerConfig(containerConfigTemplate, config);
         containerConfig.walkTree((node) => {
-            if (node.key === 'class') {
+            if (node.key === 'value') {
                 console.log(node.Id);
                 console.log(node.value);
             }
