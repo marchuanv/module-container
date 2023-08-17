@@ -1,4 +1,6 @@
 import { UserSession, Store, Route, ActiveObjectServer, v1Endpoints, GithubMock } from '../lib/registry.mjs';
+import http from 'node:http';
+const httpServer = http.createServer();
 export class SpecsHelper {
     static async getStoreToken() {
         return process.env.GIT;
@@ -35,7 +37,7 @@ export class SpecsHelper {
         await store.remove();
     }
     static async ctorActiveObjectServer() {
-        return new ActiveObjectServer();
+        return new ActiveObjectServer({ httpServer });
     }
     static async ctorGithubMock() {
         return new GithubMock();
@@ -97,7 +99,7 @@ export class SpecsHelper {
         const url = `http://localhost:${process.env.PORT || 80}/api/v1/config/get`;
         const headers = { username: args.username, sessionAuthToken };
         const method = 'GET';
-        const server = new ActiveObjectServer();
+        const server = await SpecsHelper.ctorActiveObjectServer();
         await server.start();
         const response = await fetch(url, { method, headers });
         await server.stop();
@@ -111,7 +113,7 @@ export class SpecsHelper {
         const url = `http://localhost:${process.env.PORT || 80}/api/v1/config/create`;
         const headers = { username: args.username, sessionAuthToken };
         const method = 'PUT';
-        const server = new ActiveObjectServer();
+        const server = await SpecsHelper.ctorActiveObjectServer();
         await server.start();
         const response = await fetch(url, { method, headers, body: JSON.stringify(args.content) });
         await server.stop();
@@ -125,7 +127,7 @@ export class SpecsHelper {
         const url = `http://localhost:${process.env.PORT || 80}/api/v1/config/delete`;
         const headers = { username: args.username, sessionAuthToken };
         const method = 'DELETE';
-        const server = new ActiveObjectServer();
+        const server = await SpecsHelper.ctorActiveObjectServer();
         await server.start();
         const response = await fetch(url, { method, headers, body: JSON.stringify(args.content) });
         await server.stop();
@@ -152,7 +154,7 @@ export class SpecsHelper {
         const url = `http://localhost:${process.env.PORT || 80}/api/v1/class/get`;
         const headers = { username: args.username, sessionAuthToken };
         const method = 'GET';
-        const server = new ActiveObjectServer();
+        const server = await SpecsHelper.ctorActiveObjectServer();
         await server.start();
         const response = await fetch(url, { method, headers });
         await server.stop();
@@ -166,7 +168,7 @@ export class SpecsHelper {
         const url = `http://localhost:${process.env.PORT || 80}/api/v1/class/create`;
         const headers = { username: args.username, sessionAuthToken };
         const method = 'PUT';
-        const server = new ActiveObjectServer();
+        const server = await SpecsHelper.ctorActiveObjectServer();
         await server.start();
         const response = await fetch(url, { method, headers, body: args.content });
         await server.stop();
@@ -180,7 +182,7 @@ export class SpecsHelper {
         const url = `http://localhost:${process.env.PORT || 80}/api/v1/class/delete`;
         const headers = { username: args.username, sessionAuthToken };
         const method = 'DELETE';
-        const server = new ActiveObjectServer();
+        const server = await SpecsHelper.ctorActiveObjectServer();
         await server.start();
         const response = await fetch(url, { method, headers, body: args.content });
         await server.stop();
