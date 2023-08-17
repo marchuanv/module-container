@@ -1,6 +1,6 @@
 import { SpecsHelper } from './specs-helper.mjs';
 
-fdescribe('when making a request for get class given a started active object server', () => {
+describe('when making a request for get class given a started active object server', () => {
     it('should instruct route to handle the request and respond with class not found', async () => {
         const response = await SpecsHelper.activeObjectServerHttpGetClass();
         const content = await response.json();
