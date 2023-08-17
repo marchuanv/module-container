@@ -1,4 +1,4 @@
-import { UserSession, Store, Route, ActiveObjectServer, v1Endpoints } from '../lib/registry.mjs';
+import { UserSession, Store, Route, ActiveObjectServer, v1Endpoints, GithubMock } from '../lib/registry.mjs';
 export class SpecsHelper {
     static async getStoreToken() {
         return process.env.GIT;
@@ -26,8 +26,14 @@ export class SpecsHelper {
         const store = new Store({ filePath, storeAuthToken: process.env.GIT });
         await store.remove();
     }
+    static async ctorActiveObjectServer() {
+        return new ActiveObjectServer();
+    }
+    static async ctorGithubMock() {
+        return new GithubMock();
+    }
     static async ctorGetConfigRoute(clearStore = true, args = { username: 'Joe', passphrase: 'Joe1234' }) {
-        if (clearStore) { 
+        if (clearStore) {
             await SpecsHelper.clearStore({ filePath: 'active-object-config.json' });
         }
         args.sessionAuthToken = await SpecsHelper.getUserSessionToken(args);
@@ -36,7 +42,7 @@ export class SpecsHelper {
         return new Route(args);
     }
     static async ctorCreateConfigRoute(clearStore = true, args = { username: 'Joe', passphrase: 'Joe1234', content: { className: 'HelloWorld', language: 'JavaScript', dependencyInjection: false } }) {
-        if (clearStore) { 
+        if (clearStore) {
             await SpecsHelper.clearStore({ filePath: 'active-object-config.json' });
         }
         args.sessionAuthToken = await SpecsHelper.getUserSessionToken(args);
@@ -46,7 +52,7 @@ export class SpecsHelper {
         return new Route(args);
     }
     static async ctorGetClassRoute(clearStore = true, args = { username: 'Joe', passphrase: 'Joe1234' }) {
-        if (clearStore) { 
+        if (clearStore) {
             await SpecsHelper.clearStore({ filePath: 'active-object-class.js' });
         }
         args.sessionAuthToken = await SpecsHelper.getUserSessionToken(args);
@@ -55,7 +61,7 @@ export class SpecsHelper {
         return new Route(args);
     }
     static async ctorCreateClassRoute(clearStore = true, args = { username: 'Joe', passphrase: 'Joe1234', content: `class HelloWorld { sayHello() { console.log("hello"); }}` }) {
-        if (clearStore) { 
+        if (clearStore) {
             await SpecsHelper.clearStore({ filePath: 'active-object-class.js' });
         }
         args.sessionAuthToken = await SpecsHelper.getUserSessionToken(args);
@@ -76,7 +82,7 @@ export class SpecsHelper {
     }
 
     static async activeObjectServerHttpGetConfig(clearStore = true, args = { username: 'Joe', passphrase: 'Joe1234' }) {
-        if (clearStore) { 
+        if (clearStore) {
             await SpecsHelper.clearStore({ filePath: 'active-object-config.json' });
         }
         const sessionAuthToken = await SpecsHelper.getUserSessionToken(args);
@@ -90,7 +96,7 @@ export class SpecsHelper {
         return response;
     }
     static async activeObjectServerHttpCreateConfig(clearStore = true, args = { username: 'Joe', passphrase: 'Joe1234', content: { className: 'HelloWorld', language: 'JavaScript', dependencyInjection: false } }) {
-        if (clearStore) { 
+        if (clearStore) {
             await SpecsHelper.clearStore({ filePath: 'active-object-config.json' });
         }
         const sessionAuthToken = await SpecsHelper.getUserSessionToken(args);
@@ -196,7 +202,7 @@ export class SpecsHelper {
         return new v1Endpoints.CreateConfigEndpoint(args);
     }
     static async ctorGetConfigEndpoint(clearStore = true, args = { username: 'Joe', passphrase: 'Joe1234' }) {
-        if (clearStore) { 
+        if (clearStore) {
             await SpecsHelper.clearStore({ filePath: 'active-object-config.json' });
         }
         args.sessionAuthToken = await SpecsHelper.getUserSessionToken(args);
@@ -205,7 +211,7 @@ export class SpecsHelper {
         return new v1Endpoints.GetConfigEndpoint(args);
     }
     static async ctorDeleteConfigEndpoint(clearStore = true, args = { username: 'Joe', passphrase: 'Joe1234' }) {
-        if (clearStore) { 
+        if (clearStore) {
             await SpecsHelper.clearStore({ filePath: 'active-object-config.json' });
         }
         args.sessionAuthToken = await SpecsHelper.getUserSessionToken(args);
@@ -228,7 +234,7 @@ export class SpecsHelper {
         await endpoint.handle();
         return await SpecsHelper.ctorDeleteConfigEndpoint(false);
     }
-    
+
     static async ctorCreateClassEndpoint(clearStore = true, args = { username: 'Joe', passphrase: 'Joe1234', content: `class HelloWorld { sayHello() { console.log("hello"); }}` }) {
         if (clearStore) {
             await SpecsHelper.clearStore({ filePath: 'active-object-class.js' });
@@ -239,7 +245,7 @@ export class SpecsHelper {
         return new v1Endpoints.CreateClassEndpoint(args);
     }
     static async ctorGetClassEndpoint(clearStore = true, args = { username: 'Joe', passphrase: 'Joe1234' }) {
-        if (clearStore) { 
+        if (clearStore) {
             await SpecsHelper.clearStore({ filePath: 'active-object-class.js' });
         }
         args.sessionAuthToken = await SpecsHelper.getUserSessionToken(args);
@@ -248,7 +254,7 @@ export class SpecsHelper {
         return new v1Endpoints.GetClassEndpoint(args);
     }
     static async ctorDeleteClassEndpoint(clearStore = true, args = { username: 'Joe', passphrase: 'Joe1234' }) {
-        if (clearStore) { 
+        if (clearStore) {
             await SpecsHelper.clearStore({ filePath: 'active-object-class.js' });
         }
         args.sessionAuthToken = await SpecsHelper.getUserSessionToken(args);
