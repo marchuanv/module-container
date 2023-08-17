@@ -1,35 +1,11 @@
-import { ContainerConfig, ContainerConfigTemplate } from '../lib/container/container-config.mjs';
+import { ContainerConfig } from "../lib/container/container-config.mjs";
+import { ContainerConfigTemplate } from "../lib/container/container-config-template.mjs";
 import { Github, GithubMock } from '../lib/registry.mjs';
 import utils from 'utils'
 describe('when creating a', () => {
     it('should', () => {
-        const containerConfigTemplate = new ContainerConfigTemplate('root', [new ContainerConfigTemplate('container', [
-            new ContainerConfigTemplate('members', [
-                new ContainerConfigTemplate('any', [
-                    new ContainerConfigTemplate('class', {}),
-                    new ContainerConfigTemplate('args', {})
-                ]),
-                new ContainerConfigTemplate('any', [
-                    new ContainerConfigTemplate('value', {})
-                ]),
-                new ContainerConfigTemplate('any', [
-                    new ContainerConfigTemplate('callback', {}),
-                    new ContainerConfigTemplate('args', {})
-                ])
-            ]),
-            new ContainerConfigTemplate('behavior', [
-                new ContainerConfigTemplate('singleton', false),
-                new ContainerConfigTemplate('errorHalt', true)
-            ]),
-            new ContainerConfigTemplate('mocks', [
-                new ContainerConfigTemplate('any', [
-                    new ContainerConfigTemplate('class', {}),
-                    new ContainerConfigTemplate('mockClass', {}),
-                    new ContainerConfigTemplate('args', {})
-                ])
-            ])
-        ])]);
-        const config = {
+        const configTemplate = new ContainerConfigTemplate();
+        const config = new ContainerConfig(configTemplate, {
             root: {
                 container: {
                     members: {
@@ -66,7 +42,6 @@ describe('when creating a', () => {
                     }
                 }
             }
-        };
-       new ContainerConfig(containerConfigTemplate, config);
+        });
     });
 });
