@@ -24,7 +24,7 @@ export class SpecsHelper {
         return userSession;
     }
     static async getUserSessionToken() {
-        const userSession = await SpecsHelper.ctorUserSession();
+        const userSession = await SpecsHelper.ctorUserSession(false);
         return await userSession.getSessionToken();
     }
     static async ctorStore({ filePath }) {
