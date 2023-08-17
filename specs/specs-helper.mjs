@@ -11,19 +11,27 @@ export class SpecsHelper {
             dest.on('error', reject);
         })
     }
-    static async getUserSessionToken(args = { username: 'Joe', passphrase: 'Joe1234' }) {
+    static async ctorUserSession(clearStore = true, register = true, args = { username: 'Joe', passphrase: 'Joe1234' }) {
+        if (clearStore) {
+            await SpecsHelper.clearStore({ filePath: `${args.username}.json` });
+        }
         args.storeAuthToken = await SpecsHelper.getStoreToken();
         const userSession = new UserSession(args);
-        const isAlreadyRegistered = await userSession.isRegistered();
-        if (isAlreadyRegistered) {
-            return await userSession.authenticate();
-        } else {
+        if (!(await userSession.isRegistered()) && register) {
             await userSession.register();
-            return await userSession.authenticate();
         }
+        await userSession.authenticate();
+        return userSession;
+    }
+    static async getUserSessionToken() {
+        const userSession = await SpecsHelper.ctorUserSession();
+        return await userSession.getSessionToken();
+    }
+    static async ctorStore({ filePath }) {
+        return new Store({ filePath, storeAuthToken: process.env.GIT });
     }
     static async clearStore({ filePath }) {
-        const store = new Store({ filePath, storeAuthToken: process.env.GIT });
+        const store = await SpecsHelper.ctorStore({ filePath });
         await store.remove();
     }
     static async ctorActiveObjectServer() {

@@ -1,71 +1,49 @@
-import { UserSession, Store } from '../lib/registry.mjs';
-const userCredentials = {
-    username: 'Joe1',
-    passphrase: 'Joe1234',
-    storeAuthToken: 12345
-};
-describe('when registering a user session given a valid username', () => {
-    let completed;
-    beforeAll(async () => {
-        const userSession = new UserSession(userCredentials);
-        completed = await userSession.register();
-    });
+import { SpecsHelper } from './specs-helper.mjs';
+
+describe('when registering a user session given a valid username and the user does not exist', () => {
     it('should register the user', async () => {
+        const userSession = await SpecsHelper.ctorUserSession(true, false);
+        const completed = await userSession.register();
         expect(completed).toBeTrue();
     });
 });
+
 describe('when registering a user session given an existing username', () => {
-    let completed;
-    beforeAll(async () => {
-        const userSession = new UserSession(userCredentials);
-        await userSession.register();
-        completed = await userSession.register();
-    });
     it('should NOT register the user', async () => {
+        const userSession = await SpecsHelper.ctorUserSession(false);
+        const completed = await userSession.register();
         expect(completed).toBeFalse();
     });
 });
-describe('when authenticating a user given clear text passphrase', () => {
-    const userCredentials = { username:'Joe', passphrase: 'Joe1234', storeAuthToken: 12345, sessionAuthToken: null };
-    beforeAll(async() => {
-        const userSession = new UserSession(userCredentials);
-        await userSession.register();
-        userCredentials.sessionAuthToken = await userSession.authenticate();
-        expect(userCredentials.sessionAuthToken).toBeDefined();
-    });
+
+describe('when authenticating an existing user given a clear text passphrase', () => {
     it('should succesfully authenticate', async () => {
-        const userSession = new UserSession(userCredentials);
-        const isAuthenticated = await userSession.isAuthenticated();
-        expect(isAuthenticated).toBeTrue();
+        const userSession = await SpecsHelper.ctorUserSession(true, true);
+        const token = await userSession.getSessionToken();
+        expect(token).toBeDefined();
     });
 });
-describe('when authenticating a user given a hashed passphrase', () => {
-    const userCredentials = { username:'Joe', passphrase: 'Joe1234', storeAuthToken: 12345, sessionAuthToken: null };
-    beforeAll(async() => {
-        
+
+describe('when authenticating an existing user given a hashed passphrase', () => {
+    it('should succesfully authenticate', async () => {
+
         //create user session
-        const userSession = new UserSession(userCredentials);
-        await userSession.register();
+        let userSession = await SpecsHelper.ctorUserSession(true, true);
+        const username = `JOE`;
+        const filePath = `${username}.json`;
 
         //get stored hashed passphrase
-        const store = new Store({ filePath: `${userCredentials.username}.json`, storeAuthToken: userCredentials.storeAuthToken });
+        const store = await SpecsHelper.ctorStore({ filePath });
         let content = await store.read();
         content = JSON.parse(content);
         expect(content).toBeDefined();
-        const userContent = content[userCredentials.username.toLowerCase()];
+        const userContent = content[username.toLowerCase()];
         expect(userContent).toBeDefined();
         expect(userContent.storedHashedPassphrase).toBeDefined();
-        userCredentials.hashedPassphrase = userContent.storedHashedPassphrase;
-        userCredentials.passphrase = null;
+        const hashedPassphrase = userContent.storedHashedPassphrase;
 
-        //create user session with hashed passphrase
-        const userSession2 = new UserSession(userCredentials);
-        userCredentials.sessionAuthToken = await userSession2.authenticate();
-        expect(userCredentials.sessionAuthToken).toBeDefined();
-    });
-    it('should succesfully authenticate', async () => {
-        const userSession = new UserSession(userCredentials);
-        const isAuthenticated = await userSession.isAuthenticated();
-        expect(isAuthenticated).toBeTrue();
+        userSession = await SpecsHelper.ctorUserSession(false, false, { username, hashedPassphrase });
+        const token = await userSession.getSessionToken();
+        expect(token).toBeDefined();
     });
 });
