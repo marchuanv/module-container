@@ -5,7 +5,7 @@ describe('when accessing a private member of the ActiveObjectServer class given 
         let returnValue;
         const oas = await SpecsHelper.ctorActiveObjectServer();
         try {
-            await oas.stop();
+            await oas.start();
             returnValue = await oas.server;
         } catch (err) {
             error = err;
