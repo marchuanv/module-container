@@ -25,7 +25,7 @@ describe('when creating an instance of a class that extends the container class'
         expect(error).not.toBeDefined();
     });
 });
-describe('when creating an instance of a given a dependency on a singleton class', () => {
+describe('when creating an instance of a class given a dependency on a singleton class', () => {
     it('should create an instance', async () => {
         let error;
         let instanceA;
@@ -59,7 +59,7 @@ describe('when creating an instance of a given a dependency on a singleton class
         expect(propertyB).toBe("overwrite");
     });
 });
-describe('when creating an instance of a given a dependency on a non-singleton class', () => {
+describe('when creating an instance of a class given a dependency on a non-singleton class', () => {
     it('should create an instance', async () => {
         let error;
         let instanceA;
