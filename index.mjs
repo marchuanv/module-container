@@ -9,4 +9,3 @@ const jasmine = new Jasmine({ projectBaseDir: __dirname });
 jasmine.jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
 jasmine.addMatchingSpecFiles(['**/*.spec.mjs']);
 jasmine.execute();
-
