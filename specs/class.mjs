@@ -77,8 +77,7 @@ export class Class extends Container {
     }
     async publicMethod() {
         const classDependency = await this.classDependency;
-        classDependency.publicMethod();
-        return classDependency;
+        return await classDependency.publicMethod();
     }
 }
 
@@ -96,7 +95,7 @@ export class SingletonClass extends Container {
                         setup: {
                             args: {},
                             callback: async () => {
-                                console.log(`construction work that ${singletonClass.name} should do`);
+                                console.log(`construction work that ${SingletonClass.name} should do`);
                             }
                         },
                     },
@@ -110,7 +109,6 @@ export class SingletonClass extends Container {
     }
     async publicMethod() {
         const classDependency = await this.classDependency;
-        classDependency.publicMethod();
-        return classDependency;
+        return await classDependency.publicMethod();
     }
 }

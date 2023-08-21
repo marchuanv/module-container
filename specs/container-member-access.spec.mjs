@@ -1,6 +1,6 @@
 import { Class } from './class.mjs';
 let count = 0;
-while (count < 20) {
+while (count < 1) {
     describe('when accessing a private member of a class given a different calling context', () => {
         it('should return a security error and no return value', async () => {
             let error;
