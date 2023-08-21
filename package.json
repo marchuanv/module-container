@@ -2,7 +2,7 @@
   "name": "module-container",
   "version": "1.0.0",
   "description": "extending classes with a container",
-  "main": "index.mjs",
+  "main": "registry.mjs",
   "engines": {
     "npm": ">=9.5.1",
     "node": ">=18.16.1"
