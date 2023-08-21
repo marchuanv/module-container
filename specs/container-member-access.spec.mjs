@@ -7,7 +7,7 @@ while (count < 2) {
             let returnValue;
             const instance = new Class();
             try {
-                await instance.publicMethod();
+                await instance.getClassDependency();
                 returnValue = await instance.classDependency;
             } catch (err) {
                 error = err;
@@ -23,7 +23,7 @@ while (count < 2) {
             let returnValue;
             const instance = new Class();
             try {
-                returnValue = await instance.publicMethod();
+                returnValue = await instance.getClassDependency();
             } catch (err) {
                 error = err;
             }

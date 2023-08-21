@@ -20,8 +20,40 @@ export class ClassDependency extends Container {
             }
         });
     }
-    async publicMethod() {
-        return this;
+}
+export class SingletonClassDependency extends Container {
+    constructor() {
+        super({
+            root: {
+                container: {
+                    members: {
+                        property: {
+                            value: {
+                                value: "default"
+                            }
+                        },
+                        setup: {
+                            args: {},
+                            callback: async () => {
+                                console.log(`construction work that ${SingletonClassDependency.name} should do`);
+                            }
+                        },
+                    },
+                    behaviour: {
+                        singleton: true,
+                        errorHalt: true
+                    }
+                }
+            }
+        });
+    }
+    async getProperty() {
+        const property = await this.property;
+        return property.value;
+    }
+    async setProperty(value) {
+        const property = await this.property;
+        property.value = value;
     }
 }
 export class ClassDependencyMock extends Container {
@@ -38,15 +70,12 @@ export class ClassDependencyMock extends Container {
                         },
                     },
                     behaviour: {
-                        singleton: true,
+                        singleton: false,
                         errorHalt: true
                     }
                 }
             }
         });
-    }
-    async publicMethod() {
-        return this;
     }
 }
 export class Class extends Container {
@@ -59,6 +88,10 @@ export class Class extends Container {
                             args: {},
                             class: { ClassDependency },
                             mock: { ClassDependencyMock }
+                        },
+                        singletonClassDependency: {
+                            args: {},
+                            class: { SingletonClassDependency },
                         },
                         setup: {
                             args: {},
@@ -75,40 +108,10 @@ export class Class extends Container {
             }
         });
     }
-    async publicMethod() {
-        const classDependency = await this.classDependency;
-        return await classDependency.publicMethod();
+    async getClassDependency() {
+        return await this.classDependency;
     }
-}
-
-export class SingletonClass extends Container {
-    constructor() {
-        super({
-            root: {
-                container: {
-                    members: {
-                        classDependency: {
-                            args: {},
-                            class: { ClassDependency },
-                            mock: { ClassDependencyMock }
-                        },
-                        setup: {
-                            args: {},
-                            callback: async () => {
-                                console.log(`construction work that ${SingletonClass.name} should do`);
-                            }
-                        },
-                    },
-                    behaviour: {
-                        singleton: true,
-                        errorHalt: true
-                    }
-                }
-            }
-        });
-    }
-    async publicMethod() {
-        const classDependency = await this.classDependency;
-        return await classDependency.publicMethod();
+    async getSingletonClassDependency() {
+        return await this.singletonClassDependency;
     }
 }
