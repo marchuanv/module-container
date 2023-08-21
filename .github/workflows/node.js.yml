@@ -1,4 +1,4 @@
-name: build-active-object
+name: build-module-container
 on:
   push:
     branches: [ "main" ]

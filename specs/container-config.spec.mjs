@@ -1,7 +1,7 @@
-import { ContainerConfig } from "../lib/container/container-config.mjs";
-import { ContainerConfigTemplate } from "../lib/container/container-config-template.mjs";
-import { Github, GithubMock } from '../lib/registry.mjs';
 import utils from 'utils'
+import { ContainerConfig } from "../lib/container-config.mjs";
+import { ContainerConfigTemplate } from "../lib/container-config-template.mjs";
+import { Class, ClassDependencyMock } from './class.mjs';
 describe('when creating a', () => {
     it('should', () => {
         const configTemplate = new ContainerConfigTemplate();
@@ -10,8 +10,9 @@ describe('when creating a', () => {
                 container: {
                     members: {
                         github: {
-                            class: { Github },
-                            args: { auth: 'storeAuthToken' }
+                            class: { Class },
+                            args: { auth: 'storeAuthToken' },
+                            mock: { ClassDependencyMock }
                         },
                         branchName: {
                             value: 'branchName'
@@ -27,13 +28,6 @@ describe('when creating a', () => {
                         },
                         utils: {
                             value: utils
-                        }
-                    },
-                    mocks: {
-                        githubMock: {
-                            class: { Github },
-                            mockClass: { GithubMock },
-                            args: { auth: 'storeAuthToken' }
                         }
                     },
                     behaviour: {

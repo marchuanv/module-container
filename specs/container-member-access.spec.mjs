@@ -1,33 +1,30 @@
-import { SpecsHelper } from './specs-helper.mjs';
-describe('when accessing a private member of the ActiveObjectServer class given a different context', () => {
+import { Class } from './class.mjs';
+describe('when accessing a private member of a class given a different calling context', () => {
     it('should return a security error and no return value', async () => {
         let error;
         let returnValue;
-        const oas = await SpecsHelper.ctorActiveObjectServer();
+        const instance = new Class();
         try {
-            await oas.start();
-            returnValue = await oas.server;
+            returnValue = await instance.classDependency;
         } catch (err) {
             error = err;
         }
         expect(returnValue).not.toBeDefined();
         expect(error).toBeDefined();
-        expect(error.message).toBe('server member is private for ActiveObjectServer');
+        expect(error.message).toBe('classDependency member is private for Class');
     });
 });
-describe('when accessing a private member of the GithubMock class from a different context given that the class is configured as a singleton', () => {
-    it('should return a security error and no return value', async () => {
+describe('when accessing a private member of a class given a public method that calls it from the clas calling context', () => {
+    it('should NOT return a security error and respond with success', async () => {
         let error;
         let returnValue;
-        const gitHub = await SpecsHelper.ctorGithubMock();
+        const instance = new Class();
         try {
-            await gitHub.refs;
-            returnValue = await gitHub.octokit;
+            returnValue = await instance.publicMethod();
         } catch (err) {
             error = err;
         }
-        expect(returnValue).not.toBeDefined();
-        expect(error).toBeDefined();
-        expect(error.message).toContain(`octokit member is private for GithubMock`);
+        expect(returnValue).toBeDefined();
+        expect(error).not.toBeDefined();
     });
 });

@@ -1,7 +1,7 @@
 {
-  "name": "active-objects",
+  "name": "module-container",
   "version": "1.0.0",
-  "description": "create and host your class",
+  "description": "extending classes with a container",
   "main": "index.mjs",
   "engines": {
     "npm": ">=9.5.1",
@@ -9,27 +9,23 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/marchuanv/active-objects.git"
+    "url": "git+https://github.com/marchuanv/module-container.git"
   },
   "author": "Marchuan Van Der Merwe",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/marchuanv/active-objects/issues"
+    "url": "https://github.com/marchuanv/module-container/issues"
   },
   "type": "module",
   "scripts": {
-    "start": "cross-env INFO={\\\"isProduction\\\":true,\\\"logging\\\":{\\\"enabled\\\":true,\\\"onExit\\\":false}} node index.mjs",
-    "test": "cross-env INFO={\\\"isProduction\\\":false,\\\"logging\\\":{\\\"enabled\\\":false,\\\"onExit\\\":true}} node index.mjs",
-    "test2": "nodemon specs/index.mjs"
+    "test": "cross-env INFO={\\\"isProduction\\\":false,\\\"logging\\\":{\\\"enabled\\\":true,\\\"onExit\\\":false}} node index.mjs"
   },
-  "homepage": "https://github.com/marchuanv/active-objects#readme",
+  "homepage": "https://github.com/marchuanv/module-container#readme",
   "dependencies": {
-    "octokit": "2.0.10",
     "utils": "marchuanv/utils"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
-    "jasmine": "^5.0.2",
-    "nodemon": "^2.0.22"
+    "jasmine": "^5.0.2"
   }
 }

@@ -1,5 +1,6 @@
-import { Container } from '../lib/registry.mjs';
-describe('when-activating-container', () => {
+import { Container } from '../lib/container.mjs';
+import { Class } from './class.mjs';
+describe('when creating an instance of the container class', () => {
     let error;
     beforeAll(() => {
         try {
@@ -13,5 +14,18 @@ describe('when-activating-container', () => {
         expect(error).toBeInstanceOf(Error);
         expect(error.message).toBeDefined();
         expect(error.message).toBe('Container is an abstract class');
+    });
+});
+describe('when creating an instance of a class that extends the container class', () => {
+    let error;
+    beforeAll(() => {
+        try {
+            new Class();
+        } catch (err) {
+            error = err;
+        }
+    });
+    it('should NOT get an error', () => {
+        expect(error).not.toBeDefined();
     });
 });

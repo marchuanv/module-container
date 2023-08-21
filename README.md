@@ -1,1 +1,1 @@
-create and host your javascript function
+library used for extending classes with a container. https://en.wikipedia.org/wiki/Container_(abstract_data_type)
