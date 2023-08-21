@@ -1,15 +1,13 @@
 import { Container } from '../lib/container.mjs';
 import { Class } from './class.mjs';
 describe('when creating an instance of the container class', () => {
-    let error;
-    beforeAll(() => {
+    it('should get an error', () => {
+        let error;
         try {
             new Container();
         } catch (err) {
             error = err;
         }
-    });
-    it('should get an error', () => {
         expect(error).toBeDefined();
         expect(error).toBeInstanceOf(Error);
         expect(error.message).toBeDefined();
@@ -17,15 +15,13 @@ describe('when creating an instance of the container class', () => {
     });
 });
 describe('when creating an instance of a class that extends the container class', () => {
-    let error;
-    beforeAll(() => {
+    it('should NOT get an error', () => {
+        let error;
         try {
             new Class();
         } catch (err) {
             error = err;
         }
-    });
-    it('should NOT get an error', () => {
         expect(error).not.toBeDefined();
     });
 });
