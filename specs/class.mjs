@@ -5,6 +5,11 @@ export class ClassDependency extends Container {
             root: {
                 container: {
                     members: {
+                        property: {
+                            value: {
+                                value: "default"
+                            }
+                        },
                         setup: {
                             args: {},
                             callback: async () => {
@@ -20,8 +25,16 @@ export class ClassDependency extends Container {
             }
         });
     }
+    async getProperty() {
+        const property = await this.property;
+        return property.value;
+    }
+    async setProperty(value) {
+        const property = await this.property;
+        property.value = value;
+    }
 }
-export class SingletonClassDependency extends Container {
+export class ClassDependencySingleton extends Container {
     constructor() {
         super({
             root: {
@@ -35,7 +48,7 @@ export class SingletonClassDependency extends Container {
                         setup: {
                             args: {},
                             callback: async () => {
-                                console.log(`construction work that ${SingletonClassDependency.name} should do`);
+                                console.log(`construction work that ${ClassDependencySingleton.name} should do`);
                             }
                         },
                     },
@@ -62,6 +75,11 @@ export class ClassDependencyMock extends Container {
             root: {
                 container: {
                     members: {
+                        property: {
+                            value: {
+                                value: "default"
+                            }
+                        },
                         setup: {
                             args: {},
                             callback: async () => {
@@ -77,6 +95,14 @@ export class ClassDependencyMock extends Container {
             }
         });
     }
+    async getProperty() {
+        const property = await this.property;
+        return property.value;
+    }
+    async setProperty(value) {
+        const property = await this.property;
+        property.value = value;
+    }
 }
 export class Class extends Container {
     constructor() {
@@ -91,7 +117,7 @@ export class Class extends Container {
                         },
                         singletonClassDependency: {
                             args: {},
-                            class: { SingletonClassDependency },
+                            class: { ClassDependencySingleton },
                         },
                         setup: {
                             args: {},
