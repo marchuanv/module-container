@@ -8,7 +8,7 @@ export class ClassDependency extends Container {
                         setup: {
                             args: {},
                             callback: async () => {
-                                console.log(`construction work that ${ClassDependency} should do`);
+                                console.log(`construction work that ${ClassDependency.name} should do`);
                             }
                         },
                     },
@@ -20,6 +20,9 @@ export class ClassDependency extends Container {
             }
         });
     }
+    async publicMethod() {
+        return this;
+    }
 }
 export class ClassDependencyMock extends Container {
     constructor() {
@@ -30,7 +33,7 @@ export class ClassDependencyMock extends Container {
                         setup: {
                             args: {},
                             callback: async () => {
-                                console.log(`construction work that ${ClassDependencyMock} should do`);
+                                console.log(`construction work that ${ClassDependencyMock.name} should do`);
                             }
                         },
                     },
@@ -41,6 +44,9 @@ export class ClassDependencyMock extends Container {
                 }
             }
         });
+    }
+    async publicMethod() {
+        return this;
     }
 }
 export class Class extends Container {
@@ -57,7 +63,40 @@ export class Class extends Container {
                         setup: {
                             args: {},
                             callback: async () => {
-                                console.log(`construction work that ${Class} should do`);
+                                console.log(`construction work that ${Class.name} should do`);
+                            }
+                        },
+                    },
+                    behaviour: {
+                        singleton: false,
+                        errorHalt: true
+                    }
+                }
+            }
+        });
+    }
+    async publicMethod() {
+        const classDependency = await this.classDependency;
+        classDependency.publicMethod();
+        return classDependency;
+    }
+}
+
+export class SingletonClass extends Container {
+    constructor() {
+        super({
+            root: {
+                container: {
+                    members: {
+                        classDependency: {
+                            args: {},
+                            class: { ClassDependency },
+                            mock: { ClassDependencyMock }
+                        },
+                        setup: {
+                            args: {},
+                            callback: async () => {
+                                console.log(`construction work that ${singletonClass.name} should do`);
                             }
                         },
                     },
@@ -71,6 +110,7 @@ export class Class extends Container {
     }
     async publicMethod() {
         const classDependency = await this.classDependency;
+        classDependency.publicMethod();
         return classDependency;
     }
 }
