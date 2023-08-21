@@ -1,1 +1,1 @@
-export { Container } from '/lib/container.mjs';
+export { Container } from './lib/container.mjs';
