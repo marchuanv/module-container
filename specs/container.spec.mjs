@@ -1,5 +1,5 @@
 import { Container } from '../lib/container.mjs';
-import { Class, ClassDependencyMock, ClassDependencySingleton } from './class.mjs';
+import { Class, ClassDependency, ClassDependencySingleton } from './class.mjs';
 describe('when creating an instance of the container class', () => {
     it('should get an error', () => {
         let error;
@@ -86,8 +86,8 @@ describe('when creating an instance of a class given a dependency on a non-singl
         expect(instanceB).toBeInstanceOf(Class);
         expect(dependencyInstanceA).toBeDefined();
         expect(dependencyInstanceB).toBeDefined();
-        expect(dependencyInstanceA).toBeInstanceOf(ClassDependencyMock);
-        expect(dependencyInstanceB).toBeInstanceOf(ClassDependencyMock);
+        expect(dependencyInstanceA).toBeInstanceOf(ClassDependency);
+        expect(dependencyInstanceB).toBeInstanceOf(ClassDependency);
         expect(propertyA).toBe("overwrite");
         expect(propertyB).toBe("default");
     });

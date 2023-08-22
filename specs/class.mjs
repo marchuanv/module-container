@@ -104,7 +104,7 @@ export class ClassDependencyMock extends Container {
         property.value = value;
     }
 }
-export class Class extends Container {
+export class ClassMock extends Container {
     constructor() {
         super({
             root: {
@@ -114,6 +114,38 @@ export class Class extends Container {
                             args: {},
                             class: { ClassDependency },
                             mock: { ClassDependencyMock }
+                        },
+                        setup: {
+                            args: {},
+                            callback: async () => {
+                                console.log(`construction work that ${Class.name} should do`);
+                            }
+                        },
+                    },
+                    behaviour: {
+                        singleton: false,
+                        errorHalt: true
+                    }
+                }
+            }
+        });
+    }
+    async getClassDependency() {
+        return await this.classDependency;
+    }
+    async getSingletonClassDependency() {
+        return await this.singletonClassDependency;
+    }
+}
+export class Class extends Container {
+    constructor() {
+        super({
+            root: {
+                container: {
+                    members: {
+                        classDependency: {
+                            args: {},
+                            class: { ClassDependency },
                         },
                         singletonClassDependency: {
                             args: {},
