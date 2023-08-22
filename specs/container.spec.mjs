@@ -1,5 +1,5 @@
 import { Container } from '../lib/container.mjs';
-import { Class, ClassDependency, ClassDependencySingleton } from './class.mjs';
+import { TestClass, TestClassDependency, TestClasSingletonDependency } from './class.mjs';
 describe('when creating an instance of the container class', () => {
     it('should get an error', () => {
         let error;
@@ -18,7 +18,7 @@ describe('when creating an instance of a class that extends the container class'
     it('should NOT get an error', () => {
         let error;
         try {
-            new Class();
+            new TestClass();
         } catch (err) {
             error = err;
         }
@@ -35,10 +35,10 @@ describe('when creating an instance of a class given a dependency on a singleton
         let propertyA;
         let propertyB;
         try {
-            instanceA = new Class();
-            instanceB = new Class();
-            dependencyInstanceA = await instanceA.getSingletonClassDependency();
-            dependencyInstanceB = await instanceB.getSingletonClassDependency();
+            instanceA = new TestClass();
+            instanceB = new TestClass();
+            dependencyInstanceA = await instanceA.getTestClasSingletonDependency();
+            dependencyInstanceB = await instanceB.getTestClasSingletonDependency();
             propertyA = await dependencyInstanceA.getProperty();
             await dependencyInstanceA.setProperty("overwrite");
             propertyA = await dependencyInstanceA.getProperty();
@@ -49,12 +49,12 @@ describe('when creating an instance of a class given a dependency on a singleton
         expect(error).not.toBeDefined();
         expect(instanceA).toBeDefined();
         expect(instanceB).toBeDefined();
-        expect(instanceA).toBeInstanceOf(Class);
-        expect(instanceB).toBeInstanceOf(Class);
+        expect(instanceA).toBeInstanceOf(TestClass);
+        expect(instanceB).toBeInstanceOf(TestClass);
         expect(dependencyInstanceA).toBeDefined();
         expect(dependencyInstanceB).toBeDefined();
-        expect(dependencyInstanceA).toBeInstanceOf(ClassDependencySingleton);
-        expect(dependencyInstanceB).toBeInstanceOf(ClassDependencySingleton);
+        expect(dependencyInstanceA).toBeInstanceOf(TestClasSingletonDependency);
+        expect(dependencyInstanceB).toBeInstanceOf(TestClasSingletonDependency);
         expect(propertyA).toBe("overwrite");
         expect(propertyB).toBe("overwrite");
     });
@@ -69,10 +69,10 @@ describe('when creating an instance of a class given a dependency on a non-singl
         let propertyA;
         let propertyB;
         try {
-            instanceA = new Class();
-            instanceB = new Class();
-            dependencyInstanceA = await instanceA.getClassDependency();
-            dependencyInstanceB = await instanceB.getClassDependency();
+            instanceA = new TestClass();
+            instanceB = new TestClass();
+            dependencyInstanceA = await instanceA.getTestClassDependency();
+            dependencyInstanceB = await instanceB.getTestClassDependency();
             await dependencyInstanceA.setProperty("overwrite");
             propertyA = await dependencyInstanceA.getProperty();
             propertyB = await dependencyInstanceB.getProperty();
@@ -82,12 +82,12 @@ describe('when creating an instance of a class given a dependency on a non-singl
         expect(error).not.toBeDefined();
         expect(instanceA).toBeDefined();
         expect(instanceB).toBeDefined();
-        expect(instanceA).toBeInstanceOf(Class);
-        expect(instanceB).toBeInstanceOf(Class);
+        expect(instanceA).toBeInstanceOf(TestClass);
+        expect(instanceB).toBeInstanceOf(TestClass);
         expect(dependencyInstanceA).toBeDefined();
         expect(dependencyInstanceB).toBeDefined();
-        expect(dependencyInstanceA).toBeInstanceOf(ClassDependency);
-        expect(dependencyInstanceB).toBeInstanceOf(ClassDependency);
+        expect(dependencyInstanceA).toBeInstanceOf(TestClassDependency);
+        expect(dependencyInstanceB).toBeInstanceOf(TestClassDependency);
         expect(propertyA).toBe("overwrite");
         expect(propertyB).toBe("default");
     });

@@ -1,7 +1,7 @@
-import { Class } from './class.mjs';
+import { TestClass } from './class.mjs';
 describe('when logging messages given a container extends logging', () => {
     it('should inherently write messages', () => {
-        const instance = new Class();
+        const instance = new TestClass();
         instance.log('test message');
     });
 });
