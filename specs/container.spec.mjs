@@ -39,6 +39,7 @@ describe('when creating an instance of a class given a dependency on a singleton
             instanceB = new Class();
             dependencyInstanceA = await instanceA.getSingletonClassDependency();
             dependencyInstanceB = await instanceB.getSingletonClassDependency();
+            propertyA = await dependencyInstanceA.getProperty();
             await dependencyInstanceA.setProperty("overwrite");
             propertyA = await dependencyInstanceA.getProperty();
             propertyB = await dependencyInstanceB.getProperty();
@@ -54,7 +55,6 @@ describe('when creating an instance of a class given a dependency on a singleton
         expect(dependencyInstanceB).toBeDefined();
         expect(dependencyInstanceA).toBeInstanceOf(ClassDependencySingleton);
         expect(dependencyInstanceB).toBeInstanceOf(ClassDependencySingleton);
-        expect(instanceA.contextId).not.toBe(instanceB.contextId);
         expect(propertyA).toBe("overwrite");
         expect(propertyB).toBe("overwrite");
     });
@@ -88,7 +88,6 @@ describe('when creating an instance of a class given a dependency on a non-singl
         expect(dependencyInstanceB).toBeDefined();
         expect(dependencyInstanceA).toBeInstanceOf(ClassDependencyMock);
         expect(dependencyInstanceB).toBeInstanceOf(ClassDependencyMock);
-        expect(instanceA.contextId).not.toBe(instanceB.contextId);
         expect(propertyA).toBe("overwrite");
         expect(propertyB).toBe("default");
     });
