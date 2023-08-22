@@ -1,35 +1,31 @@
 import { Class } from './class.mjs';
-let count = 0;
-while (count < 2) {
-    describe('when accessing a private member of a class given a different calling context', () => {
-        it('should return a security error and no return value', async () => {
-            let error;
-            let returnValue;
-            const instance = new Class();
-            try {
-                await instance.getClassDependency();
-                returnValue = await instance.classDependency;
-            } catch (err) {
-                error = err;
-            }
-            expect(returnValue).not.toBeDefined();
-            expect(error).toBeDefined();
-            expect(error.message).toBe('classDependency member is private for Class');
-        });
+describe('when accessing a private member of a class given a different calling context', () => {
+    it('should return a security error and no return value', async () => {
+        let error;
+        let returnValue;
+        const instance = new Class();
+        try {
+            await instance.getClassDependency();
+            returnValue = await instance.classDependency;
+        } catch (err) {
+            error = err;
+        }
+        expect(returnValue).not.toBeDefined();
+        expect(error).toBeDefined();
+        expect(error.message).toBe('classDependency member is private for Class');
     });
-    describe('when accessing a private member of a class given a public method that calls it from the class calling context', () => {
-        it('should NOT return a security error and respond with success', async () => {
-            let error;
-            let returnValue;
-            const instance = new Class();
-            try {
-                returnValue = await instance.getClassDependency();
-            } catch (err) {
-                error = err;
-            }
-            expect(returnValue).toBeDefined();
-            expect(error).not.toBeDefined();
-        });
+});
+describe('when accessing a private member of a class given a public method that calls it from the class calling context', () => {
+    it('should NOT return a security error and respond with success', async () => {
+        let error;
+        let returnValue;
+        const instance = new Class();
+        try {
+            returnValue = await instance.getClassDependency();
+        } catch (err) {
+            error = err;
+        }
+        expect(returnValue).toBeDefined();
+        expect(error).not.toBeDefined();
     });
-    count = count + 1;
-}
+});
