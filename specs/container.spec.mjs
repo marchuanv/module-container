@@ -1,5 +1,5 @@
 import { Container } from '../lib/container.mjs';
-import { TestClass, TestClassDependency, TestClasSingletonDependency } from './class.mjs';
+import { TestClass, TestClassDependency, TestClassDependency2, TestClasSingletonDependency, TestClassMultipleInstancesForOneDependency } from './class.mjs';
 describe('when creating an instance of the container class', () => {
     it('should get an error', () => {
         let error;
@@ -90,5 +90,47 @@ describe('when creating an instance of a class given a dependency on a non-singl
         expect(dependencyInstanceB).toBeInstanceOf(TestClassDependency);
         expect(propertyA).toBe("overwrite");
         expect(propertyB).toBe("default");
+    });
+});
+describe('when creating an instance of a class that extends the container class given multiple class configuration for one dependency', () => {
+    it('should return multiple instances the first time', async () => {
+        let error;
+        let instance;
+        let dependencyInstanceA;
+        let dependencyInstanceB;
+        try {
+            instance = new TestClassMultipleInstancesForOneDependency();
+            const instances = await instance.getTestClassDependency();
+            ([dependencyInstanceA, dependencyInstanceB] = instances);
+        } catch (err) {
+            error = err;
+        }
+        expect(error).not.toBeDefined();
+        expect(instance).toBeDefined();
+        expect(instance).toBeInstanceOf(TestClassMultipleInstancesForOneDependency);
+        expect(dependencyInstanceA).toBeDefined();
+        expect(dependencyInstanceB).toBeDefined();
+        expect(dependencyInstanceA).toBeInstanceOf(TestClassDependency);
+        expect(dependencyInstanceB).toBeInstanceOf(TestClassDependency2);
+    });
+    it('should return multiple instances the second time', async () => {
+        let error;
+        let instance;
+        let dependencyInstanceA;
+        let dependencyInstanceB;
+        try {
+            instance = new TestClassMultipleInstancesForOneDependency();
+            const instances = await instance.getTestClassDependency();
+            ([dependencyInstanceA, dependencyInstanceB] = instances);
+        } catch (err) {
+            error = err;
+        }
+        expect(error).not.toBeDefined();
+        expect(instance).toBeDefined();
+        expect(instance).toBeInstanceOf(TestClassMultipleInstancesForOneDependency);
+        expect(dependencyInstanceA).toBeDefined();
+        expect(dependencyInstanceB).toBeDefined();
+        expect(dependencyInstanceA).toBeInstanceOf(TestClassDependency);
+        expect(dependencyInstanceB).toBeInstanceOf(TestClassDependency2);
     });
 });

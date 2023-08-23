@@ -34,6 +34,41 @@ export class TestClassDependency extends Container {
         property.value = value;
     }
 }
+export class TestClassDependency2 extends Container {
+    constructor() {
+        super({
+            root: {
+                container: {
+                    members: {
+                        property: {
+                            value: {
+                                value: "default"
+                            }
+                        },
+                        setup: {
+                            args: {},
+                            callback: async () => {
+                                console.log(`construction work that ${TestClassDependency2.name} should do`);
+                            }
+                        },
+                    },
+                    behaviour: {
+                        singleton: false,
+                        errorHalt: true
+                    }
+                }
+            }
+        });
+    }
+    async getProperty() {
+        const property = await this.property;
+        return property.value;
+    }
+    async setProperty(value) {
+        const property = await this.property;
+        property.value = value;
+    }
+}
 export class TestClasSingletonDependency extends Container {
     constructor() {
         super({
@@ -168,5 +203,38 @@ export class TestClass extends Container {
     }
     async getTestClasSingletonDependency() {
         return await this.testClasSingletonDependency;
+    }
+}
+export class TestClassMultipleInstancesForOneDependency extends Container {
+    constructor() {
+        super({
+            root: {
+                container: {
+                    members: {
+                        testClassDependency: {
+                            args: {},
+                            class: { TestClassDependency, TestClassDependency2 },
+                        },
+                        testClasSingletonDependency: {
+                            args: {},
+                            class: { TestClasSingletonDependency },
+                        },
+                        setup: {
+                            args: {},
+                            callback: async () => {
+                                console.log(`construction work that ${TestClass.name} should do`);
+                            }
+                        },
+                    },
+                    behaviour: {
+                        singleton: false,
+                        errorHalt: true
+                    }
+                }
+            }
+        });
+    }
+    async getTestClassDependency() {
+        return await this.testClassDependency;
     }
 }
