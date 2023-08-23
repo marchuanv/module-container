@@ -13,7 +13,7 @@ export class TestClassDependency extends Container {
                         setup: {
                             args: {},
                             callback: async () => {
-                                console.log(`construction work that ${TestClassDependency.name} should do`);
+                                this.log(`construction work that ${TestClassDependency.name} should do`);
                             }
                         },
                     },
@@ -48,7 +48,7 @@ export class TestClassDependency2 extends Container {
                         setup: {
                             args: {},
                             callback: async () => {
-                                console.log(`construction work that ${TestClassDependency2.name} should do`);
+                                this.log(`construction work that ${TestClassDependency2.name} should do`);
                             }
                         },
                     },
@@ -83,7 +83,7 @@ export class TestClasSingletonDependency extends Container {
                         setup: {
                             args: {},
                             callback: async () => {
-                                console.log(`construction work that ${TestClasSingletonDependency.name} should do`);
+                                this.log(`construction work that ${TestClasSingletonDependency.name} should do`);
                             }
                         },
                     },
@@ -118,7 +118,7 @@ export class TestClassMockDependency extends Container {
                         setup: {
                             args: {},
                             callback: async () => {
-                                console.log(`construction work that ${TestClassMockDependency.name} should do`);
+                                this.log(`construction work that ${TestClassMockDependency.name} should do`);
                             }
                         },
                     },
@@ -153,7 +153,7 @@ export class MockTestClass extends Container {
                         setup: {
                             args: {},
                             callback: async () => {
-                                console.log(`construction work that ${MockTestClass.name} should do`);
+                                this.log(`construction work that ${MockTestClass.name} should do`);
                             }
                         },
                     },
@@ -186,7 +186,7 @@ export class TestClass extends Container {
                         setup: {
                             args: {},
                             callback: async () => {
-                                console.log(`construction work that ${TestClass.name} should do`);
+                                this.log(`construction work that ${TestClass.name} should do`);
                             }
                         },
                     },
@@ -222,7 +222,7 @@ export class TestClassMultipleInstancesForOneDependency extends Container {
                         setup: {
                             args: {},
                             callback: async () => {
-                                console.log(`construction work that ${TestClass.name} should do`);
+                                this.log(`construction work that ${TestClass.name} should do`);
                             }
                         },
                     },
