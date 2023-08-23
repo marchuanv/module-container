@@ -10,7 +10,7 @@ export class TestClassDependency extends Container {
                                 value: "default"
                             }
                         },
-                        setup: {
+                        testClassDependencySetup: {
                             args: {},
                             callback: async () => {
                                 this.log(`post constructor member called`);
@@ -45,7 +45,7 @@ export class TestClassDependency2 extends Container {
                                 value: "default"
                             }
                         },
-                        setup: {
+                        testClassDependency2Setup: {
                             args: {},
                             callback: async () => {
                                 this.log(`post constructor member called`);
@@ -80,7 +80,7 @@ export class TestClasSingletonDependency extends Container {
                                 value: "default"
                             }
                         },
-                        setup: {
+                        testClasSingletonDependencySetup: {
                             args: {},
                             callback: async () => {
                                 this.log(`post constructor member called`);
@@ -115,7 +115,7 @@ export class TestClassMockDependency extends Container {
                                 value: "default"
                             }
                         },
-                        setup: {
+                        testClassMockDependencySetup: {
                             args: {},
                             callback: async () => {
                                 this.log(`post constructor member called`);
@@ -150,7 +150,7 @@ export class MockTestClass extends Container {
                             class: { TestClassDependency },
                             mock: { TestClassMockDependency }
                         },
-                        setup: {
+                        mockTestClassSetup: {
                             args: {},
                             callback: async () => {
                                 this.log(`post constructor member called`);
@@ -183,7 +183,7 @@ export class TestClass extends Container {
                             args: {},
                             class: { TestClasSingletonDependency },
                         },
-                        setup: {
+                        testClassSetup: {
                             args: {},
                             callback: async () => {
                                 this.log(`post constructor member called`);
@@ -219,7 +219,7 @@ export class TestClassMultipleInstancesForOneDependency extends Container {
                             args: {},
                             class: { TestClasSingletonDependency },
                         },
-                        setup: {
+                        testClassMultipleInstancesForOneDependencySetup: {
                             args: {},
                             callback: async () => {
                                 this.log(`post constructor member called`);
