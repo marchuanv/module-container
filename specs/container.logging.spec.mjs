@@ -1,5 +1,5 @@
 import { TestClass, TestClassDependency } from './class.mjs';
-fdescribe('when creating an instance of a TestClass given a TestClassDependency', () => {
+describe('when creating an instance of a TestClass given a TestClassDependency', () => {
     it('should create call all members and log accordingly', async () => {
         let error;
         let testClass;
