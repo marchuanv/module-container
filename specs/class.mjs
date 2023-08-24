@@ -15,7 +15,7 @@ export class TestClassDependency extends Container {
                             callback: async () => {
                                 this.log(`post constructor member called`);
                             }
-                        },
+                        }
                     },
                     behaviour: {
                         singleton: false,
@@ -179,10 +179,6 @@ export class TestClass extends Container {
                             args: {},
                             class: { TestClassDependency },
                         },
-                        testClasSingletonDependency: {
-                            args: {},
-                            class: { TestClasSingletonDependency },
-                        },
                         testClassSetup: {
                             args: {},
                             callback: async () => {
@@ -200,6 +196,32 @@ export class TestClass extends Container {
     }
     async getTestClassDependency() {
         return await this.testClassDependency;
+    }
+}
+export class TestClassSingletons extends Container {
+    constructor() {
+        super({
+            root: {
+                container: {
+                    members: {
+                        testClasSingletonDependency: {
+                            args: {},
+                            class: { TestClasSingletonDependency },
+                        },
+                        testClassSingletonsSetup: {
+                            args: {},
+                            callback: async () => {
+                                this.log(`post constructor member called`);
+                            }
+                        },
+                    },
+                    behaviour: {
+                        singleton: false,
+                        errorHalt: true
+                    }
+                }
+            }
+        });
     }
     async getTestClasSingletonDependency() {
         return await this.testClasSingletonDependency;

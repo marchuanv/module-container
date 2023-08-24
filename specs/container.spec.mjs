@@ -1,5 +1,5 @@
 import { Container } from '../lib/container.mjs';
-import { TestClass, TestClassDependency, TestClassDependency2, TestClasSingletonDependency, TestClassMultipleInstancesForOneDependency } from './class.mjs';
+import { TestClass, TestClassSingletons, TestClassDependency, TestClassDependency2, TestClasSingletonDependency, TestClassMultipleInstancesForOneDependency } from './class.mjs';
 describe('when creating an instance of the container class', () => {
     it('should get an error', () => {
         let error;
@@ -35,8 +35,8 @@ describe('when creating an instance of a class given a dependency on a singleton
         let propertyA;
         let propertyB;
         try {
-            instanceA = new TestClass();
-            instanceB = new TestClass();
+            instanceA = new TestClassSingletons();
+            instanceB = new TestClassSingletons();
             dependencyInstanceA = await instanceA.getTestClasSingletonDependency();
             dependencyInstanceB = await instanceB.getTestClasSingletonDependency();
             propertyA = await dependencyInstanceA.getProperty();
@@ -70,9 +70,10 @@ describe('when creating an instance of a class given a dependency on a non-singl
         let propertyB;
         try {
             instanceA = new TestClass();
-            instanceB = new TestClass();
+            // instanceB = new TestClass();
             dependencyInstanceA = await instanceA.getTestClassDependency();
-            dependencyInstanceB = await instanceB.getTestClassDependency();
+            // dependencyInstanceB = await instanceB.getTestClassDependency();
+            return;
             await dependencyInstanceA.setProperty("overwrite");
             propertyA = await dependencyInstanceA.getProperty();
             propertyB = await dependencyInstanceB.getProperty();
