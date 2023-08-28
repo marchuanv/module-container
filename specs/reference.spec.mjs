@@ -1,5 +1,5 @@
-import { Reference } from '../lib/reference.mjs';
-fdescribe('when creating a reference', () => {
+import { Reference } from '../lib/reference/reference.mjs';
+describe('when creating a reference', () => {
     it('should', () => {
         let error;
         let references;

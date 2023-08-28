@@ -4,6 +4,7 @@ export class TestClassDependency extends Container {
         super({
             root: {
                 container: {
+                    name: 'TestClassDependency',
                     members: {
                         property: {
                             value: {
@@ -39,6 +40,7 @@ export class TestClassDependency2 extends Container {
         super({
             root: {
                 container: {
+                    name: 'TestClassDependency2',
                     members: {
                         property: {
                             value: {
@@ -74,6 +76,7 @@ export class TestClasSingletonDependency extends Container {
         super({
             root: {
                 container: {
+                    name: 'TestClasSingletonDependency',
                     members: {
                         property: {
                             value: {
@@ -109,6 +112,7 @@ export class TestClassMockDependency extends Container {
         super({
             root: {
                 container: {
+                    name: 'TestClassMockDependency',
                     members: {
                         property: {
                             value: {
@@ -144,6 +148,7 @@ export class MockTestClass extends Container {
         super({
             root: {
                 container: {
+                    name: 'MockTestClass',
                     members: {
                         testClassMockDependency: {
                             args: {},
@@ -174,6 +179,7 @@ export class TestClass extends Container {
         super({
             root: {
                 container: {
+                    name: 'TestClass',
                     members: {
                         testClassDependency: {
                             args: {},
@@ -202,6 +208,7 @@ export class TestClassSingletons extends Container {
     constructor() {
         super({
             root: {
+                name: 'TestClassSingletons',
                 container: {
                     members: {
                         testClasSingletonDependency: {
@@ -232,6 +239,7 @@ export class TestClassMultipleInstancesForOneDependency extends Container {
         super({
             root: {
                 container: {
+                    name: 'TestClassMultipleInstancesForOneDependency',
                     members: {
                         testClassDependency: {
                             args: {},

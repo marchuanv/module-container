@@ -1,10 +1,36 @@
 import { Container } from '../lib/container.mjs';
-import { TestClass, TestClassSingletons, TestClassDependency, TestClassDependency2, TestClasSingletonDependency, TestClassMultipleInstancesForOneDependency } from './class.mjs';
+import { TestClasSingletonDependency, TestClass, TestClassDependency, TestClassDependency2, TestClassMultipleInstancesForOneDependency, TestClassSingletons } from './class.mjs';
 describe('when creating an instance of the container class', () => {
     it('should get an error', () => {
         let error;
         try {
-            new Container();
+            new Container({
+                root: {
+                    container: {
+                        name: 'TestClassMultipleInstancesForOneDependency',
+                        members: {
+                            testClassDependency: {
+                                args: {},
+                                class: { TestClassDependency, TestClassDependency2 },
+                            },
+                            testClasSingletonDependency: {
+                                args: {},
+                                class: { TestClasSingletonDependency },
+                            },
+                            testClassMultipleInstancesForOneDependencySetup: {
+                                args: {},
+                                callback: async () => {
+                                    this.log(`post constructor member called`);
+                                }
+                            },
+                        },
+                        behaviour: {
+                            singleton: false,
+                            errorHalt: true
+                        }
+                    }
+                }
+            });
         } catch (err) {
             error = err;
         }
@@ -14,7 +40,7 @@ describe('when creating an instance of the container class', () => {
         expect(error.message).toBe('Container is an abstract class');
     });
 });
-describe('when creating an instance of a class that extends the container class', () => {
+fdescribe('when creating an instance of a class that extends the container class', () => {
     it('should NOT get an error', () => {
         let error;
         try {
