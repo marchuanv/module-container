@@ -1,5 +1,4 @@
 import { Container } from '../lib/container.mjs';
-import { TestClasSingletonDependency, TestClass, TestClassDependency, TestClassDependency2, TestClassMultipleInstancesForOneDependency, TestClassSingletons } from './class.mjs';
 describe('when creating an instance of the container class', () => {
     it('should get an error', () => {
         let error;
@@ -40,7 +39,7 @@ describe('when creating an instance of the container class', () => {
         expect(error.message).toBe('Container is an abstract class');
     });
 });
-fdescribe('when creating an instance of a class that extends the container class', () => {
+describe('when creating an instance of a class that extends the container class', () => {
     it('should NOT get an error', () => {
         let error;
         try {

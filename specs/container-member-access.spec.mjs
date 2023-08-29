@@ -1,9 +1,50 @@
-import { TestClass } from './class.mjs';
-describe('when accessing a private member of a class given a different calling context', () => {
+import { ContainerConfigTemplate } from '../lib/container-config-template.mjs';
+import { ContainerConfig } from '../lib/container-config.mjs';
+import { Container } from '../lib/container.mjs';
+const configTemplate = new ContainerConfigTemplate();
+const containerConfig = new ContainerConfig(configTemplate, {
+    container: {
+        name: 'TestClassContainer',
+        class: {
+            name: 'TestClass',
+            args: {},
+            ctor: async () => { },
+            isInterface: false,
+            isSingleton: false,
+            isHaltOnErrors: true,
+            isPublic: true,
+            properties: {
+                testClassDependencyPublic: {
+                    args: {},
+                    class: { name: 'OtherClass' },
+                    isPublic: true
+                },
+                testClassDependencyPrivate: {
+                    args: {},
+                    class: { name: 'OtherClass' },
+                    isPublic: false
+                }
+            },
+            methods: {
+                testClassFunctionPublic: {
+                    args: {},
+                    callback: async () => { },
+                    isPublic: true
+                },
+                testClassFunctionPrivate: {
+                    args: {},
+                    callback: async () => { },
+                    isPublic: false
+                }
+            }
+        }
+    }
+});
+fdescribe('when accessing a private member of a class given a different calling context', () => {
     it('should return a security error and no return value', async () => {
         let error;
         let returnValue;
-        const instance = new TestClass();
+        const instance = new Container(containerConfig);
         try {
             await instance.getTestClassDependency();
             returnValue = await instance.testClassDependency;
@@ -15,11 +56,11 @@ describe('when accessing a private member of a class given a different calling c
         expect(error.message).toBe('testClassDependency member is private for TestClass');
     });
 });
-describe('when accessing a private member of a class given a public method that calls it from the class calling context', () => {
+fdescribe('when accessing a private member of a class given a public method that calls it from the class calling context', () => {
     it('should NOT return a security error and respond with success', async () => {
         let error;
         let returnValue;
-        const instance = new TestClass();
+        const instance = new Container(containerConfig);
         try {
             returnValue = await instance.getTestClassDependency();
         } catch (err) {

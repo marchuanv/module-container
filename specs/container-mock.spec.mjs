@@ -1,4 +1,4 @@
-import { MockTestClass, TestClass, TestClassDependency, TestClassMockDependency } from './class.mjs';
+// import { MockTestClass, TestClass, TestClassDependency, TestClassMockDependency } from './class.mjs';
 describe('when creating an instance of Class given mock class configuration', () => {
     it('should create an instance of the mocked Class', async () => {
         process.environment.isProduction = false;
