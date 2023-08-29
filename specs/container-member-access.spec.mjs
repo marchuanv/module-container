@@ -13,15 +13,25 @@ const containerConfig = new ContainerConfig(configTemplate, {
             isSingleton: false,
             isHaltOnErrors: true,
             isPublic: true,
-            properties: {
-                testClassDependencyPublic: {
+            referenceProperties: {
+                testClassPublicProperty: {
                     args: {},
                     class: { name: 'OtherClass' },
                     isPublic: true
                 },
-                testClassDependencyPrivate: {
+                testClassPrivateProperty: {
                     args: {},
                     class: { name: 'OtherClass' },
+                    isPublic: false
+                }
+            },
+            staticProperties: {
+                testClassPublicStaticValue: {
+                    value: { message: 'this is static public property' },
+                    isPublic: true
+                },
+                testClassPrivateStaticValue: {
+                    value: { message: 'this is static private property' },
                     isPublic: false
                 }
             },
@@ -56,7 +66,7 @@ fdescribe('when accessing a private member of a class given a different calling 
         expect(error.message).toBe('testClassDependency member is private for TestClass');
     });
 });
-fdescribe('when accessing a private member of a class given a public method that calls it from the class calling context', () => {
+describe('when accessing a private member of a class given a public method that calls it from the class calling context', () => {
     it('should NOT return a security error and respond with success', async () => {
         let error;
         let returnValue;
