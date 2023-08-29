@@ -56,8 +56,7 @@ fdescribe('when accessing a private member of a class given a different calling 
         let returnValue;
         const instance = new Container(containerConfig);
         try {
-            await instance.getTestClassDependency();
-            returnValue = await instance.testClassDependency;
+            returnValue = await instance.testClassPrivateProperty;
         } catch (err) {
             error = err;
         }
@@ -72,11 +71,11 @@ describe('when accessing a private member of a class given a public method that 
         let returnValue;
         const instance = new Container(containerConfig);
         try {
-            returnValue = await instance.getTestClassDependency();
+            returnValue = await instance.testClassPublicProperty;
         } catch (err) {
             error = err;
         }
-        expect(returnValue).toBeDefined();
         expect(error).not.toBeDefined();
+        expect(returnValue).toBeDefined();
     });
 });
