@@ -63,10 +63,12 @@ fdescribe('when getting an instance', () => {
     it('should', async () => {
         const container = new Container(containerConfig);
         let instance;
+        let instance2;
         let error;
         let property;
         try {
-            instance = await container.getReference('TestClass');
+            instance = await container.getReference('testClass');
+            instance2 = await container.getReference('otherTestClass');
             property = await instance.testClassPrivateProperty;
         } catch (err) {
             error = err;
