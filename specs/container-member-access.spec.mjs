@@ -4,9 +4,7 @@ import { Container } from '../lib/container.mjs';
 const configTemplate = new ContainerConfigTemplate();
 const containerConfig = new ContainerConfig(configTemplate, {
     container: {
-        name: 'TestClassContainer',
-        class: {
-            name: 'TestClass',
+        testClass: {
             args: {},
             ctor: async () => { },
             isInterface: false,
@@ -16,12 +14,12 @@ const containerConfig = new ContainerConfig(configTemplate, {
             referenceProperties: {
                 testClassPublicProperty: {
                     args: {},
-                    class: { name: 'OtherClass' },
+                    class: { otherTestClass: {} },
                     isPublic: true
                 },
                 testClassPrivateProperty: {
                     args: {},
-                    class: { name: 'OtherClass' },
+                    class: { otherTestClass: {} },
                     isPublic: false
                 }
             },
@@ -47,22 +45,34 @@ const containerConfig = new ContainerConfig(configTemplate, {
                     isPublic: false
                 }
             }
+        },
+        otherTestClass: {
+            args: {},
+            ctor: async () => { },
+            isInterface: false,
+            isSingleton: false,
+            isHaltOnErrors: true,
+            isPublic: true,
+            referenceProperties: {},
+            staticProperties: {},
+            methods: {}
         }
     }
 });
 fdescribe('when getting an instance', () => {
     it('should', async () => {
+        const container = new Container(containerConfig);
+        let instance;
         let error;
-        let returnValue;
-        const instance = new Container(containerConfig);
+        let property;
         try {
-            returnValue = await instance.getInstance();
+            instance = await container.getReference('TestClass');
+            property = await instance.testClassPrivateProperty;
         } catch (err) {
             error = err;
         }
-        expect(returnValue).not.toBeDefined();
-        expect(error).toBeDefined();
-        expect(error.message).toBe('testClassDependency member is private for TestClass');
+        expect(error).not.toBeDefined();
+        expect(instance).toBeDefined();
     });
 });
 describe('when accessing a private member of a class given a different calling context', () => {
