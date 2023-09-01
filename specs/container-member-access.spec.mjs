@@ -72,6 +72,7 @@ fdescribe('when getting an instance', () => {
             property = await instance.testClassPrivateProperty;
         } catch (err) {
             error = err;
+            console.error(err);
         }
         expect(error).not.toBeDefined();
         expect(instance).toBeDefined();
