@@ -14,12 +14,12 @@ const containerConfig = new ContainerConfig(configTemplate, {
             referenceProperties: {
                 testClassPublicProperty: {
                     args: {},
-                    class: { otherTestClass: {} },
+                    class: { testClassA: {} },
                     isPublic: true
                 },
                 testClassPrivateProperty: {
                     args: {},
-                    class: { otherTestClass: {} },
+                    class: { testClassB: {} },
                     isPublic: false
                 }
             },
@@ -46,7 +46,18 @@ const containerConfig = new ContainerConfig(configTemplate, {
                 }
             }
         },
-        otherTestClass: {
+        testClassA: {
+            args: {},
+            ctor: async () => { },
+            isInterface: false,
+            isSingleton: false,
+            isHaltOnErrors: true,
+            isPublic: true,
+            referenceProperties: {},
+            staticProperties: {},
+            methods: {}
+        },
+        testClassB: {
             args: {},
             ctor: async () => { },
             isInterface: false,
@@ -63,19 +74,21 @@ fdescribe('when getting an instance', () => {
     it('should', async () => {
         const container = new Container(containerConfig);
         let instance;
-        let instance2;
         let error;
-        let property;
+        let privatePropertyValue;
+        let publicPropertyValue;
         try {
             instance = await container.getReference('testClass');
-            instance2 = await container.getReference('otherTestClass');
-            property = await instance.testClassPrivateProperty;
+            privatePropertyValue = await instance.testClassPrivateProperty;
+            publicPropertyValue = await instance.testClassPublicProperty;
         } catch (err) {
             error = err;
             console.error(err);
         }
         expect(error).not.toBeDefined();
         expect(instance).toBeDefined();
+        expect(privatePropertyValue).toBeDefined();
+        expect(publicPropertyValue).toBeDefined();
     });
 });
 describe('when accessing a private member of a class given a different calling context', () => {
