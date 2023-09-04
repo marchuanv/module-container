@@ -70,53 +70,35 @@ const containerConfig = new ContainerConfig(configTemplate, {
         }
     }
 });
-fdescribe('when getting an instance', () => {
-    it('should', async () => {
-        const container = new Container(containerConfig);
-        let instance;
-        let error;
-        let privatePropertyValue;
-        let publicPropertyValue;
-        try {
-            instance = await container.getReference('testClass');
-            privatePropertyValue = await instance.testClassPrivateProperty;
-            publicPropertyValue = await instance.testClassPublicProperty;
-        } catch (err) {
-            error = err;
-            console.error(err);
-        }
-        expect(error).not.toBeDefined();
-        expect(instance).toBeDefined();
-        expect(privatePropertyValue).toBeDefined();
-        expect(publicPropertyValue).toBeDefined();
-    });
-});
-describe('when accessing a private member of a class given a different calling context', () => {
+const container = new Container(containerConfig);
+fdescribe('when accessing a private member of a class given a different calling context', () => {
     it('should return a security error and no return value', async () => {
         let error;
         let returnValue;
-        const instance = new Container(containerConfig);
         try {
+            const instance = await container.getReference('testClass');
             returnValue = await instance.testClassPrivateProperty;
         } catch (err) {
             error = err;
+            console.log(err);
         }
         expect(returnValue).not.toBeDefined();
         expect(error).toBeDefined();
         expect(error.message).toBe('testClassDependency member is private for TestClass');
     });
 });
-describe('when accessing a private member of a class given a public method that calls it from the class calling context', () => {
+fdescribe('when accessing a private member of a class given a public method that calls it from the class calling context', () => {
     it('should NOT return a security error and respond with success', async () => {
         let error;
         let returnValue;
-        const instance = new Container(containerConfig);
         try {
+            const instance = await container.getReference('testClass');
             returnValue = await instance.testClassPublicProperty;
         } catch (err) {
             error = err;
+            console.log(err);
         }
-        expect(error).not.toBeDefined();
         expect(returnValue).toBeDefined();
+        expect(error).not.toBeDefined();
     });
 });
