@@ -71,7 +71,7 @@ const containerConfig = new ContainerConfig(configTemplate, {
     }
 });
 const container = new Container(containerConfig);
-fdescribe('when accessing a private member of a class given a different calling context', () => {
+fdescribe('when directly accessing a private member of a class', () => {
     it('should return a security error and no return value', async () => {
         let error;
         let returnValue;
@@ -84,10 +84,10 @@ fdescribe('when accessing a private member of a class given a different calling 
         }
         expect(returnValue).not.toBeDefined();
         expect(error).toBeDefined();
-        expect(error.message).toBe('testClassDependency member is private for TestClass');
+        expect(error.message).toBe('testClassPrivateProperty is private or not called from a valid context');
     });
 });
-fdescribe('when accessing a private member of a class given a public method that calls it from the class calling context', () => {
+fdescribe('when accessing a public member of a class', () => {
     it('should NOT return a security error and respond with success', async () => {
         let error;
         let returnValue;
