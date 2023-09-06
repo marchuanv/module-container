@@ -7,7 +7,7 @@ const containerConfig = new ContainerConfig(configTemplate, {
     container: {
         testClass: {
             args: {},
-            ctor: async () => { },
+            ctor: async function (args) { },
             classMock: {},
             isInterface: false,
             isSingleton: false,
@@ -38,12 +38,16 @@ const containerConfig = new ContainerConfig(configTemplate, {
             methods: {
                 testClassFunctionPublic: {
                     args: {},
-                    callback: async () => { },
+                    callback: async function (args) {
+                        return await this.testClassPrivateProperty
+                    },
                     isPublic: true
                 },
                 testClassFunctionPrivate: {
                     args: {},
-                    callback: async () => { },
+                    callback: async function (args) {
+                        return await this.testClassPrivateProperty
+                    },
                     isPublic: false
                 }
             }
@@ -74,18 +78,21 @@ const containerConfig = new ContainerConfig(configTemplate, {
         }
     }
 });
-describe('when directly accessing a private member of a class', () => {
+fdescribe('when directly accessing a private member of a class', () => {
     it('should raise member access security error and not return anything', async () => {
         const container = new Container(containerConfig);
         let error;
         let testClassAInstance;
+        let testClassAInstance2;
         try {
             const instance = await container.getReference('testClass');
+            testClassAInstance2 = await instance.testClassFunctionPublic();
             testClassAInstance = await instance.testClassPrivateProperty;
         } catch (err) {
             error = err;
             console.log(err);
         }
+        expect(testClassAInstance2).toBeDefined();
         expect(testClassAInstance).not.toBeDefined();
         expect(error).toBeDefined();
         expect(error.message).toBe('testClassPrivateProperty is private or not called from a valid context');
