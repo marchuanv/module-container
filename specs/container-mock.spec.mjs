@@ -56,7 +56,7 @@ const containerConfig = new ContainerConfig(configTemplate, {
         testClassC: {
             args: {},
             ctor: async () => { },
-            classMock: { testClassBMock: {} },
+            classMock: {},
             isInterface: false,
             isSingleton: false,
             isHaltOnErrors: true,
@@ -71,19 +71,30 @@ const container = new Container(containerConfig);
 fdescribe('when creating a ClassMember given classMock configuration', () => {
     it('should create an instance of the mocked Class instead', async () => {
         let error;
-        let testClassBMockInstance;
+        let testClassBInstance;
+        let testClassCInstance;
         try {
             const instance = await container.getReference('testClassA');
-            testClassBMockInstance = await instance.referencePropertyTestClassB;
+            testClassBInstance = await instance.referencePropertyTestClassB;
+            testClassCInstance = await testClassBInstance.referencePropertyTestClassC;
         } catch (err) {
             error = err;
             console.log(err);
         }
         expect(error).not.toBeDefined();
-        expect(testClassBMockInstance).toBeDefined();
-        expect(testClassBMockInstance.referencePropertyTestClassC).toBeDefined();
-        expect(testClassBMockInstance.Id).toBeDefined();
-        expect(testClassBMockInstance.Id.name).toEqual('testClassB');
-        expect(testClassBMockInstance.Id.prototype).toEqual(ClassMember);
+
+        expect(testClassBInstance).toBeDefined();
+        expect(testClassCInstance).toBeDefined();
+
+        expect(testClassBInstance.Id).toBeDefined();
+        expect(testClassCInstance.Id).toBeDefined();
+
+        expect(testClassBInstance.Id.name).toEqual('testClassB');
+        expect(testClassCInstance.Id.name).toEqual('testClassC');
+
+        expect(testClassBInstance.Id.prototype).toEqual(ClassMember);
+        expect(testClassCInstance.Id.prototype).toEqual(ClassMember);
+
+        expect(testClassBInstance.referencePropertyTestClassB).toBeDefined();
     });
 });
