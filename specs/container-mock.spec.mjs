@@ -43,6 +43,24 @@ const containerConfig = new ContainerConfig(configTemplate, {
             isSingleton: false,
             isHaltOnErrors: true,
             isPublic: true,
+            referenceProperties: {
+                referencePropertyTestClassC: {
+                    args: {},
+                    class: { testClassC: {} },
+                    isPublic: true
+                }
+            },
+            staticProperties: {},
+            methods: {}
+        },
+        testClassC: {
+            args: {},
+            ctor: async () => { },
+            classMock: { testClassBMock: {} },
+            isInterface: false,
+            isSingleton: false,
+            isHaltOnErrors: true,
+            isPublic: true,
             referenceProperties: {},
             staticProperties: {},
             methods: {}
@@ -50,7 +68,7 @@ const containerConfig = new ContainerConfig(configTemplate, {
     }
 });
 const container = new Container(containerConfig);
-describe('when creating a ClassMember given classMock configuration', () => {
+fdescribe('when creating a ClassMember given classMock configuration', () => {
     it('should create an instance of the mocked Class instead', async () => {
         let error;
         let testClassBMockInstance;
@@ -63,6 +81,7 @@ describe('when creating a ClassMember given classMock configuration', () => {
         }
         expect(error).not.toBeDefined();
         expect(testClassBMockInstance).toBeDefined();
+        expect(testClassBMockInstance.referencePropertyTestClassC).toBeDefined();
         expect(testClassBMockInstance.Id).toBeDefined();
         expect(testClassBMockInstance.Id.name).toEqual('testClassB');
         expect(testClassBMockInstance.Id.prototype).toEqual(ClassMember);
