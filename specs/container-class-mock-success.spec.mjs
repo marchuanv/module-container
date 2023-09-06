@@ -67,7 +67,7 @@ const containerConfig = new ContainerConfig(configTemplate, {
         }
     }
 });
-fdescribe('when creating a ClassMember given classMock configuration', () => {
+describe('when creating a ClassMember given classMock configuration', () => {
     it('should create an instance of the mocked Class instead', async () => {
         const container = new Container(containerConfig);
         let error;
