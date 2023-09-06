@@ -8,11 +8,11 @@ const containerConfig = new ContainerConfig(configTemplate, {
         testClassA: {
             args: {},
             ctor: async () => { },
+            classMock: {},
             isInterface: false,
             isSingleton: false,
             isHaltOnErrors: true,
             isPublic: true,
-            classMock: {},
             referenceProperties: {
                 referencePropertyTestClassB: {
                     args: {},
@@ -26,11 +26,11 @@ const containerConfig = new ContainerConfig(configTemplate, {
         testClassB: {
             args: {},
             ctor: async () => { },
+            classMock: { testClassBMock: {} },
             isInterface: false,
             isSingleton: false,
             isHaltOnErrors: true,
             isPublic: true,
-            classMock: { testClassBMock: {} },
             referenceProperties: {},
             staticProperties: {},
             methods: {}
@@ -38,11 +38,11 @@ const containerConfig = new ContainerConfig(configTemplate, {
         testClassBMock: {
             args: {},
             ctor: async () => { },
+            classMock: {},
             isInterface: false,
             isSingleton: false,
             isHaltOnErrors: true,
             isPublic: true,
-            classMock: {},
             referenceProperties: {},
             staticProperties: {},
             methods: {}
@@ -50,7 +50,7 @@ const containerConfig = new ContainerConfig(configTemplate, {
     }
 });
 const container = new Container(containerConfig);
-fdescribe('when creating a ClassMember given classMock configuration', () => {
+describe('when creating a ClassMember given classMock configuration', () => {
     it('should create an instance of the mocked Class instead', async () => {
         let error;
         let testClassBMockInstance;
@@ -64,7 +64,7 @@ fdescribe('when creating a ClassMember given classMock configuration', () => {
         expect(error).not.toBeDefined();
         expect(testClassBMockInstance).toBeDefined();
         expect(testClassBMockInstance.Id).toBeDefined();
-        expect(testClassBMockInstance.Id.name).toEqual('testClassBMock');
+        expect(testClassBMockInstance.Id.name).toEqual('testClassB');
         expect(testClassBMockInstance.Id.prototype).toEqual(ClassMember);
     });
 });

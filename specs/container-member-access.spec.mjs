@@ -8,11 +8,11 @@ const containerConfig = new ContainerConfig(configTemplate, {
         testClass: {
             args: {},
             ctor: async () => { },
+            classMock: {},
             isInterface: false,
             isSingleton: false,
             isHaltOnErrors: true,
             isPublic: true,
-            classMock: {},
             referenceProperties: {
                 testClassPublicProperty: {
                     args: {},
@@ -51,11 +51,11 @@ const containerConfig = new ContainerConfig(configTemplate, {
         testClassA: {
             args: {},
             ctor: async () => { },
+            classMock: {},
             isInterface: false,
             isSingleton: false,
             isHaltOnErrors: true,
             isPublic: true,
-            classMock: {},
             referenceProperties: {},
             staticProperties: {},
             methods: {}
@@ -63,11 +63,11 @@ const containerConfig = new ContainerConfig(configTemplate, {
         testClassB: {
             args: {},
             ctor: async () => { },
+            classMock: {},
             isInterface: false,
             isSingleton: false,
             isHaltOnErrors: true,
             isPublic: true,
-            classMock: {},
             referenceProperties: {},
             staticProperties: {},
             methods: {}
