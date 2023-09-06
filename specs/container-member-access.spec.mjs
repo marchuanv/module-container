@@ -1,6 +1,7 @@
 import { ContainerConfigTemplate } from '../lib/container-config-template.mjs';
 import { ContainerConfig } from '../lib/container-config.mjs';
 import { Container } from '../lib/container.mjs';
+import { ClassMember } from '../lib/member/class-member.mjs';
 const configTemplate = new ContainerConfigTemplate();
 const containerConfig = new ContainerConfig(configTemplate, {
     container: {
@@ -11,6 +12,7 @@ const containerConfig = new ContainerConfig(configTemplate, {
             isSingleton: false,
             isHaltOnErrors: true,
             isPublic: true,
+            classMock: {},
             referenceProperties: {
                 testClassPublicProperty: {
                     args: {},
@@ -53,6 +55,7 @@ const containerConfig = new ContainerConfig(configTemplate, {
             isSingleton: false,
             isHaltOnErrors: true,
             isPublic: true,
+            classMock: {},
             referenceProperties: {},
             staticProperties: {},
             methods: {}
@@ -64,6 +67,7 @@ const containerConfig = new ContainerConfig(configTemplate, {
             isSingleton: false,
             isHaltOnErrors: true,
             isPublic: true,
+            classMock: {},
             referenceProperties: {},
             staticProperties: {},
             methods: {}
@@ -71,34 +75,35 @@ const containerConfig = new ContainerConfig(configTemplate, {
     }
 });
 const container = new Container(containerConfig);
-fdescribe('when directly accessing a private member of a class', () => {
-    it('should return a security error and no return value', async () => {
+describe('when directly accessing a private member of a class', () => {
+    it('should raise member access security error and not return anything', async () => {
         let error;
-        let returnValue;
+        let testClassAInstance;
         try {
             const instance = await container.getReference('testClass');
-            returnValue = await instance.testClassPrivateProperty;
+            testClassAInstance = await instance.testClassPrivateProperty;
         } catch (err) {
             error = err;
             console.log(err);
         }
-        expect(returnValue).not.toBeDefined();
+        expect(testClassAInstance).not.toBeDefined();
         expect(error).toBeDefined();
         expect(error.message).toBe('testClassPrivateProperty is private or not called from a valid context');
     });
 });
-fdescribe('when accessing a public member of a class', () => {
-    it('should NOT return a security error and respond with success', async () => {
+describe('when directly accessing a public member of a class', () => {
+    it('should NOT raise member access security error and return with an instance of ClassMember', async () => {
         let error;
-        let returnValue;
+        let testClassBInstance;
         try {
             const instance = await container.getReference('testClass');
-            returnValue = await instance.testClassPublicProperty;
+            testClassBInstance = await instance.testClassPublicProperty;
         } catch (err) {
             error = err;
             console.log(err);
         }
-        expect(returnValue).toBeDefined();
         expect(error).not.toBeDefined();
+        expect(testClassBInstance).toBeDefined();
+        expect(testClassBInstance.Id.prototype).toEqual(ClassMember);
     });
 });
