@@ -67,9 +67,9 @@ const containerConfig = new ContainerConfig(configTemplate, {
         }
     }
 });
-const container = new Container(containerConfig);
 fdescribe('when creating a ClassMember given classMock configuration', () => {
     it('should create an instance of the mocked Class instead', async () => {
+        const container = new Container(containerConfig);
         let error;
         let testClassBInstance;
         let testClassCInstance;
@@ -86,6 +86,9 @@ fdescribe('when creating a ClassMember given classMock configuration', () => {
         expect(testClassBInstance).toBeDefined();
         expect(testClassCInstance).toBeDefined();
 
+        expect(testClassBInstance).toBeInstanceOf(ClassMember);
+        expect(testClassCInstance).toBeInstanceOf(ClassMember);
+
         expect(testClassBInstance.Id).toBeDefined();
         expect(testClassCInstance.Id).toBeDefined();
 
@@ -95,6 +98,6 @@ fdescribe('when creating a ClassMember given classMock configuration', () => {
         expect(testClassBInstance.Id.prototype).toEqual(ClassMember);
         expect(testClassCInstance.Id.prototype).toEqual(ClassMember);
 
-        expect(testClassBInstance.referencePropertyTestClassB).toBeDefined();
+        expect(testClassBInstance.referencePropertyTestClassC).toBeDefined();
     });
 });

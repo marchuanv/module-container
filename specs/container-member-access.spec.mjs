@@ -74,9 +74,9 @@ const containerConfig = new ContainerConfig(configTemplate, {
         }
     }
 });
-const container = new Container(containerConfig);
 describe('when directly accessing a private member of a class', () => {
     it('should raise member access security error and not return anything', async () => {
+        const container = new Container(containerConfig);
         let error;
         let testClassAInstance;
         try {
@@ -93,6 +93,7 @@ describe('when directly accessing a private member of a class', () => {
 });
 describe('when directly accessing a public member of a class', () => {
     it('should NOT raise member access security error and return with an instance of ClassMember', async () => {
+        const container = new Container(containerConfig);
         let error;
         let testClassBInstance;
         try {
